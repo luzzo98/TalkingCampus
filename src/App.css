@@ -1,0 +1,44 @@
+.BackgroundImg {
+  background-image: url('/src/Campus-Cesena.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+
+  -webkit-background-size:cover;
+  -moz-background-size:cover;
+  -o-background-size:cover;
+  background-position:center;
+
+  position: fixed;
+  display: block;
+  left: 0;
+  right: 0;
+
+
+  filter: blur(4px);
+  -webkit-filter: blur(4px);
+}
+
+.Login {
+  text-align: center;
+  left: 0;
+  right: 0;
+  position: fixed;
+}
+
+.tab-list {  border-bottom: 1px solid #ccc;
+  padding-left: 0;
+}
+
+.tab-list-item {
+  display: inline-block;
+  list-style: none;
+  margin-bottom: -1px;
+  padding: 0.5rem 0.75rem;
+}
+
+.tab-list-active {
+  background-color: white;
+  border: solid #ccc;
+  border-width: 1px 1px 0 1px;
+}
