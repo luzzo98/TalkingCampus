@@ -3,20 +3,17 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/leaflet.js.map';
 import {MutableRefObject, SyntheticEvent, useEffect, useRef, useState} from 'react';
 import * as React from 'react'
-import {markerDictionary} from './Model';
-import './style.scss'
+import {markerDictionary} from '../Model';
+import '../style.scss'
 import { renderToStaticMarkup } from "react-dom/server";
 import {divIcon, LatLngBoundsLiteral, LatLngExpression, LayersControlEvent, LeafletEvent, Map} from "leaflet";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faBook, faChalkboardTeacher, faBath} from "@fortawesome/free-solid-svg-icons";
 import {IconDefinition} from "@fortawesome/fontawesome-common-types";
-// @ts-ignore
-import floor1 from "./floor1.svg"
-// @ts-ignore
-import floor2 from "./floor2.svg"
-// @ts-ignore
-import groundFloor from "./groundFloor.svg"
-require('./slider')
+import floor1 from "../assets/floor1.svg"
+import floor2 from "../assets/floor2.svg"
+import groundFloor from "../assets/groundFloor.svg"
+require('../slider')
 
 const MapBox:React.FC = () => {
 

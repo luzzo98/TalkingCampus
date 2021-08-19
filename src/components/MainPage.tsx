@@ -1,8 +1,7 @@
-import './style.scss';
+import '../style.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MapBox from "./MapBox";
-// @ts-ignore
-import img from './volto_uomo.jpg'
+import img from '../assets/volto_uomo.jpg'
 
 const MainPage:React.FC = () => {
 
