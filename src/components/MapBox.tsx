@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.js.map';
 import {MutableRefObject, SyntheticEvent, useEffect, useRef, useState} from 'react';
 import * as React from 'react'
 import {markerDictionary} from '../Model';
-import '../style.scss'
+import '../styles/mainPageStyle/MainPageStyle.scss'
 import { renderToStaticMarkup } from "react-dom/server";
 import {divIcon, LatLngBoundsLiteral, LatLngExpression, LayersControlEvent, LeafletEvent, Map} from "leaflet";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

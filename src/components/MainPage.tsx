@@ -1,4 +1,4 @@
-import '../style.scss';
+import '../styles/mainPageStyle/MainPageStyle.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MapBox from "./MapBox";
 import img from '../assets/volto_uomo.jpg'

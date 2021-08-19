@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './styles/App.css';
 import Tab from "./components/Tab";
 import TabTitle from "./components/TabTitle";
 import Tabs from "./components/Tabs";
