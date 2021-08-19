@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-import InitialForm from "./component/InitialForm";
+import InitialForm from "./components/InitialForm";
+import './styles/App.css';
 
 function App() {
     return (
