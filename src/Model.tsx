@@ -5,6 +5,6 @@ export interface IMarker {
     icon: DivIcon;
 }
 
-export interface markerDictionary {
+export interface MarkerDictionary {
     [id: string]: IMarker[]
 }

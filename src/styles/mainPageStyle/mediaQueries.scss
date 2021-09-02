@@ -1,0 +1,172 @@
+@use "./variables";
+
+@media screen and (min-width: variables.$breakpoint-sd-screen)
+              and (max-width: variables.$breakpoint-hd-screen) {
+  hr {
+    @include variables.resizable_hr(5%)
+  }
+
+  body {
+    .card {
+
+      text-align: center;
+      display: inline-block !important;
+
+      h3 {
+        width: 100%;
+        height: auto;
+        display: inline-block;
+      }
+
+      background-color: black;
+      width: 100%;
+      height: 30%;
+
+      img.avatar-holder {
+        width: 75%;
+        height: 75%;
+        top: 0;
+        margin-left: 15%;
+        margin-right: 20%;
+        margin-top: 3%;
+        position: relative;
+      }
+
+      margin-bottom: 10%;
+
+    }
+
+    button.corner-button {
+      padding: 2%;
+    }
+
+    button.logout-button {
+      margin-top: 50%;
+    }
+  }
+
+}
+
+@media screen and (min-width: variables.$breakpoint-mobile-screen) and (max-width: variables.$breakpoint-sd-screen) {
+
+   hr {
+      @include variables.resizable_hr(10%)
+  }
+
+}
+
+@media (max-width: variables.$breakpoint-mobile-screen){
+  .leaflet-control-layers-base{
+    label {
+      div {
+        input[type="radio"] {
+          width: 11px !important;
+          height: 11px !important;
+          border-radius: 50px !important;
+          left: 0 !important;
+          top: 0 !important;
+          z-index: -1;
+          background-color: gradient(variables.$dark-grey, variables.$dark-grey-4)!important;
+        }
+        span {
+          font-family: variables.$main-font;
+          text-transform: uppercase;
+          font-size: 15px !important;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+  .leaflet-control-zoom {
+    margin-bottom: 2.2em !important;
+  }
+
+  label#drawer-toggle-label {
+    width: 50px !important;
+    height: 50px !important;
+    font-size: small !important;
+  }
+
+  header {
+    text-align: center;
+  }
+
+  body {
+    #drawer {
+      hr {
+        @include variables.resizable_hr(5%)
+      }
+      button {
+        margin: 0px !important;
+        margin-bottom: 8px !important;
+        padding: 0%;
+        height: 12%;
+
+        span {
+          width: 100%;
+          height: 100%;
+          display: block;
+          text-align: center;
+          font-size: 50%;
+        }
+      }
+    }
+  }
+
+  body {
+    #drawer-toggle-label {
+      left: 86%;
+    }
+
+    button {
+      visibility: hidden;
+      opacity: 0;
+      @include variables.transition
+    }
+
+    #drawer-toggle:checked ~ nav > button {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    #drawer-toggle:checked ~ #drawer {
+      height: 40%;
+    }
+
+    #drawer-toggle:checked ~ #drawer {
+      left: 0px;
+    }
+
+    #drawer-toggle:checked ~ #page-content {
+      margin-left: 86%;
+    }
+
+    #drawer-toggle:checked ~ #drawer-toggle-label,
+    #drawer-toggle:checked ~ header {
+      left: 86%;
+    }
+
+    header {
+      #drawer {
+        left: 0px;
+        bottom: -86%;
+        display: inline-block;
+        height: 10%;
+        width: 100%;
+
+        .card {
+          visibility: hidden;
+          height: 0;
+          margin: 0;
+        }
+
+        h3 {
+          visibility: hidden;
+          margin-bottom: 0%;
+        }
+      }
+    }
+
+  }
+
+}
