@@ -6,9 +6,17 @@ import * as React from 'react'
 import {MarkerDictionary} from '../Model';
 import '../styles/mainPageStyle/mainPageStyle.scss'
 import { renderToStaticMarkup } from "react-dom/server";
-import { Control, divIcon, LatLngBoundsLiteral, LatLngExpression, LayersControlEvent, Map } from "leaflet";
+import {
+    Control,
+    divIcon,
+    LatLngBoundsLiteral,
+    LatLngExpression, LatLngTuple,
+    LayersControlEvent,
+    LeafletMouseEvent,
+    Map
+} from "leaflet";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faBook, faChalkboardTeacher, faBath} from "@fortawesome/free-solid-svg-icons";
+import {faBook, faChalkboardTeacher, faBath, faCoffee, faFax, faFlask} from "@fortawesome/free-solid-svg-icons";
 import {IconDefinition} from "@fortawesome/fontawesome-common-types";
 import floor1 from "../assets/floor1.svg"
 import floor2 from "../assets/floor2.svg"
@@ -18,16 +26,15 @@ import $ from "jquery"
 const MapBox:React.FC = () => {
 
     const center:LatLngExpression = [40.743, -74.185];
+    const offset:LatLngTuple = [-5, +7];
 
     const defaultZoom: number = 14;
     const mobileMinLevelZoom: number = 12.49;
-    const mobileMaxLevelZoom: number = 13.50;
+    const mobileMaxLevelZoom: number = 13.75;
     const screenDefaultZoom: number = 13.50
 
     const mobileSize: number = 800
     const hdSize: number = 1080
-
-    let attributes: {[id: string]: string[]} = {};
 
     const bounds:LatLngBoundsLiteral = [
         [40.712216, -74.22655],
@@ -55,20 +62,73 @@ const MapBox:React.FC = () => {
             { position: [40.757059, -74.198484], icon: generateIcon(faChalkboardTeacher) },
             { position: [40.750755, -74.195824], icon: generateIcon(faBook) },
             { position: [40.750755, -74.201059], icon: generateIcon(faBook) },
-            { position: [40.736194, -74.184837], icon: generateIcon(faBath) }
-
+            { position: [40.736194, -74.184837], icon: generateIcon(faBath) },
+            { position: [40.735226, -74.20045], icon: generateIcon(faChalkboardTeacher) },
+            { position: [40.735226, -74.19450], icon: generateIcon(faChalkboardTeacher) },
+            { position: [40.733275, -74.190587], icon: generateIcon(faBath)},
+            { position: [40.753694, -74.163894], icon: generateIcon(faBath)},
+            { position: [40.72755, -74.202175], icon: generateIcon(faBook)},
+            { position: [40.72755, -74.198398], icon: generateIcon(faBook)},
+            { position: [40.745891, -74.158401], icon: generateIcon(faCoffee)},
+            { position: [40.73366, -74.15711], icon: generateIcon(faFax)},
+            { position: [40.728201, -74.194622], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.728201, -74.191000], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.728201, -74.187498], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.728201, -74.184000], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.728201, -74.178485], icon: generateIcon(faFlask)},
+            { position: [40.728201, -74.172306], icon: generateIcon(faFlask)},
+            { position: [40.751353, -74.18200], icon: generateIcon(faFlask)},
+            { position: [40.751353, -74.17460], icon: generateIcon(faFlask)},
+            { position: [40.752063, -74.19130], icon: generateIcon(faBath)},
+            { position: [40.750833, -74.19130], icon: generateIcon(faBath)},
+            { position: [40.75388, -74.1548], icon: generateIcon(faBath)},
+            { position: [40.751753, -74.1548], icon: generateIcon(faBath)},
+            { position: [40.757059, -74.178485], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.757059, -74.16220], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.735226, -74.178485], icon:generateIcon(faChalkboardTeacher)}
         ],
         "piano 1": [
-            {
-                position: [40.757059, -74.198484],
-                icon: generateIcon(faBook)
-            }
+            { position: [40.757059, -74.198484], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.757059, -74.194536], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.756710, -74.18887], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.756710, -74.181919], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.756710, -74.17480], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.756710, -74.16732], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.756710, -74.15994], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.74745, -74.16200], icon: generateIcon(faCoffee)},
+            { position: [40.75070, -74.19127], icon: generateIcon(faBath)},
+            { position: [40.73262, -74.15711], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.74556, -74.15917], icon: generateIcon(faFax)},
+            { position: [40.75330, -74.16337], icon:generateIcon(faBath)},
+            { position: [40.73535, -74.17848], icon:generateIcon(faChalkboardTeacher)},
+            { position: [40.73711, -74.185009], icon: generateIcon(faBath)},
+            { position: [40.73711, -74.18294], icon: generateIcon(faBath)},
+            { position: [40.72787, -74.19625], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.75063, -74.19839], icon: generateIcon(faChalkboardTeacher)},
+            { position: [40.750768, -74.2019], icon: generateIcon(faBook)},
+            { position: [40.73451, -74.19814], icon: generateIcon(faBook)},
+            { position: [40.73451, -74.19522], icon: generateIcon(faBook)},
+            { position: [40.73711, -74.19419], icon: generateIcon(faBook)},
+            { position: [40.73711, -74.19693], icon: generateIcon(faBook)},
+            { position: [40.73327, -74.19067], icon: generateIcon(faBath)},
+            { position: [40.73711, -74.1914], icon: generateIcon(faBook)},
+            { position: [40.75245, -74.18363], icon: generateIcon(faFlask)},
+            { position: [40.75245, -74.18037], icon: generateIcon(faFlask)},
+            { position: [40.75245, -74.17668], icon: generateIcon(faFlask)},
+            {position: [40.75245, -74.17316], icon: generateIcon(faFlask)},
+            {position: [40.75245, -74.16921], icon: generateIcon(faFlask)},
+            {position: [40.75063, -74.19479], icon: generateIcon(faChalkboardTeacher)},
+            {position: [40.73327, -74.16844], icon: generateIcon(faBath)},
+            {position: [40.72787, -74.19127], icon: generateIcon(faChalkboardTeacher)},
+            {position: [40.72787, -74.19127], icon: generateIcon(faChalkboardTeacher)},
+            {position: [40.72787, -74.18612], icon: generateIcon(faChalkboardTeacher)},
+            {position: [40.72787, -74.17848], icon: generateIcon(faChalkboardTeacher)},
+            {position: [40.72787, -74.16200], icon: generateIcon(faChalkboardTeacher)}
         ],
         "piano 2": [
-            {
-                position: [40.757059, -74.198484],
-                icon: generateIcon(faBook)
-            }
+            { position: [40.75759, -74.19651], icon: generateIcon(faBook)},
+            { position: [40.75050, -74.19470], icon: generateIcon(faBook)},
+            { position: [40.75232, -74.19831], icon: generateIcon(faBook)},
         ]
     }
 
@@ -79,7 +139,7 @@ const MapBox:React.FC = () => {
         return infos.map(
             el =>
                 <Marker position={el.position} icon={el.icon}>
-                    <Popup position={el.position}>A pretty CSS3 popup. <br /> Easily customizable.</Popup>
+                    <Popup offset={offset}>A pretty CSS3 popup. <br /> Easily customizable.</Popup>
                 </Marker>
         );
     }
@@ -94,6 +154,7 @@ const MapBox:React.FC = () => {
             m.setMinZoom(mobileMinLevelZoom); m.setMaxZoom(mobileMaxLevelZoom); m.setZoom(mobileMinLevelZoom)
             m.dragging.enable()
             m.addControl(new Control.Zoom({position:"bottomleft"}))
+            console.log(m.getCenter())
         } else {
             m.setMaxZoom(defaultZoom); m.setMinZoom(defaultZoom)
             m.setView(center)
@@ -103,12 +164,6 @@ const MapBox:React.FC = () => {
         setControlLayerVisible()
     }
 
-    function writeTransformRule(x: string = "-32px", y: string = "71px"):string {
-        return "transform: translate3d(" + x + ", " + y + ", 0px);"
-    }
-
-    function getChildrenOfComponent(name:string):HTMLCollection {return document.getElementsByClassName(name).item(0)?.children as HTMLCollection}
-
     function getElementOnViewByClass(className: string): HTMLElement {
         const elem = document.getElementsByClassName(className).item(0);
         return elem as HTMLElement;
@@ -116,29 +171,6 @@ const MapBox:React.FC = () => {
 
     function getElementOnViewById(id: string): HTMLElement {
         return document.getElementById(id) as HTMLElement;
-    }
-
-    function getComponents(name:string){
-        const children = getChildrenOfComponent(name)
-        let styles: string[] = []
-        for (let i:number = 0; i < children.length; i++) {
-            styles.push(children.item(i)?.getAttribute("style") as string)
-        }
-        attributes[name] = styles
-    }
-
-    function getElementsWithSelectors(selectors:string) {
-        return document.querySelectorAll(selectors)
-    }
-
-    function setStyles() {
-        for(let key in attributes) {
-            const style = attributes[key]
-            const children = getChildrenOfComponent(key)
-            for(let i: number = 0; i < children.length; i++){
-                children.item(i)?.setAttribute("style", style[i])
-            }
-        }
     }
 
     function isHidden(el: Element) {
@@ -160,72 +192,38 @@ const MapBox:React.FC = () => {
         }
     }
 
-    function setTransition() {
-        return "transition: all 0.7s ease-in-out;"
-    }
-
     function setMenuVisible(){
-        const maps = getElementOnViewByClass("leaflet-map-pane");
         getElementOnViewById("drawer-toggle-label").style.pointerEvents = "auto"
-
-        maps.setAttribute("style", writeTransformRule() + setTransition())
-        setTimeout(() => {
-            maps.setAttribute("style", writeTransformRule())
-            const button = getElementOnViewByClass("corner-button")
-            if(isHidden(button)) {
-                getElementOnViewById("drawer-toggle").click()
-            }
-        }, 500)
-    }
-
-    let firstTime: Boolean = true
-
-    function getElementsOfMapStyles(){
-        attributes = {}
-        const divs = ["leaflet-overlay-pane", "leaflet-marker-pane", "leaflet-zoom-animated"]
-        divs.forEach((e) => getComponents(e))
+        const button = getElementOnViewByClass("corner-button")
+        if(isHidden(button)) {
+            getElementOnViewById("drawer-toggle").click()
+        }
     }
 
     function isLowestZoomLevel(m: Map):boolean {
         return m.getZoom() == mobileMinLevelZoom
     }
 
-    function performOnButton(predicate: (button: HTMLInputElement) => void){
-        getElementsWithSelectors("input[type='radio'], .leaflet-control-layers-selector").forEach(b => predicate(b as HTMLInputElement))
-    }
-
     const handleMapCreatedEvent = (m: Map) => {
         sizingMap(m)
         m.on("baselayerchange", (event:LayersControlEvent) => baseLayerChange(event))
         m.on("resize", () => sizingMap(m))
-        m.on("click", () => setControlLayerVisible())
+        m.on("click", (e:LeafletMouseEvent) => {
+            setControlLayerVisible();
+            console.log(e.latlng)
+    })
         m.on("zoom", () => {
             setControlLayerVisible();
-            setTimeout(() => {
-                if (isLowestZoomLevel(m)) {
-                    setMenuVisible()
-                    if(firstTime){
-                        firstTime = false
-                        getElementsOfMapStyles()
-                    } else {
-                        setStyles()
-                    }
-                    m.dragging.disable()
-                } else {
-                    createSpaceForMap()
-                    m.dragging.enable()
-                }
-                isLowestZoomLevel(m) ? getElementOnViewByClass("leaflet-control-layers").style.visibility = "visible"
-                                     : getElementOnViewByClass("leaflet-control-layers").style.visibility = "hidden"
-            }, 100)
-        })
-        performOnButton(b => {
-            b.onclick = () => {
-                setTimeout(() => {
-                    setStyles()
-                    setControlLayerVisible()
-                }, 5)
+            if (isLowestZoomLevel(m)) {
+                m.panTo([40.753, -74.179])
+                m.dragging.disable()
+                setMenuVisible()
+            } else {
+                createSpaceForMap()
+                m.dragging.enable()
             }
+            isLowestZoomLevel(m) ? getElementOnViewByClass("leaflet-control-layers").style.visibility = "visible"
+                                 : getElementOnViewByClass("leaflet-control-layers").style.visibility = "hidden"
         })
 }
 
@@ -252,31 +250,6 @@ const MapBox:React.FC = () => {
             {markers}
         </MapContainer>
     );
-    /*
-
-    var bookIcon = new Icon({html: generateHtml('fa-book')})
-    var receptionIcon = new Icon({html: generateHtml('fa-fax')})
-    var classroomIcon = new Icon({html: generateHtml('fa-chalkboard-teacher')})
-    var bathroomIcon = new Icon({html: generateHtml('fa-bath')})
-    var cafeIcon = new Icon({html: generateHtml('fa-coffee')})
-
-    var baseMarker = {
-        "Piano 0": [
-            L.marker([40.757059, -74.198484], {icon: classroomIcon}),
-            L.marker([40.736194, -74.184837], {icon: bathroomIcon}),
-            L.marker([40.757059, -74.161835], {icon: classroomIcon}),
-            L.marker([40.727871, -74.191189], {icon: classroomIcon}),
-            L.marker([40.727871, -74.187412], {icon: classroomIcon}),
-            L.marker([40.727871, -74.194965], {icon: classroomIcon}),
-            L.marker([40.727871, -74.183979], {icon: classroomIcon}),
-            L.marker([40.732748, -74.156857], {icon: classroomIcon}),
-            L.marker([40.745815, -74.157715], {icon: cafeIcon}),
-            L.marker([40.757059, -74.178057], {icon: classroomIcon}),
-            L.marker([40.750755, -74.201059], {icon: bookIcon}),
-            L.marker([40.750755, -74.195824], {icon: bookIcon}),
-            L.marker([40.727091, -74.159002], {icon: receptionIcon})
-        ]
-    }*/
 }
 
 export default MapBox;
