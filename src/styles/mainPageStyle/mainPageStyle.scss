@@ -315,18 +315,12 @@ header {
   color:white;
 }
 
-@media (min-width: 1400px) {
-  main,
-  header,
-  #main-navbar {
-    //padding-left: 240px;
+body {
+  button {
+    width: 100%;
+    margin-bottom: 15%;
+    border: 0px;
   }
-}
-
-button {
-  width: 100%;
-  margin-bottom: 15% !important;
-  border: 0px;
 }
 
 .corner-button {
@@ -338,10 +332,14 @@ button {
   border-radius: 10px;
 }
 
-.corner-button span {
-  font-family: variables.$main-font;
-  font-size: 75%;
-  transition: all 0.3s;
+.corner-button {
+
+  span {
+    font-family: variables.$main-font;
+    font-size: 75%;
+    transition: all 0.3s;
+  }
+
 }
 
 .logout-button {
@@ -355,7 +353,7 @@ button {
 }
 
 .logout-button::before {
-  @include variables.button-transition(5px, variables.$white);
+  @include variables.button-transition(3px, variables.$white);
 }
 
 .corner-button:hover span {
@@ -366,6 +364,7 @@ button {
   opacity: 1;
   transform: scale(1, 1);
 }
+
 .corner-button::after {
   content: '';
   position: absolute;

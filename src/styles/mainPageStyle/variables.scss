@@ -28,7 +28,9 @@ $dur: .3s;
 /* Using SCSS variables to store breakpoints */
 $breakpoint-mobile-screen: 736px;
 $breakpoint-desktop-screen: 1280px;
-$breakpoint-hd-screen: 1700px;
+$breakpoint-hd-screen: 1600px;
+
+$breakpoint-height-phone: 800px;
 
 @mixin transition {
   -webkit-box-sizing: border-box;

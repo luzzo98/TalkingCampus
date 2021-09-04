@@ -26,14 +26,14 @@ import $ from "jquery"
 const MapBox:React.FC = () => {
 
     const center:LatLngExpression = [40.743, -74.185];
-    const mobileCenter:LatLngExpression = [40.753, -74.179];
+    const mobileCenter:LatLngExpression = [40.753, -74.176];
     const offset:LatLngTuple = [-5, +7];
 
-    const defaultZoom: number = 14;
+    const defaultZoom: number = 14
     const mobileMinLevelZoom: number = 12.49;
     const mobileMaxLevelZoom: number = 13.75;
     const screenDefaultZoom: number = 13.25;
-    const screenMaxZoom: number = 15;
+    const screenMaxZoom: number = 14;
 
     const mobileSize: number = 736
     const hdSize: number = 1280
@@ -170,12 +170,16 @@ const MapBox:React.FC = () => {
 
     function sizingMap(m: Map) {
         const val:number = $("#map").width() as number
-        if(val < mobileSize || (val > mobileSize && val < hdSize) ) {
-            m.setMinZoom(mobileMinLevelZoom); m.setMaxZoom(mobileMaxLevelZoom); m.setZoom(mobileMinLevelZoom)
+        if (val < hdSize) {
+            if(val < mobileSize) {
+                m.setMinZoom(mobileMinLevelZoom); m.setMaxZoom(mobileMaxLevelZoom); m.setZoom(mobileMinLevelZoom)
+            } else {
+                m.setMinZoom(screenDefaultZoom); m.setMaxZoom(screenMaxZoom); m.setZoom(screenDefaultZoom)
+            }
             m.dragging.enable()
             m.addControl(new Control.Zoom({position:"bottomleft"}))
         } else {
-            m.setMaxZoom(defaultZoom); m.setMinZoom(defaultZoom)
+            m.setMaxZoom(screenDefaultZoom); m.setMinZoom(screenDefaultZoom)
             m.setView(center)
             m.dragging.disable()
         }
@@ -219,7 +223,7 @@ const MapBox:React.FC = () => {
     }
 
     function isLowestZoomLevel(m: Map):boolean {
-        return m.getZoom() == mobileMinLevelZoom
+        return m.getZoom() == mobileMinLevelZoom || m.getZoom() == screenDefaultZoom
     }
 
     const handleMapCreatedEvent = (m: Map) => {
