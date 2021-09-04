@@ -26,8 +26,8 @@ $corner-size: 3rem;
 $dur: .3s;
 
 /* Using SCSS variables to store breakpoints */
-$breakpoint-mobile-screen: 800px;
-$breakpoint-sd-screen: 1400px;
+$breakpoint-mobile-screen: 736px;
+$breakpoint-desktop-screen: 1280px;
 $breakpoint-hd-screen: 1700px;
 
 @mixin transition {

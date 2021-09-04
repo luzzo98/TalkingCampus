@@ -26,15 +26,17 @@ import $ from "jquery"
 const MapBox:React.FC = () => {
 
     const center:LatLngExpression = [40.743, -74.185];
+    const mobileCenter:LatLngExpression = [40.753, -74.179];
     const offset:LatLngTuple = [-5, +7];
 
     const defaultZoom: number = 14;
     const mobileMinLevelZoom: number = 12.49;
     const mobileMaxLevelZoom: number = 13.75;
-    const screenDefaultZoom: number = 13.50
+    const screenDefaultZoom: number = 13.25;
+    const screenMaxZoom: number = 15;
 
-    const mobileSize: number = 800
-    const hdSize: number = 1080
+    const mobileSize: number = 736
+    const hdSize: number = 1280
 
     const bounds:LatLngBoundsLiteral = [
         [40.712216, -74.22655],
@@ -85,7 +87,10 @@ const MapBox:React.FC = () => {
             { position: [40.751753, -74.1548], icon: generateIcon(faBath)},
             { position: [40.757059, -74.178485], icon: generateIcon(faChalkboardTeacher)},
             { position: [40.757059, -74.16220], icon: generateIcon(faChalkboardTeacher)},
-            { position: [40.735226, -74.178485], icon:generateIcon(faChalkboardTeacher)}
+            { position: [40.735226, -74.178485], icon:generateIcon(faChalkboardTeacher)},
+            { position: [40.73308, -74.16947], icon: generateIcon(faBath)},
+            { position: [40.727811, -74.158401], icon: generateIcon(faFlask)},
+            { position: [40.736194, -74.1829], icon: generateIcon(faBath)}
         ],
         "piano 1": [
             { position: [40.757059, -74.198484], icon: generateIcon(faChalkboardTeacher)},
@@ -129,6 +134,25 @@ const MapBox:React.FC = () => {
             { position: [40.75759, -74.19651], icon: generateIcon(faBook)},
             { position: [40.75050, -74.19470], icon: generateIcon(faBook)},
             { position: [40.75232, -74.19831], icon: generateIcon(faBook)},
+            { position: [40.75362, -74.16320], icon: generateIcon(faBath)},
+            { position: [40.74036, -74.15780], icon: generateIcon(faFlask)},
+            { position: [40.74335, -74.15780], icon: generateIcon(faFlask)},
+            { position: [40.74335, -74.15780], icon: generateIcon(faFlask)},
+            { position: [40.74712, -74.15780], icon: generateIcon(faFlask)},
+            { position: [40.73301, -74.16870], icon: generateIcon(faBath)},
+            { position: [40.73301, -74.19007], icon: generateIcon(faBath)},
+            { position: [40.72982, -74.19101], icon: generateIcon(faFlask)},
+            { position: [40.75265, -74.15651], icon: generateIcon(faFax)},
+            { position: [40.75050, -74.1914], icon: generateIcon(faBath)},
+            { position: [40.75206, -74.1914], icon: generateIcon(faBath)},
+            { position: [40.73203, -74.18397], icon: generateIcon(faFlask)},
+            { position: [40.73203, -74.18037], icon: generateIcon(faFlask)},
+            { position: [40.73203, -74.17676], icon: generateIcon(faFlask)},
+            { position: [40.7319, -74.1696], icon: generateIcon(faBath)},
+            { position: [40.7373, -74.1602], icon: generateIcon(faBath)},
+            { position: [40.7544, -74.1821], icon: generateIcon(faFlask)},
+            { position: [40.7544, -74.17299], icon: generateIcon(faFlask)},
+            { position: [40.7544, -74.1693], icon: generateIcon(faFlask)},
         ]
     }
 
@@ -146,22 +170,16 @@ const MapBox:React.FC = () => {
 
     function sizingMap(m: Map) {
         const val:number = $("#map").width() as number
-        if (val > mobileSize && val < hdSize) {
-            m.setMinZoom(screenDefaultZoom); m.setMaxZoom(screenDefaultZoom)
-            m.setView(center)
-            m.dragging.disable()
-        } else if(val < mobileSize) {
+        if(val < mobileSize || (val > mobileSize && val < hdSize) ) {
             m.setMinZoom(mobileMinLevelZoom); m.setMaxZoom(mobileMaxLevelZoom); m.setZoom(mobileMinLevelZoom)
             m.dragging.enable()
             m.addControl(new Control.Zoom({position:"bottomleft"}))
-            console.log(m.getCenter())
         } else {
             m.setMaxZoom(defaultZoom); m.setMinZoom(defaultZoom)
             m.setView(center)
             m.dragging.disable()
         }
         getElementOnViewById("drawer-toggle").click()
-        setControlLayerVisible()
     }
 
     function getElementOnViewByClass(className: string): HTMLElement {
@@ -178,10 +196,8 @@ const MapBox:React.FC = () => {
         return (style.visibility === 'hidden')
     }
 
-    function setControlLayerVisible() {
-        const controlLayer = getElementOnViewByClass("leaflet-control-layers")
-        const className: string = controlLayer.className
-        controlLayer.className = className + " leaflet-control-layers-expanded"
+    function changeControlLayerVisibility(visibilityAttribute: string){
+        getElementOnViewByClass("leaflet-control-layers").style.visibility = visibilityAttribute
     }
 
     function createSpaceForMap() {
@@ -190,6 +206,7 @@ const MapBox:React.FC = () => {
             getElementOnViewById("drawer-toggle").click()
             getElementOnViewById("drawer-toggle-label").style.pointerEvents = "none"
         }
+        changeControlLayerVisibility("hidden")
     }
 
     function setMenuVisible(){
@@ -198,6 +215,7 @@ const MapBox:React.FC = () => {
         if(isHidden(button)) {
             getElementOnViewById("drawer-toggle").click()
         }
+        changeControlLayerVisibility("visible")
     }
 
     function isLowestZoomLevel(m: Map):boolean {
@@ -209,21 +227,17 @@ const MapBox:React.FC = () => {
         m.on("baselayerchange", (event:LayersControlEvent) => baseLayerChange(event))
         m.on("resize", () => sizingMap(m))
         m.on("click", (e:LeafletMouseEvent) => {
-            setControlLayerVisible();
             console.log(e.latlng)
-    })
+        })
         m.on("zoom", () => {
-            setControlLayerVisible();
             if (isLowestZoomLevel(m)) {
-                m.panTo([40.753, -74.179])
+                m.panTo(mobileCenter)
                 m.dragging.disable()
                 setMenuVisible()
             } else {
                 createSpaceForMap()
                 m.dragging.enable()
             }
-            isLowestZoomLevel(m) ? getElementOnViewByClass("leaflet-control-layers").style.visibility = "visible"
-                                 : getElementOnViewByClass("leaflet-control-layers").style.visibility = "hidden"
         })
 }
 
@@ -236,7 +250,7 @@ const MapBox:React.FC = () => {
                       dragging={false}
                       bounds={bounds}
                       scrollWheelZoom={false}>
-            <LayersControl position="bottomright">
+            <LayersControl position="bottomright" collapsed={false}>
                 <LayersControl.BaseLayer name = "piano 2">
                     <ImageOverlay url={floor2} bounds={bounds}/>
                 </LayersControl.BaseLayer>
