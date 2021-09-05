@@ -6,15 +6,7 @@ import * as React from 'react'
 import {MarkerDictionary} from '../Model';
 import '../styles/mainPageStyle/mainPageStyle.scss'
 import { renderToStaticMarkup } from "react-dom/server";
-import {
-    Control,
-    divIcon,
-    LatLngBoundsLiteral,
-    LatLngExpression, LatLngTuple,
-    LayersControlEvent,
-    LeafletMouseEvent,
-    Map
-} from "leaflet";
+import { Control, divIcon, LatLngBoundsLiteral, LatLngExpression, LatLngTuple, LayersControlEvent, LeafletMouseEvent, Map } from "leaflet";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faBook, faChalkboardTeacher, faBath, faCoffee, faFax, faFlask} from "@fortawesome/free-solid-svg-icons";
 import {IconDefinition} from "@fortawesome/fontawesome-common-types";

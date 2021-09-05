@@ -1,15 +1,23 @@
-import React from "react";
+import React, {useState} from "react";
 import { Form, Input, Button, Tabs } from 'antd';
 import 'antd/dist/antd.css';
 const { TabPane } = Tabs;
 
-function InitialForm() {
+interface Props {
+    onAccessGranted: (userName: string, password: string) => Promise<void>;
+}
+
+const InitialForm: React.FC<Props> = ({onAccessGranted}) => {
+
+    const [username, setUserName] = useState("")
+    const [passw, setPassw] = useState("")
 
     const onFinish = (values: any) => {
         console.log('Success:', values);
     };
 
-    const onFinishFailed = (errorInfo: any) => {        console.log('Failed:', errorInfo);
+    const onFinishFailed = (errorInfo: any) => {
+        console.log('Failed:', errorInfo);
     };
 
     return(
@@ -28,7 +36,7 @@ function InitialForm() {
                             name="email"
                             rules={[{ required: true, message: 'Inserisci la tua email istituzionale' }]}
                         >
-                            <Input />
+                            <Input onChange={(e) => setUserName(e.target.value)}/>
                         </Form.Item>
 
                         <Form.Item
@@ -36,14 +44,14 @@ function InitialForm() {
                             name="password"
                             rules={[{ required: true, message: 'Inserisci la tua password' }]}
                         >
-                            <Input.Password />
+                            <Input.Password onChange={(e) => setPassw(e.target.value)}/>
                         </Form.Item>
 
                         <Form.Item
                             className={'form-button'}
                             // wrapperCol={{ offset: 8, span: 16 }}
                         >
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" htmlType="submit" onClick={() => onAccessGranted(username, passw)}>
                                 Accedi
                             </Button>
                         </Form.Item>

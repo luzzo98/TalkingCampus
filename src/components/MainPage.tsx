@@ -5,7 +5,6 @@ import img from '../assets/volto_uomo.jpg'
 import AsideMenu from "./AsideMenù";
 
 const MainPage:React.FC = () => {
-
     return (
         <body>
             <AsideMenu id={0} name={"Giovanni"} img={img} role={"student"}/>

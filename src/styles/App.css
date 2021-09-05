@@ -48,7 +48,7 @@
 }
 
 .ant-tabs-tabpane {
-  width: 433px !important;
+  width: 100%;
 }
 
 .card-container p {
@@ -66,7 +66,7 @@
 }
 .card-container > .ant-tabs-card .ant-tabs-tab,
 [data-theme='compact'] .card-container > .ant-tabs-card .ant-tabs-tab {
-  background: transparent;
+  background: #f1efe2;
   border-color: transparent;
 }
 .card-container > .ant-tabs-card .ant-tabs-tab-active,
