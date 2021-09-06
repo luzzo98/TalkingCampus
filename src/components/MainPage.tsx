@@ -6,12 +6,12 @@ import AsideMenu from "./AsideMenù";
 
 const MainPage:React.FC = () => {
     return (
-        <body>
+        <div className={"main-container"}>
             <AsideMenu id={0} name={"Giovanni"} img={img} role={"student"}/>
             <main>
                 <MapBox />
             </main>
-        </body>
+        </div>
     );
 }
 

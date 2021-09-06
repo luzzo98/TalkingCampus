@@ -4,15 +4,29 @@
 
 html {
   margin: 0px;
+  overflow: hidden;
 }
 
-body {
+.main-container {
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
   font-family: variables.$main-font;
   font-weight: 400;
   letter-spacing: 1px;
-  overflow: hidden;
+  animation-name: slide-in;
+  animation-duration: 1s;
+  animation-direction: alternate;
+}
+
+@keyframes slide-in {
+  from {
+    margin-left: 100%;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
 }
 
 h1 {
@@ -87,7 +101,7 @@ main {
   #map {
     width: 100%;
     height: 90vh;
-    background: variables.$start_color;
+    background: variables.$gradient;
     margin-right: 0px;
     flex-direction: row-reverse;
     position: relative;
@@ -255,9 +269,8 @@ header {
   display: block;
   width: 100%;
   height: 10vh;
-  //position: fixed;
   left: 0px;
-  background: #efefef;
+  background: variables.$gradient;
   padding: 10px 10px 10px 50px;
   font-size: 30px;
   line-height: 30px;
@@ -273,7 +286,7 @@ header {
   left:-17%;
   height: 100%;
   width: 17%;
-  background: variables.$aside_background;
+  background: variables.$gradient;
   overflow-x: hidden;
   overflow-y: hidden;
   padding: 10px;
@@ -315,7 +328,7 @@ header {
   color:white;
 }
 
-body {
+.main-container {
   button {
     width: 100%;
     margin-bottom: 15%;

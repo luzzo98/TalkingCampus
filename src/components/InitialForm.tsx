@@ -4,11 +4,11 @@ import 'antd/dist/antd.css';
 import {Link, BrowserRouter as Router} from "react-router-dom"
 const { TabPane } = Tabs;
 
-interface props {
-    linkToRoute: (text: string) => JSX.Element
+interface Props {
+    linkToRoute: (path: string, text: string) => JSX.Element
 }
 
-const InitialForm:React.FC<props> = ({linkToRoute}) => {
+const InitialForm:React.FC<Props> = ({linkToRoute}) => {
 
     const [username, setUserName] = useState("")
     const [passw, setPassw] = useState("")
@@ -53,7 +53,7 @@ const InitialForm:React.FC<props> = ({linkToRoute}) => {
                             // wrapperCol={{ offset: 8, span: 16 }}
                         >
                             <Button type="primary" htmlType="submit">
-                                {linkToRoute("Accedi")}
+                                {linkToRoute("/main-page","Accedi")}
                             </Button>
                         </Form.Item>
                     </Form>

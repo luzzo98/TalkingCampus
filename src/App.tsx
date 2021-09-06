@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import InitialForm from "./components/InitialForm";
 import './styles/App.css';
-import {Switch, Link, BrowserRouter as Router, Route} from "react-router-dom";
+import {Switch, BrowserRouter as Router, Route, Link} from "react-router-dom";
 import MainPage from "./components/MainPage";
 
 const App:React.FC = () => {
 
-    function linkToRoute(text: string) {
-        return <Link to={"/main-page"}>{text}</Link>
+    function linkToRoute(path: string, text: string):JSX.Element {
+        return <Link to={path}>{text}</Link>
     }
 
     return (

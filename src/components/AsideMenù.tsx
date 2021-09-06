@@ -1,5 +1,7 @@
 import '../styles/mainPageStyle/mainPageStyle.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
+import InitialForm from "./InitialForm";
 
 interface Props {
     id: number;
@@ -46,10 +48,12 @@ const AsideMenu:React.FC<Props> = ({id, role, img, name}) => {
                     <h3>Ciao {name}!</h3>
                     <img src={img} className="avatar-holder"/>
                 </div>
-                {selectProfileMenu(role)}
-                <button className="corner-button logout-button">
-                    <span>Logout</span>
-                </button>
+                <Router>
+                    {selectProfileMenu(role)}
+                    <button className="corner-button logout-button">
+                        <span>Logout</span>
+                    </button>
+                </Router>
             </nav>
         </header>
     );

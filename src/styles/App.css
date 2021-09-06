@@ -14,7 +14,6 @@
   left: 0;
   right: 0;
 
-
   filter: blur(4px);
   -webkit-filter: blur(4px);
 }
@@ -97,3 +96,8 @@
   background: #141414;
   border-color: #141414;
 }
+
+button > a {
+  text-decoration: none;
+}
+

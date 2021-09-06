@@ -7,7 +7,7 @@
     @include variables.resizable_hr(5%)
   }
 
-  body {
+  .main-container {
     .card {
 
       text-align: center;
@@ -126,7 +126,7 @@
     text-align: center;
   }
 
-  body {
+  .main-container {
     #drawer-toggle-label {
       left: 86%;
     }
@@ -166,7 +166,7 @@
 @media screen and (min-device-height: variables.$breakpoint-height-phone)
               and (max-width: variables.$breakpoint-mobile-screen){
 
-  body {
+  .main-container {
     #drawer {
       button.corner-button {
         margin: 0 0 2% 0;
@@ -193,7 +193,7 @@
 and (min-width: variables.$breakpoint-mobile-screen)
 and (max-width: variables.$breakpoint-desktop-screen) {
 
-  body {
+  .main-container {
     #drawer {
       button.corner-button {
         margin-bottom: 3%;
