@@ -1,13 +1,14 @@
 import React, {useState} from "react";
 import { Form, Input, Button, Tabs } from 'antd';
 import 'antd/dist/antd.css';
+import {Link, BrowserRouter as Router} from "react-router-dom"
 const { TabPane } = Tabs;
 
-interface Props {
-    onAccessGranted: (userName: string, password: string) => Promise<void>;
+interface props {
+    linkToRoute: (text: string) => JSX.Element
 }
 
-const InitialForm: React.FC<Props> = ({onAccessGranted}) => {
+const InitialForm:React.FC<props> = ({linkToRoute}) => {
 
     const [username, setUserName] = useState("")
     const [passw, setPassw] = useState("")
@@ -51,8 +52,8 @@ const InitialForm: React.FC<Props> = ({onAccessGranted}) => {
                             className={'form-button'}
                             // wrapperCol={{ offset: 8, span: 16 }}
                         >
-                            <Button type="primary" htmlType="submit" onClick={() => onAccessGranted(username, passw)}>
-                                Accedi
+                            <Button type="primary" htmlType="submit">
+                                {linkToRoute("Accedi")}
                             </Button>
                         </Form.Item>
                     </Form>
