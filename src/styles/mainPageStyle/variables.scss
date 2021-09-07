@@ -13,7 +13,6 @@ $start_color: #C2D2BD;
 $end_color: #2F4858M;
 $aside_background: #93B0A3;
 $logout_button: #620024;
-$height    : calc((100% * 16)/9);
 $gradient: linear-gradient(to bottom right, #FF8865, #FFC452, #F9F871);
 
 $main-font: 'Open Sans Condensed', sans-serif;
@@ -25,6 +24,13 @@ $fg: #06c17f;
 $border-width: .5rem;
 $corner-size: 3rem;
 $dur: .3s;
+
+$height : calc((100% * 16)/9);
+$shadow_box: rgba(0, 0, 0, 0.25) 0px 20px 20px,
+             rgba(0, 0, 0, 0.12) 0px -12px 20px,
+             rgba(0, 0, 0, 0.12) 0px 4px 6px,
+             rgba(0, 0, 0, 0.17) 0px 12px 13px,
+             rgba(0, 0, 0, 0.09) 0px -3px 5px;
 
 /* Using SCSS variables to store breakpoints */
 $breakpoint-mobile-screen: 736px;
@@ -72,4 +78,21 @@ $breakpoint-height-phone: 800px;
   margin-bottom: $margin_bottom_value;
   color: $white !important;
   height: 2px!important;
+}
+
+@mixin setSlide($start_value, $end_value) {
+  from {
+    margin-left: $start_value;
+  }
+
+  to {
+    margin-left: $end_value;
+    width: 100%;
+  }
+}
+
+@mixin setAnimation($animation_name) {
+  animation-name: $animation_name;
+  animation-duration: 1s;
+  animation-direction: alternate;
 }

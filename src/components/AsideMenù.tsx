@@ -37,6 +37,10 @@ const AsideMenu:React.FC<Props> = ({id, role, img, name}) => {
         )
     }
 
+    function closeMenu(){
+        document.getElementById("drawer-toggle-label")?.click()
+    }
+
     return (
         <header id="main-nav">
             <input type="checkbox" id="drawer-toggle" name="drawer-toggle"/>
@@ -50,7 +54,7 @@ const AsideMenu:React.FC<Props> = ({id, role, img, name}) => {
                 </div>
                 <Router>
                     {selectProfileMenu(role)}
-                    <button className="corner-button logout-button">
+                    <button className="corner-button logout-button" onClick={closeMenu}>
                         <span>Logout</span>
                     </button>
                 </Router>

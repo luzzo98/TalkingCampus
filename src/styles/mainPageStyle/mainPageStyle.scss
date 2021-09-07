@@ -13,20 +13,20 @@ html {
   font-family: variables.$main-font;
   font-weight: 400;
   letter-spacing: 1px;
-  animation-name: slide-in;
-  animation-duration: 1s;
-  animation-direction: alternate;
+  @include variables.setAnimation("slide-in");
+
+  a {
+    text-decoration: none;
+  }
+
+}
+
+@keyframes slide-out {
+  @include variables.setSlide(0%, 100%);
 }
 
 @keyframes slide-in {
-  from {
-    margin-left: 100%;
-  }
-
-  to {
-    margin-left: 0%;
-    width: 100%;
-  }
+  @include variables.setSlide(100%, 0%);
 }
 
 h1 {
@@ -151,7 +151,6 @@ main {
     margin-top: 10px;
     margin-left: 10px;
     background: variables.$dark-grey;
-    //box-shadow: 0px 0px 0px 1px #1f1f1f;
     overflow: hidden;
 
     .mmm-burger {
@@ -358,7 +357,7 @@ header {
 .logout-button {
   color: white;
   background-color: variables.$logout_button;
-  margin-top: 35%;
+  margin-top: 28%;
 }
 
 .corner-button::before {
