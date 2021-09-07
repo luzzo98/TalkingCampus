@@ -14,7 +14,7 @@ import floor1 from "../assets/floor1.svg"
 import floor2 from "../assets/floor2.svg"
 import groundFloor from "../assets/groundFloor.svg"
 import $ from "jquery"
-import {getElementOnViewByClass, getElementOnViewById, isHidden} from "../utils/utils";
+import * as util from "../utils/utils";
 
 const MapBox:React.FC = () => {
 
@@ -27,9 +27,6 @@ const MapBox:React.FC = () => {
     const mobileMaxLevelZoom: number = 13.75;
     const screenDefaultZoom: number = 13.25;
     const screenMaxZoom: number = 14;
-
-    const mobileSize: number = 736
-    const hdSize: number = 1280
 
     const bounds:LatLngBoundsLiteral = [
         [40.712216, -74.22655],
@@ -162,9 +159,9 @@ const MapBox:React.FC = () => {
     }
 
     function sizingMap(m: Map) {
-        const val:number = $("#map").width() as number
-        if (val < hdSize) {
-            if(val < mobileSize) {
+        const width:number = util.getScreenWidth()
+        if (width < util.hdSize) {
+            if(width < util.mobileSize) {
                 m.setMinZoom(mobileMinLevelZoom); m.setMaxZoom(mobileMaxLevelZoom); m.setZoom(mobileMinLevelZoom)
             } else {
                 m.setMinZoom(screenDefaultZoom); m.setMaxZoom(screenMaxZoom); m.setZoom(screenDefaultZoom)
@@ -176,27 +173,27 @@ const MapBox:React.FC = () => {
             m.setView(center)
             m.dragging.disable()
         }
-        getElementOnViewById("drawer-toggle").click()
+        util.getElementOnViewById("drawer-toggle").click()
     }
 
     function changeControlLayerVisibility(visibilityAttribute: string){
-        getElementOnViewByClass("leaflet-control-layers").style.visibility = visibilityAttribute
+        util.getElementOnViewByClass("leaflet-control-layers").style.visibility = visibilityAttribute
     }
 
     function createSpaceForMap() {
-        const firstButton = getElementOnViewByClass("corner-button")
-        if (!isHidden(firstButton as Element)) {
-            getElementOnViewById("drawer-toggle").click()
-            getElementOnViewById("drawer-toggle-label").style.pointerEvents = "none"
+        const firstButton = util.getElementOnViewByClass("corner-button")
+        if (!util.isHidden(firstButton as Element)) {
+            util.getElementOnViewById("drawer-toggle").click()
+            util.getElementOnViewById("drawer-toggle-label").style.pointerEvents = "none"
         }
         changeControlLayerVisibility("hidden")
     }
 
     function setMenuVisible(){
-        getElementOnViewById("drawer-toggle-label").style.pointerEvents = "auto"
-        const button = getElementOnViewByClass("corner-button")
-        if(isHidden(button)) {
-            getElementOnViewById("drawer-toggle").click()
+        util.getElementOnViewById("drawer-toggle-label").style.pointerEvents = "auto"
+        const button = util.getElementOnViewByClass("corner-button")
+        if(util.isHidden(button)) {
+            util.getElementOnViewById("drawer-toggle").click()
         }
         changeControlLayerVisibility("visible")
     }

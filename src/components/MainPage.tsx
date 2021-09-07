@@ -8,7 +8,7 @@ const MainPage:React.FC = () => {
     return (
         <div className={"main-container"}>
             <AsideMenu user={{id: 0, name: "Giovanni", img: img, role: "student"}}/>
-            <main>
+            <main className={"main"}>
                 <MapBox />
             </main>
         </div>

@@ -21,12 +21,20 @@ html {
   @include variables.setAnimation("slide-out")
 }
 
+.slide-trans-class {
+  @include variables.setAnimation("slide-out-vertical")
+}
+
+@keyframes slide-out-vertical {
+  @include variables.setSlideVertical(0%, 200%)
+}
+
 @keyframes slide-out {
-  @include variables.setSlide(0%, 100%);
+  @include variables.setSlideHorizontal(0%, 100%);
 }
 
 @keyframes slide-in {
-  @include variables.setSlide(100%, 0%);
+  @include variables.setSlideHorizontal(100%, 0%);
 }
 
 h1 {

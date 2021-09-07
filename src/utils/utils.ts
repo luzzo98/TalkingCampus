@@ -19,3 +19,8 @@ export function setClass(elementName: string, className: string) {
     const setClasses = element.getAttribute("class")
     element.setAttribute("class", setClasses + " " + className)
 }
+
+export function getScreenWidth() {return document.body.clientWidth}
+
+export const mobileSize: number = 736
+export const hdSize: number = 1280

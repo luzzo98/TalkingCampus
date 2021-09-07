@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter as Router, useHistory} from "react-router-dom";
 import {User} from "../Model";
 import * as utils from "../utils/utils"
+import {setClass} from "../utils/utils";
 
 interface Props {
     user: User
@@ -35,16 +36,27 @@ const AsideMenu:React.FC<Props> = ({user}) => {
         )
     }
 
+    function slideOutScreen() {
+        utils.setClass("main-container", "slide-out-transition-class")
+    }
+
+    function slideOutPhone() {
+        utils.setClass("main", "slide-trans-class");
+        utils.setClass("#drawer", "slide-out-transition-class")
+        utils.setClass("#main-nav", "slide-out-transition-class")
+    }
+
     let history = useHistory();
     function closeMenu(){
 
-        utils.getElementOnViewById("drawer-toggle-label").click()
-        utils.setClass("main-container", "slide-out-transition-class")
+        const toggle = utils.getElementOnViewById("drawer-toggle-label")
+        toggle.click(); toggle.style.visibility = "hidden"
+        utils.getScreenWidth() > utils.hdSize ? slideOutScreen() : slideOutPhone()
 
         setTimeout(() => {
             history.push("/")
 
-        }, 1000)
+        }, 998)
     }
 
     return (
