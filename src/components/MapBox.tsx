@@ -14,6 +14,7 @@ import floor1 from "../assets/floor1.svg"
 import floor2 from "../assets/floor2.svg"
 import groundFloor from "../assets/groundFloor.svg"
 import $ from "jquery"
+import {getElementOnViewByClass, getElementOnViewById, isHidden} from "../utils/utils";
 
 const MapBox:React.FC = () => {
 
@@ -176,20 +177,6 @@ const MapBox:React.FC = () => {
             m.dragging.disable()
         }
         getElementOnViewById("drawer-toggle").click()
-    }
-
-    function getElementOnViewByClass(className: string): HTMLElement {
-        const elem = document.getElementsByClassName(className).item(0);
-        return elem as HTMLElement;
-    }
-
-    function getElementOnViewById(id: string): HTMLElement {
-        return document.getElementById(id) as HTMLElement;
-    }
-
-    function isHidden(el: Element) {
-        const style = window.getComputedStyle(el);
-        return (style.visibility === 'hidden')
     }
 
     function changeControlLayerVisibility(visibilityAttribute: string){

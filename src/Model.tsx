@@ -8,3 +8,10 @@ export interface IMarker {
 export interface MarkerDictionary {
     [id: string]: IMarker[]
 }
+
+export interface User {
+    id: number;
+    name: string;
+    img: string;
+    role: string;
+}

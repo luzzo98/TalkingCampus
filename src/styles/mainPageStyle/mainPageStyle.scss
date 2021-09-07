@@ -15,10 +15,10 @@ html {
   letter-spacing: 1px;
   @include variables.setAnimation("slide-in");
 
-  a {
-    text-decoration: none;
-  }
+}
 
+.slide-out-transition-class {
+  @include variables.setAnimation("slide-out")
 }
 
 @keyframes slide-out {
@@ -332,6 +332,7 @@ header {
     width: 100%;
     margin-bottom: 15%;
     border: 0px;
+    box-shadow: variables.$shadow_box;
   }
 }
 

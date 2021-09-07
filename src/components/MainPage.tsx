@@ -7,7 +7,7 @@ import AsideMenu from "./AsideMenù";
 const MainPage:React.FC = () => {
     return (
         <div className={"main-container"}>
-            <AsideMenu id={0} name={"Giovanni"} img={img} role={"student"}/>
+            <AsideMenu user={{id: 0, name: "Giovanni", img: img, role: "student"}}/>
             <main>
                 <MapBox />
             </main>

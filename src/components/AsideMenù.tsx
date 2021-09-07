@@ -1,16 +1,14 @@
 import '../styles/mainPageStyle/mainPageStyle.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
-import InitialForm from "./InitialForm";
+import {BrowserRouter as Router, useHistory} from "react-router-dom";
+import {User} from "../Model";
+import * as utils from "../utils/utils"
 
 interface Props {
-    id: number;
-    name: string;
-    img: string;
-    role: string;
+    user: User
 }
 
-const AsideMenu:React.FC<Props> = ({id, role, img, name}) => {
+const AsideMenu:React.FC<Props> = ({user}) => {
 
     function selectProfileMenu(role: String): JSX.Element[] {
         let buttons:JSX.Element[] = [];
@@ -37,8 +35,16 @@ const AsideMenu:React.FC<Props> = ({id, role, img, name}) => {
         )
     }
 
+    let history = useHistory();
     function closeMenu(){
-        document.getElementById("drawer-toggle-label")?.click()
+
+        utils.getElementOnViewById("drawer-toggle-label").click()
+        utils.setClass("main-container", "slide-out-transition-class")
+
+        setTimeout(() => {
+            history.push("/")
+
+        }, 1000)
     }
 
     return (
@@ -49,11 +55,11 @@ const AsideMenu:React.FC<Props> = ({id, role, img, name}) => {
                 <h1 className="mobile-logo">Talking Campus</h1>
                 <hr/>
                 <div className="card">
-                    <h3>Ciao {name}!</h3>
-                    <img src={img} className="avatar-holder"/>
+                    <h3>Ciao {user.name}!</h3>
+                    <img src={user.img} className="avatar-holder"/>
                 </div>
                 <Router>
-                    {selectProfileMenu(role)}
+                    {selectProfileMenu(user.role)}
                     <button className="corner-button logout-button" onClick={closeMenu}>
                         <span>Logout</span>
                     </button>
