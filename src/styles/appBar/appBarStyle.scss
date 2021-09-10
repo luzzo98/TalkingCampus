@@ -1,0 +1,20 @@
+.appbar {
+  .header {
+    padding: 1%;
+    background-color: #6157F5;
+
+    .ant-typography {
+      text-align: center;
+      color: white;
+    }
+  }
+
+  .bottom-header {
+    padding: 2% 1%;
+    text-align: center;
+  }
+
+  hr {
+    margin: 0 0 10% 0;
+  }
+}

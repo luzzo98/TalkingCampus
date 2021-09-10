@@ -1,3 +1,5 @@
+import {User} from "../Model";
+
 export function getElementOnViewByClass(className: string): HTMLElement {
     const elem = document.getElementsByClassName(className).item(0);
     return elem as HTMLElement;
@@ -21,6 +23,29 @@ export function setClass(elementName: string, className: string) {
 }
 
 export function getScreenWidth() {return document.body.clientWidth}
+
+//TODO: da fare sicuramente meglio
+export function getElements(user: User):[string, string][] {
+    let elements: [string, string][] = [];
+    switch (user.role){
+        case "student":
+            elements = [["Area Personale", "/student-personal-area"],
+                ["Notifiche", "/student-notifications"],
+                ["Aule registrate", "/registered-rooms"]]
+            break;
+        case "teacher":
+            elements = [["Area Personale", "/teacher-personal-area"],
+                ["Modifica orario di ricevimento", "/time-table"],
+                ["Gestisci i tuoi corsi", "/course-table"]]
+            break;
+        case "admin":
+            elements = [["Aggiungi locale", "/add-room"],
+                ["Elimina locale", "/delete-room"],
+                ["Modifica locale", "/change-room"]]
+    }
+    return elements
+}
+
 
 export const mobileSize: number = 736
 export const hdSize: number = 1280

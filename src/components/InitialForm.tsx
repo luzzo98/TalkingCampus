@@ -1,14 +1,18 @@
 import React, {useState} from "react";
 import { Form, Input, Button, Tabs } from 'antd';
 import 'antd/dist/antd.css';
-import {Link, BrowserRouter as Router} from "react-router-dom"
-const { TabPane } = Tabs;
+import {Link, Route, Switch} from "react-router-dom";
+import MainPage from "./MainPage";
+import * as utils from "../utils/utils";
+import {User} from "../Model";
+import img from "../assets/volto_uomo.jpg"
 
-interface Props {
-    linkToRoute: (path: string, text: string) => JSX.Element
+const { TabPane } = Tabs;
+const mockUser = new class implements User {
+    id = 0; name = "Giovanni"; img = img; role = "student"
 }
 
-const InitialForm:React.FC<Props> = ({linkToRoute}) => {
+const InitialForm:React.FC = () => {
 
     const [username, setUserName] = useState("")
     const [passw, setPassw] = useState("")
@@ -53,7 +57,10 @@ const InitialForm:React.FC<Props> = ({linkToRoute}) => {
                             // wrapperCol={{ offset: 8, span: 16 }}
                         >
                             <Button type="primary" htmlType="submit">
-                                {linkToRoute("/main-page","Accedi")}
+                                <Link to={{
+                                    pathname: "/main-page",
+                                    state: {user: mockUser, hooks: utils.getElements(mockUser)}
+                                }}>Accedi</Link>
                             </Button>
                         </Form.Item>
                     </Form>
@@ -164,6 +171,7 @@ const InitialForm:React.FC<Props> = ({linkToRoute}) => {
                     </Form>
                 </TabPane>
             </Tabs>
+            <Route path={"/main-page"} component={MainPage}/>
         </div>
     );
 }

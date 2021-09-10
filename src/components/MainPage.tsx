@@ -1,13 +1,18 @@
 import '../styles/mainPageStyle/mainPageStyle.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MapBox from "./MapBox";
-import img from '../assets/volto_uomo.jpg'
-import AsideMenu from "./AsideMenù";
+import AsideMenu from "./AsideMenu";
+import {MainpageContents} from "../Model";
+import {useLocation} from "react-router-dom"
 
-const MainPage:React.FC = () => {
+const MainPage:React.FC<MainpageContents> = () => {
+
+    let data = useLocation();
+    const mainContents:MainpageContents = data.state as MainpageContents
+
     return (
         <div className={"main-container"}>
-            <AsideMenu user={{id: 0, name: "Giovanni", img: img, role: "student"}}/>
+            <AsideMenu hooks={mainContents.hooks} user={mainContents.user} />
             <main className={"main"}>
                 <MapBox />
             </main>

@@ -15,3 +15,8 @@ export interface User {
     img: string;
     role: string;
 }
+
+export interface MainpageContents {
+    user: User
+    hooks: [string, string][];
+}
