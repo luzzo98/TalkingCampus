@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import 'antd/dist/antd.css';
-import {List, Button, Pagination} from 'antd';
+import {List, Button} from 'antd';
 import {CloseCircleOutlined} from "@ant-design/icons";
 import AppBar from "./Appbar";
 import Footer from "./Footer";
@@ -21,6 +21,10 @@ for (let i = 0; i < 23; i++) {
     });
 }
 
+function handleElimination(value: string){
+    console.log(value)
+}
+
 const NotificationsPage = () => {
     return (
         <div className={"notifications-box"}>
@@ -39,7 +43,12 @@ const NotificationsPage = () => {
                 renderItem={item => (
                     <List.Item
                         key={item.title}
-                        actions={[<Button className={"btn-notification"} icon={<CloseCircleOutlined className={"btn-icon"}/>}/>]}
+                        extra={[
+                            <Button size = "small"
+                                    onClick={(e) => handleElimination(item.title)}
+                                    className={"btn-notification"}
+                                    icon={<CloseCircleOutlined className={"btn-icon"}/>}/>
+                            ]}
                     >
                         <span className={"notification-text"}>{item.content}</span>
                     </List.Item>
