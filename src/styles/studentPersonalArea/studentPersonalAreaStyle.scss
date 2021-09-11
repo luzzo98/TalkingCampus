@@ -1,6 +1,6 @@
 @use "../transitions";
 
-.notifications-box {
+.list-box {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -19,11 +19,11 @@
   }
 
   .ant-list-items {
-    font-size: large;
+    font-size: medium;
     .ant-list-item {
+      padding: 0%;
       border: none;
-      display: flex;
-      align-items: center;
+      display: block;
       margin-bottom: 5%;
       text-align: center;
     }
@@ -46,11 +46,11 @@
 
   .btn-notification {
     border: none;
-      span.btn-icon {
-        font-size: 150%;
-        color: red;
-      }
+    span.btn-icon {
+      font-size: 150%;
+      color: red;
     }
+  }
 
   .ant-list-pagination{
     border: 0px solid transparent;

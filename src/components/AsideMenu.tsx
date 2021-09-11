@@ -35,7 +35,7 @@ const AsideMenu:React.FC<MainpageContents> = ({user, hooks}) => {
         utils.getScreenWidth() > utils.hdSize ? slideOutScreen() : slideOutPhone()
         setTimeout(() => {
             history.push(path)
-        }, 998)
+        }, 900)
     }
 
     return (

@@ -12,8 +12,6 @@ const MainPage:React.FC<MainpageContents> = () => {
     const mainContents:MainpageContents = data.state as MainpageContents
     const [contents, setContents] = useState(mainContents)
 
-    console.log(contents)
-
     return (
         <div className={"main-container"}>
             <AsideMenu hooks={contents.hooks} user={contents.user} />

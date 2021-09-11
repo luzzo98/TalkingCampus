@@ -14,12 +14,20 @@ export function isHidden(el: Element) {
     return (style.visibility === 'hidden')
 }
 
+function getElement(elementName: string){
+    return elementName.includes("#") ? getElementOnViewById(elementName.slice(1)) : getElementOnViewByClass(elementName)
+}
+
 export function setClass(elementName: string, className: string) {
-    const element = (elementName.includes("#") ? getElementOnViewById(elementName.slice(1))
-                                               : getElementOnViewByClass(elementName))
-    console.log(elementName.slice(1))
+    const element = getElement(elementName)
     const setClasses = element.getAttribute("class")
     element.setAttribute("class", setClasses + " " + className)
+}
+
+export function removeClass(elementName: string, className: string) {
+    const element = getElement(elementName)
+    const setClasses = element.hasAttribute("class") ? element.getAttribute("class") as string : ""
+    element.setAttribute("class", setClasses.replace(className, ""))
 }
 
 export function getScreenWidth() {return document.body.clientWidth}
