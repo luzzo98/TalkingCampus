@@ -5,26 +5,25 @@ import {CloseCircleOutlined} from "@ant-design/icons";
 import AppBar from "./Appbar";
 import Footer from "./Footer";
 import * as util from "../utils/utils"
-require("../styles/notificationsPage/notificationBoxStyle.scss")
+require("../styles/list_component/notificationBoxStyle.scss")
 
-interface NotificationInfo {
+interface ListItem {
     id: number
     content: string
 }
 
-function getInfos():NotificationInfo[] {
-    const listData: NotificationInfo[] = [];
+function getInfos():ListItem[] {
+    const listData: ListItem[] = [];
     for (let i = 0; i < 23; i++) {
         listData.push({
             id: i,
-            content: 'Lorem ipsum se amet cavallini sulla ' +
-                'mia maglietta ragazzini cavallini qua crescono in fretta ' + `${i}` + ' stanno per terminare!',
+            content: 'I posti nell\'aula 3.3 stanno per terminare',
         });
     }
     return listData
 }
 
-const NotificationPage = () => {
+const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
     const[data, setData] = useState(getInfos)
 
@@ -32,15 +31,14 @@ const NotificationPage = () => {
         const elemId = `#${id}`
         util.removeClass(elemId, "motion-in")
         util.setClass(elemId, "motion-out")
-        console.log(id)
         setTimeout(() =>
                 setData(data.filter(el => el.id != id)),
             1000)
     }
 
     return (
-            <div className={"notifications-box slide-down"}>
-                <AppBar text={"Notifiche"}/>
+            <div className={"notifications-box slide-down"} id={"list-container"}>
+                <AppBar text={sub_title}/>
                     <List
                         size="large"
                         pagination= {{
@@ -72,4 +70,4 @@ const NotificationPage = () => {
     );
 }
 
-export default NotificationPage
+export default EditableListComponent

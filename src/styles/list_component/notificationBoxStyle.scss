@@ -1,4 +1,5 @@
 @use "../transitions";
+@import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300';
 
 .notifications-box {
   position: fixed;
@@ -34,8 +35,12 @@
 
     .notification-text {
       flex-basis: 90%;
-      text-align: left;
-      font-size: 100%;
+      text-align: center;
+      font-size: 150%;
+      font-weight: bold;
+      font-family: 'Open Sans Condensed', sans-serif;
+      padding-left: 10%;
+      padding-right: 0%;
     }
 
   }

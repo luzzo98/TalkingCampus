@@ -15,14 +15,13 @@ const StudentPersonalArea = () => {
     ];
 
     return (
-        <div className={"list-box slide-down"}>
+        <div className={"list-box slide-down"} id={"list-container"}>
             <AppBar text={"Area personale"}/>
             <List
                 size="large"
                 dataSource={data}
                 renderItem={(item) => (
                     <List.Item
-                        className={"motion-in"}
                         key={`${10_000}`}>
                         <span className={"notification-text"}>{item}</span>
                     </List.Item>
