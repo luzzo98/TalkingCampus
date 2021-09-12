@@ -13,7 +13,6 @@ import {IconDefinition} from "@fortawesome/fontawesome-common-types";
 import floor1 from "../assets/floor1.svg"
 import floor2 from "../assets/floor2.svg"
 import groundFloor from "../assets/groundFloor.svg"
-import $ from "jquery"
 import * as util from "../utils/utils";
 
 const MapBox:React.FC = () => {
@@ -152,7 +151,13 @@ const MapBox:React.FC = () => {
         const infos = baseMarker[floor]
         return infos.map(
             el =>
-                <Marker position={el.position} icon={el.icon}>
+                <Marker
+                    position={el.position}
+                    icon={el.icon}
+                    eventHandlers={{click: () => {
+                            util.removeClassByClass("marker-pin", "blinking-transition")
+                        }}}
+                >
                     <Popup offset={offset}>A pretty CSS3 popup. <br /> Easily customizable.</Popup>
                 </Marker>
         );
@@ -177,12 +182,12 @@ const MapBox:React.FC = () => {
     }
 
     function changeControlLayerVisibility(visibilityAttribute: string){
-        util.getElementOnViewByClass("leaflet-control-layers").style.visibility = visibilityAttribute
+        (util.getElementOnViewByClass("leaflet-control-layers")[0] as HTMLElement).style.visibility = visibilityAttribute
     }
 
     function createSpaceForMap() {
-        const firstButton = util.getElementOnViewByClass("corner-button")
-        if (!util.isHidden(firstButton as Element)) {
+        const firstButton = util.getElementOnViewByClass("corner-button")[0]
+        if (!util.isHidden(firstButton)) {
             util.getElementOnViewById("drawer-toggle").click()
             util.getElementOnViewById("drawer-toggle-label").style.pointerEvents = "none"
         }
@@ -191,7 +196,7 @@ const MapBox:React.FC = () => {
 
     function setMenuVisible(){
         util.getElementOnViewById("drawer-toggle-label").style.pointerEvents = "auto"
-        const button = util.getElementOnViewByClass("corner-button")
+        const button = util.getElementOnViewByClass("corner-button")[0]
         if(util.isHidden(button)) {
             util.getElementOnViewById("drawer-toggle").click()
         }

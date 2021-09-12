@@ -1,8 +1,7 @@
 import {User} from "../Model";
 
-export function getElementOnViewByClass(className: string): HTMLElement {
-    const elem = document.getElementsByClassName(className).item(0);
-    return elem as HTMLElement;
+export function getElementOnViewByClass(className: string): HTMLCollection {
+    return document.getElementsByClassName(className);
 }
 
 export function getElementOnViewById(id: string): HTMLElement {
@@ -14,20 +13,33 @@ export function isHidden(el: Element) {
     return (style.visibility === 'hidden')
 }
 
-function getElement(elementName: string){
-    return elementName.includes("#") ? getElementOnViewById(elementName.slice(1)) : getElementOnViewByClass(elementName)
-}
-
-export function setClass(elementName: string, className: string) {
-    const element = getElement(elementName)
+export function setClassById(elementName: string, className: string) {
+    const element = getElementOnViewById(elementName)
     const setClasses = element.getAttribute("class")
     element.setAttribute("class", setClasses + " " + className)
 }
 
-export function removeClass(elementName: string, className: string) {
-    const element = getElement(elementName)
-    const setClasses = element.hasAttribute("class") ? element.getAttribute("class") as string : ""
-    element.setAttribute("class", setClasses.replace(className, ""))
+function editElementByClass(elementName: string,
+                                className: string,
+                                doOnElement: (e: Element, className: string) => void) {
+    const element = getElementOnViewByClass(elementName)
+    for (let i = 0; i < element.length; i++) {
+        doOnElement(element[i], className)
+    }
+}
+
+export function removeClassByClass(elementName: string, className: string) {
+    editElementByClass(elementName, className, (el, className) => {
+        const setClasses = el.hasAttribute("class") ? el.getAttribute("class") as string : ""
+        el.setAttribute("class", setClasses.replace(className, ""))
+    })
+}
+
+export function setClassByClass(elementName: string, className: string) {
+    editElementByClass(elementName, className, (el, className) =>{
+        const setClasses = el.getAttribute("class")
+        el.setAttribute("class", setClasses + " " + className)
+    })
 }
 
 export function getScreenWidth() {return document.body.clientWidth}

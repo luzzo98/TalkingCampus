@@ -10,7 +10,7 @@ import AppBarTitle from "./AppBarTitle";
 
 const { TabPane } = Tabs;
 const mockUser = new class implements User {
-    id = 0; name = "Giovanni"; img = img; role = "student"
+    id = 0; name = "Giovanni"; img = img; role = "admin"
 }
 
 const InitialForm:React.FC = () => {

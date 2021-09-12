@@ -11,25 +11,36 @@ const AsideMenu:React.FC<MainpageContents> = ({user, hooks}) => {
     function createButtons():JSX.Element[]{
         return hooks.map(
             el =>
-                <button className="corner-button" onClick={() => closeMenu(el[1])}>
+                <button className="corner-button" onClick={() => user.role !== 'admin' ? closeMenu(el[1]) : nullAction(el[0])}>
                     <span>{el[0]}</span>
                 </button>
         )
     }
 
     function slideOutScreen() {
-        utils.setClass("main-container", "slide-out-transition-class")
+        utils.setClassByClass("main-container", "slide-out-transition-class")
     }
 
     function slideOutPhone() {
-        utils.setClass("main", "slide-trans-class");
-        utils.setClass("#drawer", "slide-out-transition-class")
-        utils.setClass("#main-nav", "slide-out-transition-class")
+        utils.setClassByClass("main", "slide-trans-class");
+        utils.setClassById("drawer", "slide-out-transition-class")
+        utils.setClassById("main-nav", "slide-out-transition-class")
+    }
+
+    function nullAction(action: string){
+        const command: string = action.split(" ")[0].toLowerCase();
+        switch (command){
+            case "elimina":
+                utils.setClassByClass("marker-pin", "blinking-transition")
+                break;
+            case "modifica":
+                utils.setClassByClass("marker-pin", "blinking-transition")
+                break;
+        }
     }
 
     let history = useHistory();
     function closeMenu(path: string){
-
         const toggle = utils.getElementOnViewById("drawer-toggle-label")
         toggle.click(); toggle.style.visibility = "hidden"
         utils.getScreenWidth() > utils.hdSize ? slideOutScreen() : slideOutPhone()

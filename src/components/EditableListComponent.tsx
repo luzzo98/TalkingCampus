@@ -29,9 +29,9 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
     const[data, setData] = useState(getInfos)
 
     function handleElimination(id: number){
-        const elemId = `#${id}`
-        util.removeClass(elemId, "motion-in")
-        util.setClass(elemId, "motion-out")
+        const elemId = `${id}`
+        util.removeClassByClass(elemId, "motion-in")
+        util.setClassById(elemId, "motion-out")
         setTimeout(() =>
                 setData(data.filter(el => el.id != id)),
             1000)
