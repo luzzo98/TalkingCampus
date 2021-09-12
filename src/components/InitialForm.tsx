@@ -1,11 +1,12 @@
 import React, {useState} from "react";
 import { Form, Input, Button, Tabs } from 'antd';
 import 'antd/dist/antd.css';
-import {Link, Route, Switch} from "react-router-dom";
+import {Link, Route} from "react-router-dom";
 import MainPage from "./MainPage";
 import * as utils from "../utils/utils";
 import {User} from "../Model";
 import img from "../assets/volto_uomo.jpg"
+import AppBarTitle from "./AppBarTitle";
 
 const { TabPane } = Tabs;
 const mockUser = new class implements User {
@@ -27,6 +28,7 @@ const InitialForm:React.FC = () => {
 
     return(
         <div className="card-container">
+            <AppBarTitle/>
             <Tabs type="card">
                 <TabPane tab="Login" key="1" className="tabpane-container">
                     <Form

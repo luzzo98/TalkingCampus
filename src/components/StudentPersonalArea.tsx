@@ -1,8 +1,9 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import {List} from 'antd';
-import AppBar from "./Appbar";
+import AppBarTitle from "./AppBarTitle";
 import Footer from "./Footer";
+import SubAppBar from "./SubAppBar";
 require("../styles/studentPersonalArea/studentPersonalAreaStyle.scss")
 
 const StudentPersonalArea = () => {
@@ -16,7 +17,8 @@ const StudentPersonalArea = () => {
 
     return (
         <div className={"list-box slide-down"} id={"list-container"}>
-            <AppBar text={"Area personale"}/>
+            <AppBarTitle/>
+            <SubAppBar sub_text={"Area Personale"}/>
             <List
                 size="large"
                 dataSource={data}

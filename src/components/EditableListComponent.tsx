@@ -2,9 +2,10 @@ import React, {useState} from 'react';
 import 'antd/dist/antd.css';
 import {List, Button} from 'antd';
 import {CloseCircleOutlined} from "@ant-design/icons";
-import AppBar from "./Appbar";
+import AppBarTitle from "./AppBarTitle";
 import Footer from "./Footer";
 import * as util from "../utils/utils"
+import SubAppBar from "./SubAppBar";
 require("../styles/list_component/notificationBoxStyle.scss")
 
 interface ListItem {
@@ -38,7 +39,8 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
     return (
             <div className={"notifications-box slide-down"} id={"list-container"}>
-                <AppBar text={sub_title}/>
+                <AppBarTitle/>
+                <SubAppBar sub_text={sub_title}/>
                     <List
                         size="large"
                         pagination= {{
