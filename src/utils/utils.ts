@@ -8,9 +8,9 @@ export function getElementOnViewById(id: string): HTMLElement {
     return document.getElementById(id) as HTMLElement;
 }
 
-export function isHidden(el: Element) {
+export function isVisible(el: Element) {
     const style = window.getComputedStyle(el);
-    return (style.visibility === 'hidden')
+    return (style.left !== '0px')
 }
 
 export function setClassById(elementName: string, className: string) {

@@ -37,18 +37,20 @@ html {
   @include variables.setSlideHorizontal(100%, 0%);
 }
 
-h1 {
-  font-family: variables.$main-font;
-  color: variables.$white;
-  margin: 1% 10% 1% 10% !important;
-  text-align: left;
-  font-weight: 400;
-  white-space: nowrap;
-  background-color: transparent;
-  font-style: normal;
-  letter-spacing: 0px;
-  font-size: variables.$font_size;
-  height: variables.$height;
+#drawer {
+  h1 {
+    font-family: variables.$main-font;
+    color: variables.$white;
+    margin: 3% 10% 15% 10%;
+    text-align: left;
+    font-weight: 400;
+    white-space: nowrap;
+    background-color: transparent;
+    font-style: normal;
+    letter-spacing: 0px;
+    font-size: variables.$font_size;
+    height: variables.$height;
+  }
 }
 
 #container{

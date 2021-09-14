@@ -9,8 +9,11 @@ import img from "../assets/volto_uomo.jpg"
 import AppBarTitle from "./AppBarTitle";
 
 const { TabPane } = Tabs;
-const mockUser = new class implements User {
-    id = 0; name = "Giovanni"; img = img; role = "admin"
+const mockUser: User = {
+    id: 0,
+    name: "Giovanni",
+    img: img,
+    role: "admin"
 }
 
 const InitialForm:React.FC = () => {
