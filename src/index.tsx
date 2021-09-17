@@ -7,7 +7,8 @@ import MainPage from "./components/MainPage";
 
 ReactDOM.render(
   <React.StrictMode>
-    <MainPage />
+      <App/>
+    {/*<MainPage />*/}
   </React.StrictMode>,
   document.getElementById('root')
 );
