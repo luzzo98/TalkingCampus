@@ -2,7 +2,9 @@ import {DivIcon, LatLngTuple} from "leaflet";
 
 export interface IMarker {
     position: LatLngTuple;
-    icon: DivIcon;
+    type: string;
+    isMarkerSet: boolean;
+    id: string
 }
 
 export interface MarkerDictionary {

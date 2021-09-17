@@ -105,8 +105,18 @@ $breakpoint-height-phone: 800px;
   }
 }
 
-@mixin setAnimation($animation_name) {
+@mixin setSlideMenu($start_value, $end_value) {
+  from {
+    left: $start_value;
+  }
+
+  to {
+    left: $end_value;
+  }
+}
+
+@mixin setAnimation($animation_name, $duration: 1s, $direction: alternate) {
   animation-name: $animation_name;
-  animation-duration: 1s;
-  animation-direction: alternate;
+  animation-duration: $duration;
+  animation-direction: $direction;
 }

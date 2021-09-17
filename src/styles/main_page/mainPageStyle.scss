@@ -25,6 +25,32 @@ html {
   @include variables.setAnimation("slide-out-vertical")
 }
 
+.toggle-to-right {
+  @include variables.setAnimation("slide-right-toggle", 0.3s, ease-in-out);
+  left: 17%;
+}
+
+.toggle-to-left {
+  @include variables.setAnimation("slide-left-toggle", 0.3s, ease-in-out);
+  left: 0%;
+}
+
+@keyframes slide-right-drawer {
+  @include variables.setSlideMenu(-17%, 0%)
+}
+
+@keyframes slide-left-drawer {
+  @include variables.setSlideMenu(0%, -17%)
+}
+
+@keyframes slide-right-toggle {
+  @include variables.setSlideMenu(0%, 17%)
+}
+
+@keyframes slide-left-toggle {
+  @include variables.setSlideMenu(17%, 0%)
+}
+
 @keyframes slide-out-vertical {
   @include variables.setSlideVertical(0%, 200%)
 }
@@ -229,12 +255,11 @@ main {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  left: 0px;
   height:50px;
   width: 50px;
   display: block;
   position: fixed;
-  background: rgba(255,255,255,.0);
+  background: transparent;
   z-index: 1;
 }
 
@@ -289,26 +314,20 @@ header {
 /* drawer menu pane - note the 0px width */
 
 #drawer {
-  @include variables.transition;
   position: fixed;
+  display: block;
   top: 0;
-  left:-17%;
   height: 100%;
   width: 17%;
   background: variables.$gradient;
   overflow-x: hidden;
   overflow-y: hidden;
   padding: 10px;
-  -webkit-overflow-scrolling: touch;
 
   h1 {
     font-size: 2rem;
     height: auto;
     text-align: center;
-  }
-
-  hr {
-    @include variables.resizable_hr(10%)
   }
 
   button {
@@ -320,28 +339,14 @@ header {
 
 }
 
-#drawer-toggle:checked ~ #drawer-toggle-label,
-#drawer-toggle:checked ~ header {
-  left: 17%;
+.drawer-to-right {
+  @include variables.setAnimation("slide-right-drawer", 0.3s, ease-in-out);
+  left: 0;
 }
 
-#drawer-toggle:checked ~ #drawer {
-  left: 0px;
-}
-
-#drawer-toggle:checked ~ #page-content {
-  margin-left: 17%;
-}
-
-#drawer ul a {
-  display:block;
-  padding:10px;
-  color:#c7c7c7;
-  text-decoration:none;
-}
-
-#drawer ul a:hover {
-  color:white;
+.drawer-to-left {
+  @include variables.setAnimation("slide-left-drawer", 0.3s, ease-in-out);
+  left: -17%;
 }
 
 .main-container {
@@ -409,18 +414,6 @@ header {
   transform: scale(0.1, 1);
 }
 
-@-webkit-keyframes blinker {
-  from { top: 50%; }
-  to { top: 38%; }
-}
-
-.blinking-transition {
-  -webkit-animation-name: blinker;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-timing-function: ease-out;
-  -webkit-animation-duration: 0.6s;
-}
-
 .marker-pin {
   width: 30px;
   height: 30px;
@@ -430,7 +423,7 @@ header {
   transform: rotate(-45deg);
   left: 50%;
   top: 50%;
-  margin: -15px 0 0 -15px;
+  margin: -12px 0 0 -9px;
 }
 
 .marker-pin::after {

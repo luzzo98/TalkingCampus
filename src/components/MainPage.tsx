@@ -1,136 +1,76 @@
 import {MapContainer, ImageOverlay, LayersControl, Marker} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/leaflet.js.map';
-import {useRef, useState} from 'react';
+import {useReducer, useRef, useState} from 'react';
 import * as React from 'react'
 import {MainpageContents, MarkerDictionary, Room} from '../Model';
 import '../styles/main_page/mainPageStyle.scss'
-import { renderToStaticMarkup } from "react-dom/server";
-import { Control, divIcon, LatLngBoundsLiteral, LatLngExpression,
-    LatLngTuple, LayersControlEvent, LeafletMouseEvent, Map
-} from "leaflet";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faBook, faChalkboardTeacher, faBath, faCoffee, faFax, faFlask} from "@fortawesome/free-solid-svg-icons";
-import {IconDefinition} from "@fortawesome/fontawesome-common-types";
+import { Control, LatLngBoundsLiteral, LatLngExpression, LatLngTuple, LayersControlEvent, LeafletMouseEvent, Map} from "leaflet";
 import floor1 from "../assets/floor1.svg"
 import floor2 from "../assets/floor2.svg"
 import groundFloor from "../assets/groundFloor.svg"
-import * as util from "../utils/utils";
 import DefaultPopUp from "./DefaultPopUp";
 import {Popup} from "react-leaflet";
 import {useHistory, useLocation} from "react-router-dom";
 import * as utils from "../utils/utils";
-import {Popconfirm} from "antd";
 import DeletePopUp from "./DeletePopUp";
+import AddPopUp from "./AddPopup";
+import {message} from "antd";
 
 //Devono essere richiesti da db ovviamente
+let id: number = 20
+
 const baseMarker: MarkerDictionary = {
     "piano 0": [
-        { position: [40.757059, -74.198484], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.750755, -74.195824], icon: generateIcon(faBook) },
-        { position: [40.750755, -74.201059], icon: generateIcon(faBook) },
-        { position: [40.736194, -74.184837], icon: generateIcon(faBath) },
-        { position: [40.735226, -74.20045], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.735226, -74.19450], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.733275, -74.190587], icon: generateIcon(faBath) },
-        { position: [40.753694, -74.163894], icon: generateIcon(faBath) },
-        { position: [40.72755, -74.202175], icon: generateIcon(faBook) },
-        { position: [40.72755, -74.198398], icon: generateIcon(faBook) },
-        { position: [40.745891, -74.158401], icon: generateIcon(faCoffee) },
-        { position: [40.73366, -74.15711], icon: generateIcon(faFax) },
-        { position: [40.728201, -74.194622], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.728201, -74.191000], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.728201, -74.187498], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.728201, -74.184000], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.728201, -74.178485], icon: generateIcon(faFlask) },
-        { position: [40.728201, -74.172306], icon: generateIcon(faFlask) },
-        { position: [40.751353, -74.18200], icon: generateIcon(faFlask) },
-        { position: [40.751353, -74.17460], icon: generateIcon(faFlask) },
-        { position: [40.752063, -74.19130], icon: generateIcon(faBath) },
-        { position: [40.750833, -74.19130], icon: generateIcon(faBath) },
-        { position: [40.75388, -74.1548], icon: generateIcon(faBath) },
-        { position: [40.751753, -74.1548], icon: generateIcon(faBath) },
-        { position: [40.757059, -74.178485], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.757059, -74.16220], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.735226, -74.178485], icon:generateIcon(faChalkboardTeacher) },
-        { position: [40.73308, -74.16947], icon: generateIcon(faBath) },
-        { position: [40.727811, -74.158401], icon: generateIcon(faFlask) },
-        { position: [40.736194, -74.1829], icon: generateIcon(faBath) }
+        { id: "piano-0-0", position: [40.757059, -74.198484], type: "aula", isMarkerSet: true },
+        { id: "piano-0-1", position: [40.750755, -74.195824], type: "aula-studio", isMarkerSet: true },
+        { id: "piano-0-2", position: [40.750755, -74.201059], type: "aula-studio", isMarkerSet: true },
+        { id: "piano-0-3", position: [40.736194, -74.184837], type: "bagno", isMarkerSet: true},
+        { id: "piano-0-4", position: [40.735226, -74.20045], type: "aula", isMarkerSet: true },
+        { id: "piano-0-5", position: [40.735226, -74.19450], type: "aula", isMarkerSet: true },
+        { id: "piano-0-6", position: [40.733275, -74.190587], type: "bagno", isMarkerSet: true },
+        { id: "piano-0-7", position: [40.753694, -74.163894], type: "bagno", isMarkerSet: true},
+        { id: "piano-0-8", position: [40.72755, -74.202175], type: "aula-studio", isMarkerSet: true},
+        { id: "piano-0-9", position: [40.72755, -74.198398], type: "aula-studio", isMarkerSet: true },
+        { id: "piano-0-10", position: [40.745891, -74.158401], type: "mensa", isMarkerSet: true},
+        { id: "piano-0-11", position: [40.73366, -74.15711], type: "segreteria", isMarkerSet: true},
+        { id: "piano-0-12", position: [40.728201, -74.178485], type: "laboratorio", isMarkerSet: true},
+        { id: "piano-0-13", position: [40.728201, -74.172306], type: "laboratorio", isMarkerSet: true},
     ],
     "piano 1": [
-        { position: [40.757059, -74.198484], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.757059, -74.194536], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.756710, -74.18887], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.756710, -74.181919], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.756710, -74.17480], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.756710, -74.16732], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.756710, -74.15994], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.74745, -74.16200], icon: generateIcon(faCoffee) },
-        { position: [40.75070, -74.19127], icon: generateIcon(faBath) },
-        { position: [40.73262, -74.15711], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.74556, -74.15917], icon: generateIcon(faFax) },
-        { position: [40.75330, -74.16337], icon:generateIcon(faBath) },
-        { position: [40.73535, -74.17848], icon:generateIcon(faChalkboardTeacher) },
-        { position: [40.73711, -74.185009], icon: generateIcon(faBath) },
-        { position: [40.73711, -74.18294], icon: generateIcon(faBath) },
-        { position: [40.72787, -74.19625], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.75063, -74.19839], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.750768, -74.2019], icon: generateIcon(faBook) },
-        { position: [40.73451, -74.19814], icon: generateIcon(faBook) },
-        { position: [40.73451, -74.19522], icon: generateIcon(faBook) },
-        { position: [40.73711, -74.19419], icon: generateIcon(faBook) },
-        { position: [40.73711, -74.19693], icon: generateIcon(faBook) },
-        { position: [40.73327, -74.19067], icon: generateIcon(faBath) },
-        { position: [40.73711, -74.1914], icon: generateIcon(faBook) },
-        { position: [40.75245, -74.18363], icon: generateIcon(faFlask) },
-        { position: [40.75245, -74.18037], icon: generateIcon(faFlask) },
-        { position: [40.75245, -74.17668], icon: generateIcon(faFlask) },
-        { position: [40.75245, -74.17316], icon: generateIcon(faFlask) },
-        { position: [40.75245, -74.16921], icon: generateIcon(faFlask) },
-        { position: [40.75063, -74.19479], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.73327, -74.16844], icon: generateIcon(faBath) },
-        { position: [40.72787, -74.19127], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.72787, -74.19127], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.72787, -74.18612], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.72787, -74.17848], icon: generateIcon(faChalkboardTeacher) },
-        { position: [40.72787, -74.16200], icon: generateIcon(faChalkboardTeacher) }
+        { id: "piano-1-1", position: [40.757059, -74.198484], type: "aula", isMarkerSet: true},
+        { id: "piano-1-2", position: [40.757059, -74.194536], type: "aula", isMarkerSet: true},
+        { id: "piano-1-3", position: [40.756710, -74.18887], type: "aula", isMarkerSet: true},
+        { id: "piano-1-4", position: [40.756710, -74.181919], type: "aula", isMarkerSet: true},
+        { id: "piano-1-5", position: [40.74745, -74.16200], type: "mensa", isMarkerSet: true},
+        { id: "piano-1-6", position: [40.75070, -74.19127], type: "bagno", isMarkerSet: true},
+        { id: "piano-1-7", position: [40.74556, -74.15917], type: "segreteria", isMarkerSet: true},
+        { id: "piano-1-8", position: [40.75330, -74.16337], type: "bagno", isMarkerSet: true},
+        { id: "piano-1-9", position: [40.73711, -74.185009], type: "bagno", isMarkerSet: true},
+        { id: "piano-1-10", position: [40.750768, -74.2019], type: "aula-studio", isMarkerSet: true},
+        { id: "piano-1-11", position: [40.73451, -74.19522], type: "aula-studio", isMarkerSet: true},
+        { id: "piano-1-12", position: [40.75245, -74.18363], type: "laboratorio", isMarkerSet: true},
+        { id: "piano-1-13", position: [40.75245, -74.18037], type: "laboratorio", isMarkerSet: true},
+        { id: "piano-1-14", position: [40.73327, -74.16844], type: "bagno", isMarkerSet: true},
+        { id: "piano-1-15", position: [40.72787, -74.16200], type: "aula", isMarkerSet: true}
     ],
     "piano 2": [
-        { position: [40.75759, -74.19651], icon: generateIcon(faBook) },
-        { position: [40.75050, -74.19470], icon: generateIcon(faBook) },
-        { position: [40.75232, -74.19831], icon: generateIcon(faBook) },
-        { position: [40.75362, -74.16320], icon: generateIcon(faBath) },
-        { position: [40.74036, -74.15780], icon: generateIcon(faFlask) },
-        { position: [40.74335, -74.15780], icon: generateIcon(faFlask) },
-        { position: [40.74335, -74.15780], icon: generateIcon(faFlask) },
-        { position: [40.74712, -74.15780], icon: generateIcon(faFlask) },
-        { position: [40.73301, -74.16870], icon: generateIcon(faBath) },
-        { position: [40.73301, -74.19007], icon: generateIcon(faBath) },
-        { position: [40.72982, -74.19101], icon: generateIcon(faFlask) },
-        { position: [40.75265, -74.15651], icon: generateIcon(faFax) },
-        { position: [40.75050, -74.1914], icon: generateIcon(faBath) },
-        { position: [40.75206, -74.1914], icon: generateIcon(faBath) },
-        { position: [40.73203, -74.18397], icon: generateIcon(faFlask) },
-        { position: [40.73203, -74.18037], icon: generateIcon(faFlask) },
-        { position: [40.73203, -74.17676], icon: generateIcon(faFlask) },
-        { position: [40.7319, -74.1696], icon: generateIcon(faBath) },
-        { position: [40.7373, -74.1602], icon: generateIcon(faBath) },
-        { position: [40.7544, -74.1821], icon: generateIcon(faFlask) },
-        { position: [40.7544, -74.17299], icon: generateIcon(faFlask) },
-        { position: [40.7544, -74.1693], icon: generateIcon(faFlask) },
+        { id: "piano-2-1", position: [40.75759, -74.19651], type: "aula-studio", isMarkerSet: true},
+        { id: "piano-2-2", position: [40.75050, -74.19470], type: "aula-studio", isMarkerSet: true},
+        { id: "piano-2-3", position: [40.75362, -74.16320], type: "bagno", isMarkerSet: true},
+        { id: "piano-2-4", position: [40.74036, -74.15780], type: "laboratorio", isMarkerSet: true},
+        { id: "piano-2-5", position: [40.74335, -74.15780], type: "laboratorio", isMarkerSet: true},
+        { id: "piano-2-6", position: [40.74335, -74.15780], type: "laboratorio", isMarkerSet: true},
+        { id: "piano-2-7", position: [40.73301, -74.16870], type: "bagno", isMarkerSet: true},
+        { id: "piano-2-8", position: [40.73301, -74.19007], type: "bagno", isMarkerSet: true},
+        { id: "piano-2-9", position: [40.75265, -74.15651], type: "segreteria", isMarkerSet: true},
+        { id: "piano-2-10", position: [40.75050, -74.1914], type: "bagno", isMarkerSet: true},
+        { id: "piano-2-11", position: [40.75206, -74.1914], type: "bagno", isMarkerSet: true},
+        { id: "piano-2-12", position: [40.73203, -74.18397], type: "laboratorio", isMarkerSet: true},
+        { id: "piano-2-13", position: [40.73203, -74.18037], type: "laboratorio", isMarkerSet: true},
+        { id: "piano-2-14", position: [40.73203, -74.17676], type: "laboratorio", isMarkerSet: true},
+        { id: "piano-2-15", position: [40.7319, -74.1696],  type: "bagno", isMarkerSet: true}
     ]
-}
-
-function generateIcon(className:IconDefinition) {
-    const iconMarkup = renderToStaticMarkup(
-        <div className='marker-pin'><FontAwesomeIcon icon={className}/></div>
-    );
-    return divIcon({
-        className: 'custom-div-icon',
-        html: iconMarkup,
-        iconSize: [20, 42],
-        iconAnchor: [15, 42]
-    });
 }
 
 interface MapState {
@@ -141,6 +81,7 @@ interface MapState {
 
 const MainPage:React.FC = () => {
 
+    const [isMenuVisible, setIsMenuVisible] = useState(true)
     const center: LatLngExpression = [40.743, -74.185];
     const mobileCenter: LatLngExpression = [40.753, -74.176];
 
@@ -149,20 +90,23 @@ const MainPage:React.FC = () => {
     const mobileMaxLevelZoom: number = 13.75;
     const screenDefaultZoom: number = 13.25;
     const screenMaxZoom: number = 14;
-    const offset:LatLngTuple = [-4, -5];
+    const offset:LatLngTuple = [2, -2];
+    let firstInitialization: boolean = true
 
     const bounds: LatLngBoundsLiteral = [
         [40.712216, -74.22655],
         [40.773941, -74.12544]
     ];
 
-    let data = useLocation();
-    const mainContents: MainpageContents = data.state as MainpageContents
-    const [mapState, setMapState] = useState({
+    const initState = {
         mode: 'default',
         currentPiano: 'piano 0',
         markers: baseMarker
-    })
+    }
+
+    let data = useLocation();
+    const mainContents: MainpageContents = data.state as MainpageContents
+    const [mapState, setMapState] = useReducer(utils.reducer, initState)
     const mapStateRef = useRef<MapState>()
     mapStateRef.current = mapState
 
@@ -179,100 +123,103 @@ const MainPage:React.FC = () => {
         }
         return infos?.map(
             el => {
-                const marker = <Marker
-                    position={el.position}
-                    icon={el.icon}
-                    eventHandlers={{
-                        click: () => {
-                            util.removeClassByClass("marker-pin", "blinking-transition")
-                        }
-                    }}
-                >
-                    { mapStateRef.current?.mode === "aggiungi" ? <Popup>Aggiungi</Popup>
-                    : mapStateRef.current?.mode === "modifica" ? <Popup >Modifica</Popup>
-                    : mapStateRef.current?.mode === "elimina" ?  <DeletePopUp room_id={mockRoom.room_name} offset={offset}/> : <DefaultPopUp room={mockRoom}
-                                                                                                        offset={offset}/>
-                    }
-                </Marker>;
-                return marker;
+                return <Marker
+                            position={el.position}
+                            icon={utils.generateIcon(el.type, el.id)}
+                            eventHandlers={{
+                                add: () => {
+                                    if(!el.isMarkerSet) {
+                                        utils.getElementOnViewById(el.id).click()
+                                    }
+                                }
+                            }}
+                         >
+                             { (!el.isMarkerSet) ? <AddPopUp offset={offset}
+                                                             onElementAdd={() => el.isMarkerSet = true}
+                                                             onRoomTypeDefined={(room: string) => el.type = room}/>
+                                 : mapStateRef.current?.mode === "modifica" ? <Popup offset={offset}>Modifica</Popup>
+                                     : mapStateRef.current?.mode === "elimina" ? <DeletePopUp room_id={mockRoom.room_name} offset={offset}/>
+                                         : mapStateRef.current?.mode === "aggiungi" ? null : <DefaultPopUp room={mockRoom} offset={offset}/>
+                             }
+                         </Marker>
             }
         );
     }
 
     const baseLayerChange = (floorChanged: LayersControlEvent) => {
-        setMapState(prevState => new class implements MapState {
-            currentPiano = floorChanged.name;
-            mode = prevState.mode;
-            markers = prevState.markers;
-        });
+        setMapState({ currentPiano: floorChanged.name });
     }
 
     const addingMarker = (e: LeafletMouseEvent) => {
-        if (mapStateRef.current?.mode === "aggiungi") {
+        if (mapStateRef.current?.mode === "aggiungi" && !isNewMarkerBeenBuilding()) {
             const piano: string = mapStateRef.current?.currentPiano ? mapStateRef.current?.currentPiano : ""
             const tempMarkers = mapStateRef.current?.markers
             tempMarkers[piano].push({
+                id: "piano-" + (piano.split(" ")[1]) + "-" + id++,
+                type: "none",
                 position: [e.latlng.lat, e.latlng.lng] as LatLngTuple,
-                icon: generateIcon(faBath)
+                isMarkerSet: false
             })
-            setMapState(prevState => new class implements MapState {
-                currentPiano = prevState.currentPiano;
-                mode = prevState.mode;
-                markers = tempMarkers
-            })
+            setMapState({ markers: tempMarkers })
         }
     }
+
     function sizingMap(m: Map) {
-        const width: number = util.getScreenWidth()
-        if (width < util.hdSize) {
-            if (width < util.mobileSize) {
-                m.setMinZoom(mobileMinLevelZoom);
-                m.setMaxZoom(mobileMaxLevelZoom);
-                m.setZoom(mobileMinLevelZoom)
+        const width: number = utils.getScreenWidth()
+        if (width < utils.hdSize) {
+            if (width < utils.mobileSize) {
+                m.setMinZoom(mobileMinLevelZoom); m.setMaxZoom(mobileMaxLevelZoom); m.setZoom(mobileMinLevelZoom)
             } else {
-                m.setMinZoom(screenDefaultZoom);
-                m.setMaxZoom(screenMaxZoom);
-                m.setZoom(screenDefaultZoom)
+                m.setMinZoom(screenDefaultZoom); m.setMaxZoom(screenMaxZoom); m.setZoom(screenDefaultZoom)
             }
             m.dragging.enable()
-            m.addControl(new Control.Zoom({position: "bottomleft"}))
+            if(firstInitialization){
+                m.addControl(new Control.Zoom({position: "bottomleft"}))
+                firstInitialization = false
+            }
         } else {
-            m.setMaxZoom(screenDefaultZoom);
-            m.setMinZoom(screenDefaultZoom)
-            m.setView(center)
+            m.setMaxZoom(screenDefaultZoom); m.setMinZoom(screenDefaultZoom); m.setView(center)
             m.dragging.disable()
         }
         openMenu()
     }
 
     function changeControlLayerVisibility(visibilityAttribute: string) {
-        (util.getElementOnViewByClass("leaflet-control-layers")[0] as HTMLElement).style.visibility = visibilityAttribute
+        (utils.getElementOnViewByClass("leaflet-control-layers")[0] as HTMLElement).style.visibility = visibilityAttribute
     }
 
     function openMenu() {
-        const drawer = util.getElementOnViewById("drawer-toggle-label")
-        if (!util.isVisible(drawer)) {
-            util.getElementOnViewById("drawer-toggle").click()
-            util.getElementOnViewById("drawer-toggle-label").style.pointerEvents = "none"
+        const drawer = utils.getElementOnViewById("drawer-toggle-label")
+        if (!isMenuVisible) {
+            console.log("Qui ci entri?")
+            setIsMenuVisible(true)
         }
     }
 
     function createSpaceForMap() {
-        openMenu()
+        //openMenu()
         changeControlLayerVisibility("hidden")
     }
 
     function setMenuVisible() {
-        util.getElementOnViewById("drawer-toggle-label").style.pointerEvents = "auto"
-        const button = util.getElementOnViewByClass("corner-button")[0]
-        if (util.isVisible(button)) {
-            util.getElementOnViewById("drawer-toggle").click()
+        utils.getElementOnViewById("drawer-toggle-label").style.pointerEvents = "auto"
+        const button = utils.getElementOnViewByClass("corner-button")[0]
+        if (utils.isVisible(button)) {
+            utils.getElementOnViewById("drawer-toggle").click()
         }
         changeControlLayerVisibility("visible")
     }
 
     function isLowestZoomLevel(m: Map): boolean {
         return m.getZoom() == mobileMinLevelZoom || m.getZoom() == screenDefaultZoom
+    }
+
+    function isNewMarkerBeenBuilding():boolean{
+        return !!utils.getElementOnViewById("crea-marker")
+    }
+
+    function noElementNotSet() : boolean {
+        return ! mapStateRef.current?.markers[mapStateRef.current?.currentPiano].find(e => !e.isMarkerSet)
     }
 
     const handleMapEvent = (m: Map) => {
@@ -282,16 +229,18 @@ const MainPage:React.FC = () => {
         m.on("click", (e: LeafletMouseEvent) => addingMarker(e))
         m.on("zoom", () => {
             if (isLowestZoomLevel(m)) {
-                m.panTo(mobileCenter)
-                m.dragging.disable()
-                setMenuVisible()
+                m.panTo(mobileCenter); m.dragging.disable(); setMenuVisible()
             } else {
-                createSpaceForMap()
-                m.dragging.enable()
+                createSpaceForMap(); m.dragging.enable()
             }
         })
         m.on('popupclose', () => {
             sizingMap(m)
+            setTimeout(() => {
+                if (noElementNotSet()){
+                    setMapState({ mode: "default"})
+                }
+            }, 200)
         })
     }
 
@@ -317,37 +266,21 @@ const MainPage:React.FC = () => {
         utils.setClassById("main-nav", "slide-out-transition-class")
     }
 
-    function setTransition() {
-        utils.removeClassByClass("marker-pin", "blinking-transition")
-        utils.setClassByClass("marker-pin", "blinking-transition")
-    }
-
     function adminAction(action: string) {
         const command: string = action.split(" ")[0].toLowerCase();
-        switch (command) {
-            case "aggiungi":
-                setMapState(prevState => new class implements MapState {
-                    currentPiano = prevState.currentPiano
-                    markers = prevState.markers
-                    mode = "aggiungi"
-                })
-                break;
-            case "elimina":
-                setTransition()
-                setMapState(prevState => new class implements MapState {
-                    currentPiano = prevState.currentPiano
-                    markers = prevState.markers
-                    mode = "elimina"
-                })
-                break;
-            case "modifica":
-                setTransition()
-                setMapState(prevState => new class implements MapState {
-                    currentPiano = prevState.currentPiano
-                    markers = prevState.markers
-                    mode = "modifica"
-                })
-                break;
+        if(mapStateRef.current?.mode == "default"){
+            switch (command) {
+                case "aggiungi":
+                    setMapState({ mode: "aggiungi" })
+                    break;
+                case "elimina":
+                    setMapState({ mode: "elimina" })
+                    break;
+                case "modifica":
+                    setMapState({ mode: "modifica" })
+                    break;
+            }
+            message.info(`${command[0].toUpperCase() + command.slice(1)} un elemento sulla mappa`,0.7);
         }
     }
 
@@ -367,9 +300,12 @@ const MainPage:React.FC = () => {
         <div className={"main-container"}>
             <main className={"main"}>
                 <header id="main-nav">
-                    <input type="checkbox" id="drawer-toggle" name="drawer-toggle"/>
-                    <label htmlFor="drawer-toggle" id="drawer-toggle-label"/>
-                    <nav id="drawer">
+                    <nav id="drawer" className={isMenuVisible ? "drawer-to-right" : "drawer-to-left"}>
+                        <input type="checkbox" id="drawer-toggle" name="drawer-toggle"/>
+                        <label htmlFor="drawer-toggle"
+                               id="drawer-toggle-label"
+                               className={isMenuVisible ? "toggle-to-right" : "toggle-to-left"}
+                               onClick={() => setIsMenuVisible(prev => !prev)}/>
                         <h1 className="mobile-logo">Talking Campus</h1>
                         <div className="card">
                             <h3>Ciao {mainContents.user.name}!</h3>
@@ -385,10 +321,10 @@ const MainPage:React.FC = () => {
                               id={'map'}
                               maxZoom={defaultZoom} minZoom={defaultZoom} zoom={defaultZoom}
                               whenCreated={handleMapEvent}
-                              zoomControl={false}
+                              zoomControl={false} scrollWheelZoom={false} doubleClickZoom={false}
                               dragging={false}
                               bounds={bounds}
-                              scrollWheelZoom={false}>
+                              keyboard={false}>
                     <LayersControl position="bottomright" collapsed={false}>
                         <LayersControl.BaseLayer name="piano 2">
                             <ImageOverlay url={floor2} bounds={bounds}/>

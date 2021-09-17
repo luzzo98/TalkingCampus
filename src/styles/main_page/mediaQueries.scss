@@ -49,6 +49,7 @@
   }
 }
 
+//per schermi fino al monitor sd: tablet e telefoni
 @media (max-width: variables.$breakpoint-desktop-screen){
 
   div#map {
@@ -84,6 +85,10 @@
       width: 100%;
       padding-bottom: 0%;
 
+      h1 {
+        margin-bottom: 5%;
+      }
+
       button {
         box-shadow: variables.$shadow_box_mobile;
       }
@@ -96,9 +101,6 @@
           visibility: hidden;
           margin-bottom: 0%;
         }
-      }
-      hr {
-        @include variables.resizable_hr(2%)
       }
 
       button.corner-button {
@@ -121,14 +123,13 @@
     margin-bottom: 2.2em !important;
   }
 
-  label#drawer-toggle-label {
-    width: 50px !important;
-    height: 50px !important;
-    font-size: small !important;
-  }
-
   header {
     text-align: center;
+    #drawer-toggle-label {
+      width: 50px;
+      height: 50px;
+      font-size: small;
+    }
   }
 
   .main-container {
@@ -168,6 +169,7 @@
 
 }
 
+//smartphone lunghi
 @media screen and (min-device-height: variables.$breakpoint-height-phone)
               and (max-width: variables.$breakpoint-mobile-screen){
 
@@ -195,6 +197,7 @@
 
 }
 
+//tablet lunghi
 @media screen and (min-device-height: variables.$breakpoint-height-phone)
 and (min-width: variables.$breakpoint-mobile-screen)
 and (max-width: variables.$breakpoint-desktop-screen) {

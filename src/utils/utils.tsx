@@ -1,4 +1,31 @@
-import {User} from "../Model";
+import {IMarker, User} from "../Model";
+import {renderToStaticMarkup} from "react-dom/server";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+    faBook,
+    faChalkboardTeacher,
+    faBath,
+    faCoffee,
+    faFax,
+    faFlask,
+} from "@fortawesome/free-solid-svg-icons";
+import {IconDefinition} from "@fortawesome/fontawesome-common-types";
+import {divIcon} from "leaflet";
+import * as React from "react";
+
+export const locals: {[id: string]: IconDefinition} = {
+    "aula-studio" : faBook,
+    "laboratorio" : faFlask,
+    "bagno"       : faBath,
+    "segreteria"  : faFax,
+    "mensa"       : faCoffee,
+    "aula"        : faChalkboardTeacher,
+}
+
+export const reducer = (prevState: any, updatedProperty:any) => ({
+    ...prevState,
+    ...updatedProperty,
+});
 
 export function getElementOnViewByClass(className: string): HTMLCollection {
     return document.getElementsByClassName(className);
@@ -66,6 +93,20 @@ export function getElements(user: User):[string, string][] {
     return elements
 }
 
+export function generateIcon(type: string, id:string) {
+    console.log("Icon: " + locals[type])
+    const iconMarkup = renderToStaticMarkup(
+        type !== "none" ?
+            <div className='marker-pin' id={id}><FontAwesomeIcon icon={locals[type]}/></div> :
+    <div className='marker-pin' id={id}/>
+);
+    return divIcon({
+        className: 'custom-div-icon',
+        html: iconMarkup,
+        iconSize: [20, 42],
+        iconAnchor: [15, 42]
+    });
+}
 
 export const mobileSize: number = 736
 export const hdSize: number = 1280
