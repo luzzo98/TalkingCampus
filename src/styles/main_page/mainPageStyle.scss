@@ -96,6 +96,7 @@ main {
     flex-direction: row-reverse;
     position: relative;
     opacity: 1;
+    transition: left 0.5s ease-in-out;
 
     img {
       margin: 0px;
@@ -267,6 +268,22 @@ header {
 
 .toggle-slide-exit-done {
   left: 0
+}
+
+@keyframes map-slide-left {
+  @include variables.setSlideMenu(100%, 0)
+}
+
+@keyframes map-slide-right {
+  @include variables.setSlideMenu(0, 100%)
+}
+
+.slide-left {
+  @include variables.setAnimation("map-slide-left");
+}
+
+.slide-right {
+  @include variables.setAnimation("map-slide-right");
 }
 
 .main-container {

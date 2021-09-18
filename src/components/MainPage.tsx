@@ -83,6 +83,7 @@ interface MapState {
 const MainPage:React.FC = () => {
 
     const [isMenuVisible, setIsMenuVisible] = useState(false)
+    const [isOpeningView, setIsOpeningView] = useState(true)
     const center: LatLngExpression = [40.743, -74.185];
     const mobileCenter: LatLngExpression = [40.753, -74.176];
 
@@ -261,6 +262,8 @@ const MainPage:React.FC = () => {
     let history = useHistory();
 
     function closeMenu(path: string) {
+        setIsMenuVisible(false)
+        setIsOpeningView(false)
         setTimeout(() => {
             history.push(path)
         }, 900)
@@ -268,7 +271,7 @@ const MainPage:React.FC = () => {
 
     return (
         <div className={"main-container"}>
-            <main className={"main"}>
+            <main className={"main " + (isOpeningView ? "" : "slide-right")}>
                 <header id="main-nav">
                     <input type="checkbox" id="drawer-toggle" name="drawer-toggle"/>
                     <CSSTransition in={isMenuVisible} timeout={500} classNames="toggle-slide" mountOnEnter>
@@ -293,27 +296,28 @@ const MainPage:React.FC = () => {
                         </nav>
                     </CSSTransition>
                 </header>
-                <MapContainer center={center}
-                              id={'map'}
-                              maxZoom={defaultZoom} minZoom={defaultZoom} zoom={defaultZoom}
-                              whenCreated={handleMapEvent}
-                              zoomControl={false} scrollWheelZoom={false} doubleClickZoom={false}
-                              dragging={false}
-                              bounds={bounds}
-                              keyboard={false}>
-                    <LayersControl position="bottomright" collapsed={false}>
-                        <LayersControl.BaseLayer name="piano 2">
-                            <ImageOverlay url={floor2} bounds={bounds}/>
-                        </LayersControl.BaseLayer>
-                        <LayersControl.BaseLayer name="piano 1">
-                            <ImageOverlay url={floor1} bounds={bounds}/>
-                        </LayersControl.BaseLayer>
-                        <LayersControl.BaseLayer checked name="piano 0">
-                            <ImageOverlay url={groundFloor} bounds={bounds}/>
-                        </LayersControl.BaseLayer>
-                    </LayersControl>
-                    {renderMarkers(mapState.currentPiano)}
-                </MapContainer>
+                    <MapContainer center={center}
+                                  id={'map'}
+                                  maxZoom={defaultZoom} minZoom={defaultZoom} zoom={defaultZoom}
+                                  whenCreated={handleMapEvent}
+                                  zoomControl={false} scrollWheelZoom={false} doubleClickZoom={false}
+                                  dragging={false}
+                                  bounds={bounds}
+                                  className={"slide-left"}
+                                  keyboard={false} >
+                        <LayersControl position="bottomright" collapsed={!isOpeningView}>
+                            <LayersControl.BaseLayer name="piano 2">
+                                <ImageOverlay url={floor2} bounds={bounds}/>
+                            </LayersControl.BaseLayer>
+                            <LayersControl.BaseLayer name="piano 1">
+                                <ImageOverlay url={floor1} bounds={bounds}/>
+                            </LayersControl.BaseLayer>
+                            <LayersControl.BaseLayer checked name="piano 0">
+                                <ImageOverlay url={groundFloor} bounds={bounds}/>
+                            </LayersControl.BaseLayer>
+                        </LayersControl>
+                        {renderMarkers(mapState.currentPiano)}
+                    </MapContainer>
             </main>
         </div>
     );

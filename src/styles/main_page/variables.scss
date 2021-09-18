@@ -84,34 +84,13 @@ $breakpoint-height-phone: 800px;
   height: 2px!important;
 }
 
-@mixin setSlideHorizontal($start_value, $end_value) {
+@mixin setSlideMenu($start_value, $end_value) {
   from {
     margin-left: $start_value;
   }
 
   to {
     margin-left: $end_value;
-  }
-}
-
-@mixin setSlideVertical($start_value, $end_value) {
-
-  from {
-    margin-top: $start_value;
-  }
-
-  to {
-    margin-top: $end_value;
-  }
-}
-
-@mixin setSlideMenu($start_value, $end_value) {
-  from {
-    left: $start_value;
-  }
-
-  to {
-    left: $end_value;
   }
 }
 
