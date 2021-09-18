@@ -94,7 +94,7 @@ $breakpoint-height-phone: 800px;
   }
 }
 
-@mixin setAnimation($animation_name, $duration: 1s, $direction: alternate) {
+@mixin setAnimation($animation_name, $duration: 0.9s, $direction: alternate) {
   animation-name: $animation_name;
   animation-duration: $duration;
   animation-direction: $direction;
