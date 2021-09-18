@@ -12,6 +12,7 @@ import {
 import {IconDefinition} from "@fortawesome/fontawesome-common-types";
 import {divIcon} from "leaflet";
 import * as React from "react";
+import {useMediaQuery} from "react-responsive";
 
 export const locals: {[id: string]: IconDefinition} = {
     "aula-studio" : faBook,
@@ -94,7 +95,6 @@ export function getElements(user: User):[string, string][] {
 }
 
 export function generateIcon(type: string, id:string) {
-    console.log("Icon: " + locals[type])
     const iconMarkup = renderToStaticMarkup(
         type !== "none" ?
             <div className='marker-pin' id={id}><FontAwesomeIcon icon={locals[type]}/></div> :
@@ -107,6 +107,3 @@ export function generateIcon(type: string, id:string) {
         iconAnchor: [15, 42]
     });
 }
-
-export const mobileSize: number = 736
-export const hdSize: number = 1280

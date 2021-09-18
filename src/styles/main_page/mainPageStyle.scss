@@ -17,53 +17,7 @@ html {
 
 }
 
-.slide-out-transition-class {
-  @include variables.setAnimation("slide-out")
-}
-
-.slide-trans-class {
-  @include variables.setAnimation("slide-out-vertical")
-}
-
-.toggle-to-right {
-  @include variables.setAnimation("slide-right-toggle", 0.3s, ease-in-out);
-  left: 17%;
-}
-
-.toggle-to-left {
-  @include variables.setAnimation("slide-left-toggle", 0.3s, ease-in-out);
-  left: 0%;
-}
-
-@keyframes slide-right-drawer {
-  @include variables.setSlideMenu(-17%, 0%)
-}
-
-@keyframes slide-left-drawer {
-  @include variables.setSlideMenu(0%, -17%)
-}
-
-@keyframes slide-right-toggle {
-  @include variables.setSlideMenu(0%, 17%)
-}
-
-@keyframes slide-left-toggle {
-  @include variables.setSlideMenu(17%, 0%)
-}
-
-@keyframes slide-out-vertical {
-  @include variables.setSlideVertical(0%, 200%)
-}
-
-@keyframes slide-out {
-  @include variables.setSlideHorizontal(0%, 100%);
-}
-
-@keyframes slide-in {
-  @include variables.setSlideHorizontal(100%, 0%);
-}
-
-#drawer {
+.drawer {
   h1 {
     font-family: variables.$main-font;
     color: variables.$white;
@@ -165,77 +119,11 @@ main {
 }
 
 #main-nav {
-  width: 100%;
-  //height: auto;
-  background-color: variables.$start_color;
-  position: relative;
-  z-index: 100;
-  display: block;
-
-  .logo{
-    height: 86px;
-    padding: 20px 50px;
     width: 100%;
-    color: variables.$white;
-    cursor: pointer;
-    opacity: 1;
-    transition: opacity 200ms ease;
+    background-color: variables.$start_color;
     position: relative;
-  }
-  .bun {
-    cursor: pointer;
-    margin-top: 10px;
-    margin-left: 10px;
-    background: variables.$dark-grey;
-    overflow: hidden;
-
-    .mmm-burger {
-      position: relative;
-      width: 25px;
-      margin: 18px 7px 0;
-      height: 3px;
-      background: variables.$white;
-
-      &:before{
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 3px;
-        background: variables.$white;
-        right: 0;
-        top: -8px;
-      }
-
-      &:after{
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 3px;
-        background: variables.$white;
-        right: 0;
-        top: 8px;
-      }
-    }
-    &:before{
-      content: '';
-      top: -10px;
-      left: -45px;
-      width: 30px;
-      height: 75px;
-      position: absolute;
-      opacity: 0;
-      background: rgba(255, 255, 255, 0.2);
-      transform: rotate(25deg);
-      transition: left 300ms linear 50ms, opacity 20ms linear;
-    }
-    &:hover{
-
-      &:before {
-        opacity: 1;
-        left: 100px;
-      }
-    }
-  }
+    z-index: 100;
+    display: block;
 }
 
 .leaflet-control-attribution {
@@ -247,7 +135,7 @@ main {
   opacity: 0;
 }
 
-#drawer-toggle-label {
+.drawer-toggle-label {
   @include variables.transition;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -261,11 +149,12 @@ main {
   position: fixed;
   background: transparent;
   z-index: 1;
+  left: 17%;
 }
 
 /* adds our "hamburger" menu icon */
 
-#drawer-toggle-label:before {
+.drawer-toggle-label:before {
   content: '';
   display: block;
   position: absolute;
@@ -313,10 +202,11 @@ header {
 
 /* drawer menu pane - note the 0px width */
 
-#drawer {
+.drawer {
   position: fixed;
   display: block;
   top: 0;
+  left: 0;
   height: 100%;
   width: 17%;
   background: variables.$gradient;
@@ -339,14 +229,44 @@ header {
 
 }
 
-.drawer-to-right {
-  @include variables.setAnimation("slide-right-drawer", 0.3s, ease-in-out);
+.drawer-slide-enter {
+  left: -17%;
+}
+
+.drawer-slide-enter-active {
+  left: 0;
+  transition: left 500ms ease-in-out;
+}
+
+.drawer-slide-exit {
   left: 0;
 }
 
-.drawer-to-left {
-  @include variables.setAnimation("slide-left-drawer", 0.3s, ease-in-out);
+.drawer-slide-exit-active {
   left: -17%;
+  transition: left 500ms ease-in-out;
+}
+
+.toggle-slide-enter {
+  left: 0;
+}
+
+.toggle-slide-enter-active {
+  left: 17%;
+  transition: left 500ms ease-in-out;
+}
+
+.toggle-slide-exit {
+  left: 17%;
+}
+
+.toggle-slide-exit-active {
+  left: 0;
+  transition: left 500ms ease-in-out;
+}
+
+.toggle-slide-exit-done {
+  left: 0
 }
 
 .main-container {

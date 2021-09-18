@@ -2,7 +2,6 @@ import {MapContainer, ImageOverlay, LayersControl, Marker} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/leaflet.js.map';
 import {useReducer, useRef, useState} from 'react';
-import * as React from 'react'
 import {MainpageContents, MarkerDictionary, Room} from '../Model';
 import '../styles/main_page/mainPageStyle.scss'
 import { Control, LatLngBoundsLiteral, LatLngExpression, LatLngTuple, LayersControlEvent, LeafletMouseEvent, Map} from "leaflet";
@@ -16,6 +15,8 @@ import * as utils from "../utils/utils";
 import DeletePopUp from "./DeletePopUp";
 import AddPopUp from "./AddPopup";
 import {message} from "antd";
+import {CSSTransition} from "react-transition-group";
+import {useMediaQuery} from "react-responsive";
 
 //Devono essere richiesti da db ovviamente
 let id: number = 20
@@ -81,7 +82,7 @@ interface MapState {
 
 const MainPage:React.FC = () => {
 
-    const [isMenuVisible, setIsMenuVisible] = useState(true)
+    const [isMenuVisible, setIsMenuVisible] = useState(false)
     const center: LatLngExpression = [40.743, -74.185];
     const mobileCenter: LatLngExpression = [40.753, -74.176];
 
@@ -107,6 +108,8 @@ const MainPage:React.FC = () => {
     let data = useLocation();
     const mainContents: MainpageContents = data.state as MainpageContents
     const [mapState, setMapState] = useReducer(utils.reducer, initState)
+    const isMobile: boolean = useMediaQuery({ query: '(max-width: 736px)' })
+    const isTabletOrMobile: boolean = useMediaQuery({ query: '(max-width: 1240px)' })
     const mapStateRef = useRef<MapState>()
     mapStateRef.current = mapState
 
@@ -127,9 +130,9 @@ const MainPage:React.FC = () => {
                             position={el.position}
                             icon={utils.generateIcon(el.type, el.id)}
                             eventHandlers={{
-                                add: () => {
+                                add: (e) => {
                                     if(!el.isMarkerSet) {
-                                        utils.getElementOnViewById(el.id).click()
+                                        (e.target as L.Marker).openPopup()
                                     }
                                 }
                             }}
@@ -151,7 +154,7 @@ const MainPage:React.FC = () => {
     }
 
     const addingMarker = (e: LeafletMouseEvent) => {
-        if (mapStateRef.current?.mode === "aggiungi" && !isNewMarkerBeenBuilding()) {
+        if (mapStateRef.current?.mode === "aggiungi" /*&& !isNewMarkerBeenBuilding()*/) {
             const piano: string = mapStateRef.current?.currentPiano ? mapStateRef.current?.currentPiano : ""
             const tempMarkers = mapStateRef.current?.markers
             tempMarkers[piano].push({
@@ -165,11 +168,13 @@ const MainPage:React.FC = () => {
     }
 
     function sizingMap(m: Map) {
-        const width: number = utils.getScreenWidth()
-        if (width < utils.hdSize) {
-            if (width < utils.mobileSize) {
+        if (isTabletOrMobile) {
+            console.log("é tablet o mobile bro!!!")
+            if (isMobile) {
+                console.log("è mobile bro!!")
                 m.setMinZoom(mobileMinLevelZoom); m.setMaxZoom(mobileMaxLevelZoom); m.setZoom(mobileMinLevelZoom)
             } else {
+                console.log("ma non è mobile slime")
                 m.setMinZoom(screenDefaultZoom); m.setMaxZoom(screenMaxZoom); m.setZoom(screenDefaultZoom)
             }
             m.dragging.enable()
@@ -177,6 +182,7 @@ const MainPage:React.FC = () => {
                 m.addControl(new Control.Zoom({position: "bottomleft"}))
                 firstInitialization = false
             }
+            m.setView(mobileCenter)
         } else {
             m.setMaxZoom(screenDefaultZoom); m.setMinZoom(screenDefaultZoom); m.setView(center)
             m.dragging.disable()
@@ -184,38 +190,14 @@ const MainPage:React.FC = () => {
         openMenu()
     }
 
-    function changeControlLayerVisibility(visibilityAttribute: string) {
-        (utils.getElementOnViewByClass("leaflet-control-layers")[0] as HTMLElement).style.visibility = visibilityAttribute
-    }
-
     function openMenu() {
-        const drawer = utils.getElementOnViewById("drawer-toggle-label")
         if (!isMenuVisible) {
-            console.log("Qui ci entri?")
             setIsMenuVisible(true)
         }
     }
 
-    function createSpaceForMap() {
-        //openMenu()
-        changeControlLayerVisibility("hidden")
-    }
-
-    function setMenuVisible() {
-        utils.getElementOnViewById("drawer-toggle-label").style.pointerEvents = "auto"
-        const button = utils.getElementOnViewByClass("corner-button")[0]
-        if (utils.isVisible(button)) {
-            utils.getElementOnViewById("drawer-toggle").click()
-        }
-        changeControlLayerVisibility("visible")
-    }
-
     function isLowestZoomLevel(m: Map): boolean {
         return m.getZoom() == mobileMinLevelZoom || m.getZoom() == screenDefaultZoom
-    }
-
-    function isNewMarkerBeenBuilding():boolean{
-        return !!utils.getElementOnViewById("crea-marker")
     }
 
     function noElementNotSet() : boolean {
@@ -229,9 +211,11 @@ const MainPage:React.FC = () => {
         m.on("click", (e: LeafletMouseEvent) => addingMarker(e))
         m.on("zoom", () => {
             if (isLowestZoomLevel(m)) {
-                m.panTo(mobileCenter); m.dragging.disable(); setMenuVisible()
+                m.panTo(mobileCenter); m.dragging.disable();
+                setIsMenuVisible(true)
             } else {
-                createSpaceForMap(); m.dragging.enable()
+                setIsMenuVisible(false)
+                m.dragging.enable()
             }
         })
         m.on('popupclose', () => {
@@ -256,16 +240,6 @@ const MainPage:React.FC = () => {
         )
     }
 
-    function slideOutScreen() {
-        utils.setClassByClass("main-container", "slide-out-transition-class")
-    }
-
-    function slideOutPhone() {
-        utils.setClassByClass("main", "slide-trans-class");
-        utils.setClassById("drawer", "slide-out-transition-class")
-        utils.setClassById("main-nav", "slide-out-transition-class")
-    }
-
     function adminAction(action: string) {
         const command: string = action.split(" ")[0].toLowerCase();
         if(mapStateRef.current?.mode == "default"){
@@ -287,10 +261,6 @@ const MainPage:React.FC = () => {
     let history = useHistory();
 
     function closeMenu(path: string) {
-        const toggle = utils.getElementOnViewById("drawer-toggle-label")
-        toggle.click();
-        toggle.style.visibility = "hidden"
-        utils.getScreenWidth() > utils.hdSize ? slideOutScreen() : slideOutPhone()
         setTimeout(() => {
             history.push(path)
         }, 900)
@@ -300,22 +270,28 @@ const MainPage:React.FC = () => {
         <div className={"main-container"}>
             <main className={"main"}>
                 <header id="main-nav">
-                    <nav id="drawer" className={isMenuVisible ? "drawer-to-right" : "drawer-to-left"}>
-                        <input type="checkbox" id="drawer-toggle" name="drawer-toggle"/>
+                    <input type="checkbox" id="drawer-toggle" name="drawer-toggle"/>
+                    <CSSTransition in={isMenuVisible} timeout={500} classNames="toggle-slide" mountOnEnter>
                         <label htmlFor="drawer-toggle"
-                               id="drawer-toggle-label"
-                               className={isMenuVisible ? "toggle-to-right" : "toggle-to-left"}
-                               onClick={() => setIsMenuVisible(prev => !prev)}/>
-                        <h1 className="mobile-logo">Talking Campus</h1>
-                        <div className="card">
-                            <h3>Ciao {mainContents.user.name}!</h3>
-                            <img src={mainContents.user.img} className="avatar-holder"/>
-                        </div>
-                        {buttons}
-                        <button className="corner-button logout-button" onClick={() => closeMenu("/")}>
-                            <span>Logout</span>
-                        </button>
-                    </nav>
+                            className="drawer-toggle-label"
+                            onClick={() => setIsMenuVisible(prev => !prev)}/>
+                    </CSSTransition>
+                    <CSSTransition in = {isMenuVisible}
+                                   timeout ={isMobile ? 300 : 500}
+                                   classNames = {isMobile ? "slide-vertical" : "drawer-slide"}
+                                   unmountOnExit={!isMobile}>
+                        <nav className="drawer">
+                            <h1 className="mobile-logo">Talking Campus</h1>
+                            <div className="card">
+                                <h3>Ciao {mainContents.user.name}!</h3>
+                                <img src={mainContents.user.img} className="avatar-holder"/>
+                            </div>
+                            {buttons}
+                            <button className="corner-button logout-button" onClick={() => closeMenu("/")}>
+                                <span>Logout</span>
+                            </button>
+                        </nav>
+                    </CSSTransition>
                 </header>
                 <MapContainer center={center}
                               id={'map'}
