@@ -272,7 +272,7 @@ const MainPage:React.FC = () => {
     return (
         <div className={"main-container"}>
             <main className={"main " + (isOpeningView ? "" : "slide-right")}>
-                <header id="main-nav">
+                <header id="main-nav" className={"slide-left"}>
                     <input type="checkbox" id="drawer-toggle" name="drawer-toggle"/>
                     <CSSTransition in={isMenuVisible} timeout={500} classNames="toggle-slide" mountOnEnter>
                         <label htmlFor="drawer-toggle"
