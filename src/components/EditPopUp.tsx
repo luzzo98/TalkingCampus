@@ -1,36 +1,35 @@
-import React, {useReducer, useRef, useState} from "react";
+import React, {useReducer, useRef} from "react";
 import {Popup} from "react-leaflet";
 import {Button, Form, Input, Select} from "antd";
 import * as utils from "../utils/utils"
 require("../styles/pop_up/addPopUpStyle.scss")
 
 interface props  {
-    offset: [number, number]
-    onElementAdd: () => void
-    onRoomTypeDefined: (type:string) => void
+    name?: string
+    seats?: string
+    type?: string
+    onSubmit: (type: string, name: string, seats: string) => void
 }
 
 interface PopFormState {
-    roomType: string
+    type: string
     seats: string
     name: string
 }
 
-const AddPopUp: React.FC<props> = ({offset, onElementAdd, onRoomTypeDefined}) => {
+const EditPopUp: React.FC<props> = ({onSubmit, type, name, seats}) => {
 
-    const initState = {
-        roomType: "",
-        seats: "",
-        name: ""
+    const initState: PopFormState = {
+        type: type ? type : "",
+        seats: seats ? seats : "",
+        name: name ? name : ""
     }
     const [formState, setFormState] = useReducer(utils.reducer, initState)
-    const [isButtonCloseVisible, setIsButtonCloseVisible] = useState(false)
 
     function handleChangeSelect(value: any, param: string) {
         switch (param) {
             case "room":
-                onRoomTypeDefined(value)
-                setFormState({roomType: value})
+                setFormState({type: value})
                 break;
             case "seats":
                 setFormState({seats: value})
@@ -49,18 +48,18 @@ const AddPopUp: React.FC<props> = ({offset, onElementAdd, onRoomTypeDefined}) =>
     }
 
     function handleSubmit(){
-        const state = formState as PopFormState
-        if(state.name !== "" && state.roomType !== "" && state.seats !== ""){
-            setIsButtonCloseVisible(flag => !flag);
+        if(formState.name !== "" && formState.type !== "" && formState.seats !== ""){
             (utils.getElementOnViewByClass("leaflet-popup-close-button")[0] as HTMLElement).click()
-            setTimeout(onElementAdd, 10)
+            setTimeout(() => {
+                onSubmit(formState.type, formState.name, formState.seats)
+            }, 10)
         }
         else
             console.log("shit submit")
     }
 
     return (
-        <Popup offset={offset}
+        <Popup offset={utils.getOffset()}
                closeOnClick={false}
                closeButton={true}
         >
@@ -71,6 +70,7 @@ const AddPopUp: React.FC<props> = ({offset, onElementAdd, onRoomTypeDefined}) =>
                     rules={[{ required: true, message:"parametro richiesto!!!"}]}
                 >
                     <Select
+                        defaultValue={formState.type}
                         onSelect={(value => handleChangeSelect(value, 'room'))}>{generateOptions()}</Select>
                 </Form.Item>
                 <Form.Item
@@ -78,14 +78,14 @@ const AddPopUp: React.FC<props> = ({offset, onElementAdd, onRoomTypeDefined}) =>
                     name="nome"
                     rules={[{ required: true, message:"parametro richiesto!!!"}]}
                 >
-                    <Input onChange={(value => handleChangeSelect(value.target.value, 'name'))}/>
+                    <Input defaultValue={formState.name} onChange={(value => handleChangeSelect(value.target.value, 'name'))}/>
                 </Form.Item>
                 <Form.Item
                     label="Posti"
                     name="posti"
                     rules={[{ required: true, message:"parametro richiesto!!!"}]}
                 >
-                    <Input onChange={(value) => handleChangeSelect(value.target.value, 'seats')}/>
+                    <Input defaultValue={formState.seats} onChange={(value) => handleChangeSelect(value.target.value, 'seats')}/>
                 </Form.Item>
                 <hr/>
                 <div className={"ant-row div-buttons-popup"}>
@@ -99,4 +99,4 @@ const AddPopUp: React.FC<props> = ({offset, onElementAdd, onRoomTypeDefined}) =>
     )
 }
 
-export default AddPopUp;
+export default EditPopUp;

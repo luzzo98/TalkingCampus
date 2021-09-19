@@ -2,23 +2,22 @@ import React from "react";
 import {ModalTitle} from "react-bootstrap";
 import {Room} from "../Model";
 import {Popup} from "react-leaflet";
-import {LatLngTuple} from "leaflet";
+import * as util from "../utils/utils"
 import {Button} from "antd";
 require("../styles/pop_up/popUpStyle.scss")
 
 interface Props {
     room: Room,
-    offset: [number, number]
 }
 
-const DefaultPopUp: React.FC<Props> = ({room, offset}) => {
+const DefaultPopUp: React.FC<Props> = ({room}) => {
     return (
-        <Popup offset={offset}>
+        <Popup offset={util.getOffset()}>
             <ModalTitle> {room.room_name} </ModalTitle>
             <hr/>
-            <p>Posti occupati: {room.occupied_seats}/{room.total_seats}</p>
-            <p>{room.lesson_name} dalle {room.start} alle {room.end}</p>
-            <p>Docente: {room.teacher}</p>
+            <p>- Posti occupati: {room.occupied_seats}/{room.total_seats}</p>
+            <p>- {room.lesson_name} dalle {room.start} alle {room.end}</p>
+            <p>- Docente: {room.teacher}</p>
             <Button className={"prenote-class"}>Prenota Aula</Button>
         </Popup>
     )

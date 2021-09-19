@@ -13,7 +13,7 @@ import {Popup} from "react-leaflet";
 import {useHistory, useLocation} from "react-router-dom";
 import * as utils from "../utils/utils";
 import DeletePopUp from "./DeletePopUp";
-import AddPopUp from "./AddPopup";
+import EditPopUp from "./EditPopUp";
 import {message} from "antd";
 import {CSSTransition} from "react-transition-group";
 import {useMediaQuery} from "react-responsive";
@@ -92,7 +92,6 @@ const MainPage:React.FC = () => {
     const mobileMaxLevelZoom: number = 13.75;
     const screenDefaultZoom: number = 13.25;
     const screenMaxZoom: number = 14;
-    const offset:LatLngTuple = [2, -2];
     let firstInitialization: boolean = true
 
     const bounds: LatLngBoundsLiteral = [
@@ -129,6 +128,7 @@ const MainPage:React.FC = () => {
             el => {
                 return <Marker
                             position={el.position}
+                            draggable={!el.isMarkerSet}
                             icon={utils.generateIcon(el.type, el.id)}
                             eventHandlers={{
                                 add: (e) => {
@@ -138,12 +138,23 @@ const MainPage:React.FC = () => {
                                 }
                             }}
                          >
-                             { (!el.isMarkerSet) ? <AddPopUp offset={offset}
-                                                             onElementAdd={() => el.isMarkerSet = true}
-                                                             onRoomTypeDefined={(room: string) => el.type = room}/>
-                                 : mapStateRef.current?.mode === "modifica" ? <Popup offset={offset}>Modifica</Popup>
-                                     : mapStateRef.current?.mode === "elimina" ? <DeletePopUp room_id={mockRoom.room_name} offset={offset}/>
-                                         : mapStateRef.current?.mode === "aggiungi" ? null : <DefaultPopUp room={mockRoom} offset={offset}/>
+                             { (!el.isMarkerSet) ? <EditPopUp onSubmit={
+                                 (type: string, name:string, seats:string) => {
+                                     console.log("Il tipo è: " + type)
+                                     el.type = type;
+                                     el.isMarkerSet = true
+                                 }
+                             }/>
+                                 : mapStateRef.current?.mode === "modifica" ? <EditPopUp
+                                                                                onSubmit={(type, name, seats) => {
+                                                                                        el.type = type
+                                                                                    }
+                                                                                }
+                                                                                name={"Aula"}
+                                                                                type={el.type}
+                                                                                seats={"100"}>Modifica</EditPopUp>
+                                     : mapStateRef.current?.mode === "elimina" ? <DeletePopUp room_id={mockRoom.room_name}/>
+                                         : mapStateRef.current?.mode === "aggiungi" ? null : <DefaultPopUp room={mockRoom}/>
                              }
                          </Marker>
             }
@@ -275,9 +286,9 @@ const MainPage:React.FC = () => {
                 <header id="main-nav" className={"slide-left"}>
                     <input type="checkbox" id="drawer-toggle" name="drawer-toggle"/>
                     <CSSTransition in={isMenuVisible} timeout={500} classNames="toggle-slide" mountOnEnter>
-                        <label htmlFor="drawer-toggle"
-                            className="drawer-toggle-label"
-                            onClick={() => setIsMenuVisible(prev => !prev)}/>
+                    <label htmlFor="drawer-toggle"
+                        className={"drawer-toggle-label " + (isOpeningView ? "" : "hidden-label")}
+                        onClick={() => setIsMenuVisible(prev => !prev)}/>
                     </CSSTransition>
                     <CSSTransition in = {isMenuVisible}
                                    timeout ={isMobile ? 300 : 500}

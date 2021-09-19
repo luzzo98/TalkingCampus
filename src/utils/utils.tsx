@@ -10,9 +10,8 @@ import {
     faFlask,
 } from "@fortawesome/free-solid-svg-icons";
 import {IconDefinition} from "@fortawesome/fontawesome-common-types";
-import {divIcon} from "leaflet";
+import {divIcon, LatLngTuple} from "leaflet";
 import * as React from "react";
-import {useMediaQuery} from "react-responsive";
 
 export const locals: {[id: string]: IconDefinition} = {
     "aula-studio" : faBook,
@@ -107,3 +106,5 @@ export function generateIcon(type: string, id:string) {
         iconAnchor: [15, 42]
     });
 }
+
+export const getOffset:() => LatLngTuple = () => [2, -2];

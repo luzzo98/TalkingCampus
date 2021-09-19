@@ -199,6 +199,10 @@ header {
   font-size: 30px;
   line-height: 30px;
   z-index: 0;
+
+  .hidden-label {
+    visibility: hidden;
+  }
 }
 
 /* drawer menu pane - note the 0px width */
