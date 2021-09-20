@@ -1,7 +1,7 @@
 import {MapContainer, ImageOverlay, LayersControl, Marker} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/leaflet.js.map';
-import {useReducer, useRef, useState} from 'react';
+import {Reducer, useEffect, useReducer, useRef, useState} from 'react';
 import {MainpageContents, MarkerDictionary, Room} from '../Model';
 import '../styles/main_page/mainPageStyle.scss'
 import { Control, LatLngBoundsLiteral, LatLngExpression, LatLngTuple, LayersControlEvent, LeafletMouseEvent, Map} from "leaflet";
@@ -99,7 +99,7 @@ const MainPage:React.FC = () => {
         [40.773941, -74.12544]
     ];
 
-    const initState = {
+    const initState: MapState = {
         mode: 'default',
         currentPiano: 'piano 0',
         markers: baseMarker
@@ -107,14 +107,18 @@ const MainPage:React.FC = () => {
 
     let data = useLocation();
     const mainContents: MainpageContents = data.state as MainpageContents
-    const [mapState, setMapState] = useReducer(utils.reducer, initState)
-    const isMobile: boolean = useMediaQuery({ query: '(max-width: 736px)' })
-    const isTabletOrMobile: boolean = useMediaQuery({ query: '(max-width: 1240px)' })
+    const [mapState, setMapState] = useReducer<Reducer<MapState, any>>(utils.reducer, initState)
     const mapStateRef = useRef<MapState>()
     mapStateRef.current = mapState
+    const isMobile: boolean = useMediaQuery({ query: '(max-width: 736px)' })
+    const isTabletOrMobile: boolean = useMediaQuery({ query: '(max-width: 1240px)' })
+
+    useEffect(() => {
+        message.info("Talking campus mode: " + mapState.mode,0.7);
+    }, [mapState])
 
     function renderMarkers(floor: string) {
-        const infos = mapStateRef.current?.markers[floor]
+        const infos = mapState.markers[floor]
         const mockRoom: Room = {
             room_name: "Aula",
             occupied_seats: 23,
@@ -138,23 +142,20 @@ const MainPage:React.FC = () => {
                                 }
                             }}
                          >
-                             { (!el.isMarkerSet) ? <EditPopUp onSubmit={
-                                 (type: string, name:string, seats:string) => {
-                                     console.log("Il tipo è: " + type)
-                                     el.type = type;
-                                     el.isMarkerSet = true
-                                 }
-                             }/>
-                                 : mapStateRef.current?.mode === "modifica" ? <EditPopUp
-                                                                                onSubmit={(type, name, seats) => {
-                                                                                        el.type = type
-                                                                                    }
-                                                                                }
-                                                                                name={"Aula"}
-                                                                                type={el.type}
-                                                                                seats={"100"}>Modifica</EditPopUp>
-                                     : mapStateRef.current?.mode === "elimina" ? <DeletePopUp room_id={mockRoom.room_name}/>
-                                         : mapStateRef.current?.mode === "aggiungi" ? null : <DefaultPopUp room={mockRoom}/>
+                             {   !el.isMarkerSet ? <EditPopUp onSubmit={(type, name, seats) => {
+                                                                        el.type = type
+                                                                        el.isMarkerSet = true
+                                                                      }
+                                                             }/>
+                                 : mapState.mode === "modifica" ? <EditPopUp onSubmit={(type, name, seats) => {
+                                                                            el.type = type
+                                                                        }
+                                                                    }
+                                                                    name={"Aula"}
+                                                                    type={el.type}
+                                                                    seats={"100"}/>
+                                     : mapState.mode === "elimina" ? <DeletePopUp room_id={mockRoom.room_name}/>
+                                         : mapState.mode === "aggiungi" ? null : <DefaultPopUp room={mockRoom}/>
                              }
                          </Marker>
             }
@@ -166,9 +167,9 @@ const MainPage:React.FC = () => {
     }
 
     const addingMarker = (e: LeafletMouseEvent) => {
-        if (mapStateRef.current?.mode === "aggiungi" /*&& !isNewMarkerBeenBuilding()*/) {
-            const piano: string = mapStateRef.current?.currentPiano ? mapStateRef.current?.currentPiano : ""
-            const tempMarkers = mapStateRef.current?.markers
+        if (mapStateRef.current?.mode === "aggiungi") {
+            const piano: string = mapState.currentPiano ? mapState.currentPiano : ""
+            const tempMarkers = mapState.markers
             tempMarkers[piano].push({
                 id: "piano-" + (piano.split(" ")[1]) + "-" + id++,
                 type: "none",
@@ -213,7 +214,7 @@ const MainPage:React.FC = () => {
     }
 
     function noElementNotSet() : boolean {
-        return ! mapStateRef.current?.markers[mapStateRef.current?.currentPiano].find(e => !e.isMarkerSet)
+        return ! mapState.markers[mapState.currentPiano].find(e => !e.isMarkerSet)
     }
 
     const handleMapEvent = (m: Map) => {
@@ -254,7 +255,7 @@ const MainPage:React.FC = () => {
 
     function adminAction(action: string) {
         const command: string = action.split(" ")[0].toLowerCase();
-        if(mapStateRef.current?.mode == "default"){
+        if(mapState.mode == "default"){
             switch (command) {
                 case "aggiungi":
                     setMapState({ mode: "aggiungi" })
@@ -266,7 +267,6 @@ const MainPage:React.FC = () => {
                     setMapState({ mode: "modifica" })
                     break;
             }
-            message.info(`${command[0].toUpperCase() + command.slice(1)} un elemento sulla mappa`,0.7);
         }
     }
 

@@ -1,4 +1,4 @@
-import React, {useReducer, useRef} from "react";
+import React, {createRef, FormEvent, Ref, useReducer, useRef, useState} from "react";
 import {Popup} from "react-leaflet";
 import {Button, Form, Input, Select} from "antd";
 import * as utils from "../utils/utils"
@@ -25,6 +25,8 @@ const EditPopUp: React.FC<props> = ({onSubmit, type, name, seats}) => {
         name: name ? name : ""
     }
     const [formState, setFormState] = useReducer(utils.reducer, initState)
+    const popupRef = createRef<L.Popup>()
+    const closeButtonIndex: number = 2
 
     function handleChangeSelect(value: any, param: string) {
         switch (param) {
@@ -47,9 +49,9 @@ const EditPopUp: React.FC<props> = ({onSubmit, type, name, seats}) => {
         return icons
     }
 
-    function handleSubmit(){
+    function handleSubmit(e: FormEvent<HTMLFormElement>){
         if(formState.name !== "" && formState.type !== "" && formState.seats !== ""){
-            (utils.getElementOnViewByClass("leaflet-popup-close-button")[0] as HTMLElement).click()
+            (popupRef.current?.getElement()?.children[closeButtonIndex] as HTMLLinkElement).click()
             setTimeout(() => {
                 onSubmit(formState.type, formState.name, formState.seats)
             }, 10)
@@ -62,8 +64,9 @@ const EditPopUp: React.FC<props> = ({onSubmit, type, name, seats}) => {
         <Popup offset={utils.getOffset()}
                closeOnClick={false}
                closeButton={true}
+               ref={popupRef}
         >
-            <Form onSubmitCapture={() => handleSubmit()}>
+            <Form onSubmitCapture={(e) => handleSubmit(e)}>
                 <Form.Item
                     label="Stanza:"
                     name="stanza"
