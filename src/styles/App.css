@@ -1,3 +1,6 @@
+
+/*----------- background -----------*/
+
 .BackgroundImg {
   background-image: url('/src/assets/Campus-Cesena.jpg');
   background-repeat: no-repeat;
@@ -14,91 +17,176 @@
   left: 0;
   right: 0;
 
-  /*filter: blur(4px);
-  -webkit-filter: blur(4px);*/
+  filter: blur(4px);
+  -webkit-filter: blur(4px);
 }
 
-.tab-list {  border-bottom: 1px solid #ccc;
-  padding-left: 0;
-}
+/*----------- custom -----------*/
 
-.tab-list-item {
-  display: inline-block;
-  list-style: none;
-  margin-bottom: -1px;
-  padding: 0.5rem 0.75rem;
+.first-elem {
+  margin-top: 20pt !important;
 }
-
-.tab-list-active {
-  background-color: white;
-  border: solid #ccc;
-  border-width: 1px 1px 0 1px;
-}
-
 .form-button {
   text-align: center;
+  margin: 15pt 10% 0 10% !important;
+}
+.upload-btn {
+  text-align: center !important;
 }
 
-.card-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
+/*----------- scroll and corner -----------*/
+
+.ant-tabs-tabpane {
+  max-height: 300pt;
+  overflow-y: scroll;
+  border-radius: 0 0 5pt 5pt;
 }
+/*.ant-tabs-tab {*/
+/*  border-radius: 3pt 3pt 0 0 !important;*/
+/*}*/
+
+/*----------- form -----------*/
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  /*position: fixed;*/
+  /*top: 50%;*/
+  /*left: 50%;*/
+  /*transform: translate(-50%, -50%);*/
+  /*background-color: white;*/
+}
+
+
+
+.appbar-title{
+  width: 433px;
+  border-radius: 3pt 3pt 0 0 !important;
+}
+.ant-tabs-nav-wrap {
+  background-color: white !important;
+}
+
+
 
 .ant-tabs-tabpane {
   width: 100%;
 }
-
 .card-container p {
   margin: 0;
 }
 .card-container > .ant-tabs-card .ant-tabs-content {
   margin-top: -16px;
 }
-.card-container > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
-  padding: 16px;
-  background: #fff;
-}
 .card-container > .ant-tabs-card > .ant-tabs-nav::before {
   display: none;
 }
-.card-container > .ant-tabs-card .ant-tabs-tab,
-[data-theme='compact'] .card-container > .ant-tabs-card .ant-tabs-tab {
-  background: #f1efe2;
-  border-color: transparent;
+
+/* color */
+.tab-list-active {
+  background-color: white;
+  border: solid #ccc;
+  border-width: 1px 1px 0 1px;
+}
+.card-container > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
+  padding: 16px;
+  background: #fff;
+  /*background: rgba(255, 255, 255, 0.7);*/
+
+/*.card-container > .ant-tabs-card .ant-tabs-tab,*/
+/*[data-theme='compact'] .card-container > .ant-tabs-card .ant-tabs-tab {*/
+/*  background: #f1efe2;*/
+/*  border-color: transparent;*/
 }
 .card-container > .ant-tabs-card .ant-tabs-tab-active,
 [data-theme='compact'] .card-container > .ant-tabs-card .ant-tabs-tab-active {
   background: #fff;
   border-color: #fff;
 }
-#components-tabs-demo-card-top .code-box-demo {
-  padding: 24px;
-  overflow: hidden;
-  background: #f5f5f5;
-}
-[data-theme='compact'] .card-container > .ant-tabs-card .ant-tabs-content {
-  height: 120px;
-  margin-top: -8px;
-}
-[data-theme='dark'] .card-container > .ant-tabs-card .ant-tabs-tab {
-  background: transparent;
-  border-color: transparent;
-}
-[data-theme='dark'] #components-tabs-demo-card-top .code-box-demo {
-  background: #000;
-}
-[data-theme='dark'] .card-container > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
-  background: #141414;
-}
-[data-theme='dark'] .card-container > .ant-tabs-card .ant-tabs-tab-active {
-  background: #141414;
-  border-color: #141414;
+.ant-tabs-nav-operations {
+  background: #fff;
 }
 
-button > a {
-  text-decoration: none;
+/*----------- mobile -----------*/
+
+@media only screen
+and (min-device-width: 0px)
+and (max-device-width: 435px) {
+
+  .ant-tabs-tabpane {
+    width: 100% !important;
+  }
+
+  .card-container {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: auto;
+    margin: 0 10%;
+  }
 }
 
+@media only screen
+and (min-device-width: 0px)
+and (max-device-width: 575px) {
+  .lesson-timetable-button {
+    margin: 5pt 0 0 0 !important;
+  }
+}
+
+/*----------- hide scrollbar -----------*/
+
+*{
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+/*----------- DaySelector -----------*/
+
+.anticon-minus-circle {
+  margin-left: 5pt !important;
+}
+.ant-form-item-control-input-content {
+  text-align: center !important;
+}
+
+.lesson-timetable-button {
+  margin: 5pt 15pt 0 0;
+}
+
+/*.receipt-button {*/
+/*  text-align: center;*/
+/*}*/
+
+.day-selector {
+  background: #fff;
+  padding: 1% 5%;
+  border-radius: 5pt;
+  max-height: 300pt;
+  overflow-y: scroll;
+}
+
+.hour-line > div {
+  width: 50%;
+}
+
+.hour-line > div > div {
+  margin-bottom: 0;
+}
+
+.add-day {
+  margin-top: 25pt;
+}
+
+/*button > a {*/
+/*  text-decoration: none;*/
+/*}*/
