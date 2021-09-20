@@ -1,8 +1,7 @@
 import {MapContainer, ImageOverlay, LayersControl, Marker} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/leaflet.js.map';
-import {useReducer, useRef, useState} from 'react';
-import * as React from 'react'
+import React, {Reducer, useEffect, useReducer, useRef, useState} from 'react';
 import {MainpageContents, MarkerDictionary, Room} from '../Model';
 import '../styles/main_page/mainPageStyle.scss'
 import { Control, LatLngBoundsLiteral, LatLngExpression, LatLngTuple, LayersControlEvent, LeafletMouseEvent, Map} from "leaflet";
@@ -10,12 +9,13 @@ import floor1 from "../assets/floor1.svg"
 import floor2 from "../assets/floor2.svg"
 import groundFloor from "../assets/groundFloor.svg"
 import DefaultPopUp from "./DefaultPopUp";
-import {Popup} from "react-leaflet";
 import {useHistory, useLocation} from "react-router-dom";
 import * as utils from "../utils/utils";
 import DeletePopUp from "./DeletePopUp";
-import AddPopUp from "./AddPopup";
+import EditPopUp from "./EditPopUp";
 import {message} from "antd";
+import {CSSTransition} from "react-transition-group";
+import {useMediaQuery} from "react-responsive";
 
 //Devono essere richiesti da db ovviamente
 let id: number = 20
@@ -79,9 +79,10 @@ interface MapState {
     markers: MarkerDictionary
 }
 
-const MainPage:React.FC = () => {
+const MainPage : React.FC = () => {
 
-    const [isMenuVisible, setIsMenuVisible] = useState(true)
+    const [isMenuVisible, setIsMenuVisible] = useState(false)
+    const [isOpeningView, setIsOpeningView] = useState(true)
     const center: LatLngExpression = [40.743, -74.185];
     const mobileCenter: LatLngExpression = [40.753, -74.176];
 
@@ -90,7 +91,6 @@ const MainPage:React.FC = () => {
     const mobileMaxLevelZoom: number = 13.75;
     const screenDefaultZoom: number = 13.25;
     const screenMaxZoom: number = 14;
-    const offset:LatLngTuple = [2, -2];
     let firstInitialization: boolean = true
 
     const bounds: LatLngBoundsLiteral = [
@@ -98,7 +98,7 @@ const MainPage:React.FC = () => {
         [40.773941, -74.12544]
     ];
 
-    const initState = {
+    const initState: MapState = {
         mode: 'default',
         currentPiano: 'piano 0',
         markers: baseMarker
@@ -106,14 +106,19 @@ const MainPage:React.FC = () => {
 
     let data = useLocation();
     const mainContents: MainpageContents = data.state as MainpageContents
-    const [mapState, setMapState] = useReducer(utils.reducer, initState)
+    const [mapState, setMapState] = useReducer<Reducer<MapState, any>>(utils.reducer, initState)
     const mapStateRef = useRef<MapState>()
     mapStateRef.current = mapState
+    const isMobile: boolean = useMediaQuery({ query: '(max-width: 736px)' })
+    const isTabletOrMobile: boolean = useMediaQuery({ query: '(max-width: 1240px)' })
+
+    useEffect(() => {
+        message.info("Talking campus mode: " + mapState.mode,0.7);
+    }, [mapState.mode])
 
     function renderMarkers(floor: string) {
-        const infos = mapStateRef.current?.markers[floor]
         const mockRoom: Room = {
-            room_name: "Aula",
+            type: "Aula",
             occupied_seats: 23,
             total_seats: 80,
             lesson_name: "Sistemi Operativi",
@@ -121,25 +126,39 @@ const MainPage:React.FC = () => {
             end: "12:00",
             teacher: "Vittorio Ghini"
         }
-        return infos?.map(
+        return mapState.markers[floor].map(
             el => {
                 return <Marker
                             position={el.position}
+                            draggable={!el.isMarkerSet}
                             icon={utils.generateIcon(el.type, el.id)}
                             eventHandlers={{
-                                add: () => {
+                                add: (e) => {
                                     if(!el.isMarkerSet) {
-                                        utils.getElementOnViewById(el.id).click()
+                                        (e.target as L.Marker).openPopup()
                                     }
+                                },
+                                dragend: (e) => {
+                                    const newPos = (e.target as L.Marker).getLatLng()
+                                    el.position = [newPos.lat, newPos.lng]
                                 }
                             }}
                          >
-                             { (!el.isMarkerSet) ? <AddPopUp offset={offset}
-                                                             onElementAdd={() => el.isMarkerSet = true}
-                                                             onRoomTypeDefined={(room: string) => el.type = room}/>
-                                 : mapStateRef.current?.mode === "modifica" ? <Popup offset={offset}>Modifica</Popup>
-                                     : mapStateRef.current?.mode === "elimina" ? <DeletePopUp room_id={mockRoom.room_name} offset={offset}/>
-                                         : mapStateRef.current?.mode === "aggiungi" ? null : <DefaultPopUp room={mockRoom} offset={offset}/>
+                             {   !el.isMarkerSet ? <EditPopUp onSubmit={(type) => {
+                                                                            el.type = type
+                                                                            el.isMarkerSet = true
+                                                                      }
+                                                             } onDelete={deleteIncompleteMarker}/>
+                                 : mapState.mode === "modifica" ? <EditPopUp onSubmit={(type) => {
+                                                                            el.type = type
+                                                                        }
+                                                                    }
+                                                                    onDelete={deleteIncompleteMarker}
+                                                                    name={"Aula"}
+                                                                    type={el.type}
+                                                                    seats={"100"}/>
+                                     : mapState.mode === "elimina" ? <DeletePopUp room_id={mockRoom.type}/>
+                                         : mapState.mode === "aggiungi" ? null : <DefaultPopUp room={mockRoom}/>
                              }
                          </Marker>
             }
@@ -151,9 +170,9 @@ const MainPage:React.FC = () => {
     }
 
     const addingMarker = (e: LeafletMouseEvent) => {
-        if (mapStateRef.current?.mode === "aggiungi" && !isNewMarkerBeenBuilding()) {
-            const piano: string = mapStateRef.current?.currentPiano ? mapStateRef.current?.currentPiano : ""
-            const tempMarkers = mapStateRef.current?.markers
+        if (mapStateRef.current?.mode === "aggiungi") {
+            const piano: string = mapState.currentPiano ? mapState.currentPiano : ""
+            const tempMarkers = mapState.markers
             tempMarkers[piano].push({
                 id: "piano-" + (piano.split(" ")[1]) + "-" + id++,
                 type: "none",
@@ -165,9 +184,8 @@ const MainPage:React.FC = () => {
     }
 
     function sizingMap(m: Map) {
-        const width: number = utils.getScreenWidth()
-        if (width < utils.hdSize) {
-            if (width < utils.mobileSize) {
+        if (isTabletOrMobile) {
+            if (isMobile) {
                 m.setMinZoom(mobileMinLevelZoom); m.setMaxZoom(mobileMaxLevelZoom); m.setZoom(mobileMinLevelZoom)
             } else {
                 m.setMinZoom(screenDefaultZoom); m.setMaxZoom(screenMaxZoom); m.setZoom(screenDefaultZoom)
@@ -177,6 +195,7 @@ const MainPage:React.FC = () => {
                 m.addControl(new Control.Zoom({position: "bottomleft"}))
                 firstInitialization = false
             }
+            m.setView(mobileCenter)
         } else {
             m.setMaxZoom(screenDefaultZoom); m.setMinZoom(screenDefaultZoom); m.setView(center)
             m.dragging.disable()
@@ -184,44 +203,23 @@ const MainPage:React.FC = () => {
         openMenu()
     }
 
-    function changeControlLayerVisibility(visibilityAttribute: string) {
-        (utils.getElementOnViewByClass("leaflet-control-layers")[0] as HTMLElement).style.visibility = visibilityAttribute
-    }
-
     function openMenu() {
-        const drawer = utils.getElementOnViewById("drawer-toggle-label")
         if (!isMenuVisible) {
-            console.log("Qui ci entri?")
             setIsMenuVisible(true)
         }
-    }
-
-    function createSpaceForMap() {
-        //openMenu()
-        changeControlLayerVisibility("hidden")
-    }
-
-    function setMenuVisible() {
-        utils.getElementOnViewById("drawer-toggle-label").style.pointerEvents = "auto"
-        const button = utils.getElementOnViewByClass("corner-button")[0]
-        if (utils.isVisible(button)) {
-            utils.getElementOnViewById("drawer-toggle").click()
-        }
-        changeControlLayerVisibility("visible")
     }
 
     function isLowestZoomLevel(m: Map): boolean {
         return m.getZoom() == mobileMinLevelZoom || m.getZoom() == screenDefaultZoom
     }
 
-    function isNewMarkerBeenBuilding():boolean{
-        return !!utils.getElementOnViewById("crea-marker")
-    }
-
     function noElementNotSet() : boolean {
-        return ! mapStateRef.current?.markers[mapStateRef.current?.currentPiano].find(e => !e.isMarkerSet)
+        return ! mapState.markers[mapState.currentPiano].find(e => !e.isMarkerSet)
     }
 
+    function setPreviousMapState() {
+        setMapState({ mode: mapStateRef.current?.mode})
+    }
     const handleMapEvent = (m: Map) => {
         sizingMap(m)
         m.on("baselayerchange", (event: LayersControlEvent) => baseLayerChange(event))
@@ -229,16 +227,18 @@ const MainPage:React.FC = () => {
         m.on("click", (e: LeafletMouseEvent) => addingMarker(e))
         m.on("zoom", () => {
             if (isLowestZoomLevel(m)) {
-                m.panTo(mobileCenter); m.dragging.disable(); setMenuVisible()
+                m.panTo(mobileCenter); m.dragging.disable();
+                setIsMenuVisible(true)
             } else {
-                createSpaceForMap(); m.dragging.enable()
+                setIsMenuVisible(false)
+                m.dragging.enable()
             }
         })
         m.on('popupclose', () => {
             sizingMap(m)
             setTimeout(() => {
                 if (noElementNotSet()){
-                    setMapState({ mode: "default"})
+                    setPreviousMapState()
                 }
             }, 200)
         })
@@ -256,41 +256,37 @@ const MainPage:React.FC = () => {
         )
     }
 
-    function slideOutScreen() {
-        utils.setClassByClass("main-container", "slide-out-transition-class")
+    function changeMode(mode: string) {
+        mapState.mode === mode ? setMapState({ mode: "default" }) : setMapState({ mode: mode})
     }
 
-    function slideOutPhone() {
-        utils.setClassByClass("main", "slide-trans-class");
-        utils.setClassById("drawer", "slide-out-transition-class")
-        utils.setClassById("main-nav", "slide-out-transition-class")
+    function deleteIncompleteMarker() {
+        const dicto = mapState.markers
+        dicto[mapState.currentPiano] = dicto[mapState.currentPiano].filter(e => e.isMarkerSet)
+        setMapState({markers: dicto})
     }
 
     function adminAction(action: string) {
         const command: string = action.split(" ")[0].toLowerCase();
-        if(mapStateRef.current?.mode == "default"){
-            switch (command) {
-                case "aggiungi":
-                    setMapState({ mode: "aggiungi" })
-                    break;
-                case "elimina":
-                    setMapState({ mode: "elimina" })
-                    break;
-                case "modifica":
-                    setMapState({ mode: "modifica" })
-                    break;
-            }
-            message.info(`${command[0].toUpperCase() + command.slice(1)} un elemento sulla mappa`,0.7);
+        switch (command) {
+            case "aggiungi":
+                changeMode("aggiungi")
+                break;
+            case "elimina":
+                changeMode("elimina")
+                break;
+            case "modifica":
+                changeMode("modifica")
+                break;
         }
+        deleteIncompleteMarker()
     }
 
     let history = useHistory();
 
     function closeMenu(path: string) {
-        const toggle = utils.getElementOnViewById("drawer-toggle-label")
-        toggle.click();
-        toggle.style.visibility = "hidden"
-        utils.getScreenWidth() > utils.hdSize ? slideOutScreen() : slideOutPhone()
+        setIsMenuVisible(false)
+        setIsOpeningView(false)
         setTimeout(() => {
             history.push(path)
         }, 900)
@@ -298,46 +294,53 @@ const MainPage:React.FC = () => {
 
     return (
         <div className={"main-container"}>
-            <main className={"main"}>
-                <header id="main-nav">
-                    <nav id="drawer" className={isMenuVisible ? "drawer-to-right" : "drawer-to-left"}>
-                        <input type="checkbox" id="drawer-toggle" name="drawer-toggle"/>
-                        <label htmlFor="drawer-toggle"
-                               id="drawer-toggle-label"
-                               className={isMenuVisible ? "toggle-to-right" : "toggle-to-left"}
-                               onClick={() => setIsMenuVisible(prev => !prev)}/>
-                        <h1 className="mobile-logo">Talking Campus</h1>
-                        <div className="card">
-                            <h3>Ciao {mainContents.user.name}!</h3>
-                            <img src={mainContents.user.img} className="avatar-holder"/>
-                        </div>
-                        {buttons}
-                        <button className="corner-button logout-button" onClick={() => closeMenu("/")}>
-                            <span>Logout</span>
-                        </button>
-                    </nav>
+            <main className={"main " + (isOpeningView ? "" : "slide-right")}>
+                <header id="main-nav" className={"slide-left"}>
+                    <input type="checkbox" id="drawer-toggle" name="drawer-toggle"/>
+                    <CSSTransition in={isMenuVisible} timeout={500} classNames="toggle-slide" mountOnEnter>
+                    <label htmlFor="drawer-toggle"
+                        className={"drawer-toggle-label " + (isOpeningView ? "" : "hidden-label")}
+                        onClick={() => setIsMenuVisible(prev => !prev)}/>
+                    </CSSTransition>
+                    <CSSTransition in = {isMenuVisible}
+                                   timeout ={isMobile ? 300 : 500}
+                                   classNames = {isMobile ? "slide-vertical" : "drawer-slide"}
+                                   unmountOnExit={!isMobile}>
+                        <nav className="drawer">
+                            <h1 className="mobile-logo">Talking Campus</h1>
+                            <div className="card">
+                                <h3>Ciao {mainContents.user.name}!</h3>
+                                <img src={mainContents.user.img} className="avatar-holder"/>
+                            </div>
+                            {buttons}
+                            <button className="corner-button logout-button" onClick={() => closeMenu("/")}>
+                                <span>Logout</span>
+                            </button>
+                        </nav>
+                    </CSSTransition>
                 </header>
-                <MapContainer center={center}
-                              id={'map'}
-                              maxZoom={defaultZoom} minZoom={defaultZoom} zoom={defaultZoom}
-                              whenCreated={handleMapEvent}
-                              zoomControl={false} scrollWheelZoom={false} doubleClickZoom={false}
-                              dragging={false}
-                              bounds={bounds}
-                              keyboard={false}>
-                    <LayersControl position="bottomright" collapsed={false}>
-                        <LayersControl.BaseLayer name="piano 2">
-                            <ImageOverlay url={floor2} bounds={bounds}/>
-                        </LayersControl.BaseLayer>
-                        <LayersControl.BaseLayer name="piano 1">
-                            <ImageOverlay url={floor1} bounds={bounds}/>
-                        </LayersControl.BaseLayer>
-                        <LayersControl.BaseLayer checked name="piano 0">
-                            <ImageOverlay url={groundFloor} bounds={bounds}/>
-                        </LayersControl.BaseLayer>
-                    </LayersControl>
-                    {renderMarkers(mapState.currentPiano)}
-                </MapContainer>
+                    <MapContainer center={center}
+                                  id={'map'}
+                                  maxZoom={defaultZoom} minZoom={defaultZoom} zoom={defaultZoom}
+                                  whenCreated={handleMapEvent}
+                                  zoomControl={false} scrollWheelZoom={false} doubleClickZoom={false}
+                                  dragging={false}
+                                  bounds={bounds}
+                                  className={"slide-left"}
+                                  keyboard={false} >
+                        <LayersControl position="bottomright" collapsed={!isOpeningView}>
+                            <LayersControl.BaseLayer name="piano 2">
+                                <ImageOverlay url={floor2} bounds={bounds}/>
+                            </LayersControl.BaseLayer>
+                            <LayersControl.BaseLayer name="piano 1">
+                                <ImageOverlay url={floor1} bounds={bounds}/>
+                            </LayersControl.BaseLayer>
+                            <LayersControl.BaseLayer checked name="piano 0">
+                                <ImageOverlay url={groundFloor} bounds={bounds}/>
+                            </LayersControl.BaseLayer>
+                        </LayersControl>
+                        {renderMarkers(mapState.currentPiano)}
+                    </MapContainer>
             </main>
         </div>
     );

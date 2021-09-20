@@ -10,7 +10,7 @@ import {
     faFlask,
 } from "@fortawesome/free-solid-svg-icons";
 import {IconDefinition} from "@fortawesome/fontawesome-common-types";
-import {divIcon} from "leaflet";
+import {divIcon, LatLngTuple} from "leaflet";
 import * as React from "react";
 
 export const locals: {[id: string]: IconDefinition} = {
@@ -94,7 +94,6 @@ export function getElements(user: User):[string, string][] {
 }
 
 export function generateIcon(type: string, id:string) {
-    console.log("Icon: " + locals[type])
     const iconMarkup = renderToStaticMarkup(
         type !== "none" ?
             <div className='marker-pin' id={id}><FontAwesomeIcon icon={locals[type]}/></div> :
@@ -108,5 +107,4 @@ export function generateIcon(type: string, id:string) {
     });
 }
 
-export const mobileSize: number = 736
-export const hdSize: number = 1280
+export const getOffset:() => LatLngTuple = () => [2, -2];
