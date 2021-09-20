@@ -139,6 +139,11 @@ const MainPage:React.FC = () => {
                                     if(!el.isMarkerSet) {
                                         (e.target as L.Marker).openPopup()
                                     }
+                                },
+                                dragend: (e) => {
+                                    const newPos = (e.target as L.Marker).getLatLng()
+                                    el.position = [newPos.lat, newPos.lng]
+                                    //el.position = e.target.position
                                 }
                             }}
                          >
