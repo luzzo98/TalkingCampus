@@ -391,3 +391,9 @@ header {
 .custom-div-icon i.awesome {
   font-size: 17px;
 }
+
+.ant-message-notice-content {
+ background: variables.$hover_color;
+  font-family: variables.$main-font;
+  font-size: large;
+}
