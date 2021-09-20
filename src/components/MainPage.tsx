@@ -1,7 +1,7 @@
 import {MapContainer, ImageOverlay, LayersControl, Marker} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/leaflet.js.map';
-import {Reducer, useEffect, useReducer, useRef, useState} from 'react';
+import React, {Reducer, useEffect, useReducer, useRef, useState} from 'react';
 import {MainpageContents, MarkerDictionary, Room} from '../Model';
 import '../styles/main_page/mainPageStyle.scss'
 import { Control, LatLngBoundsLiteral, LatLngExpression, LatLngTuple, LayersControlEvent, LeafletMouseEvent, Map} from "leaflet";
@@ -9,7 +9,6 @@ import floor1 from "../assets/floor1.svg"
 import floor2 from "../assets/floor2.svg"
 import groundFloor from "../assets/groundFloor.svg"
 import DefaultPopUp from "./DefaultPopUp";
-import {Popup} from "react-leaflet";
 import {useHistory, useLocation} from "react-router-dom";
 import * as utils from "../utils/utils";
 import DeletePopUp from "./DeletePopUp";
@@ -17,7 +16,6 @@ import EditPopUp from "./EditPopUp";
 import {message} from "antd";
 import {CSSTransition} from "react-transition-group";
 import {useMediaQuery} from "react-responsive";
-import set = Reflect.set;
 
 //Devono essere richiesti da db ovviamente
 let id: number = 20
@@ -81,7 +79,7 @@ interface MapState {
     markers: MarkerDictionary
 }
 
-const MainPage:React.FC = () => {
+const MainPage : React.FC = () => {
 
     const [isMenuVisible, setIsMenuVisible] = useState(false)
     const [isOpeningView, setIsOpeningView] = useState(true)
@@ -116,12 +114,11 @@ const MainPage:React.FC = () => {
 
     useEffect(() => {
         message.info("Talking campus mode: " + mapState.mode,0.7);
-    }, [mapState])
+    }, [mapState.mode])
 
     function renderMarkers(floor: string) {
-        const infos = mapState.markers[floor]
         const mockRoom: Room = {
-            room_name: "Aula",
+            type: "Aula",
             occupied_seats: 23,
             total_seats: 80,
             lesson_name: "Sistemi Operativi",
@@ -129,7 +126,7 @@ const MainPage:React.FC = () => {
             end: "12:00",
             teacher: "Vittorio Ghini"
         }
-        return infos?.map(
+        return mapState.markers[floor].map(
             el => {
                 return <Marker
                             position={el.position}
@@ -147,20 +144,20 @@ const MainPage:React.FC = () => {
                                 }
                             }}
                          >
-                             {   !el.isMarkerSet ? <EditPopUp onSubmit={(type, name, seats) => {
-                                                                        el.type = type
-                                                                        console.log("hei slime")
-                                                                        el.isMarkerSet = true
+                             {   !el.isMarkerSet ? <EditPopUp onSubmit={(type) => {
+                                                                            el.type = type
+                                                                            el.isMarkerSet = true
                                                                       }
-                                                             }/>
-                                 : mapState.mode === "modifica" ? <EditPopUp onSubmit={(type, name, seats) => {
+                                                             } onDelete={deleteIncompleteMarker}/>
+                                 : mapState.mode === "modifica" ? <EditPopUp onSubmit={(type) => {
                                                                             el.type = type
                                                                         }
                                                                     }
+                                                                    onDelete={deleteIncompleteMarker}
                                                                     name={"Aula"}
                                                                     type={el.type}
                                                                     seats={"100"}/>
-                                     : mapState.mode === "elimina" ? <DeletePopUp room_id={mockRoom.room_name}/>
+                                     : mapState.mode === "elimina" ? <DeletePopUp room_id={mockRoom.type}/>
                                          : mapState.mode === "aggiungi" ? null : <DefaultPopUp room={mockRoom}/>
                              }
                          </Marker>
@@ -220,6 +217,9 @@ const MainPage:React.FC = () => {
         return ! mapState.markers[mapState.currentPiano].find(e => !e.isMarkerSet)
     }
 
+    function setPreviousMapState() {
+        setMapState({ mode: mapStateRef.current?.mode})
+    }
     const handleMapEvent = (m: Map) => {
         sizingMap(m)
         m.on("baselayerchange", (event: LayersControlEvent) => baseLayerChange(event))
@@ -238,7 +238,7 @@ const MainPage:React.FC = () => {
             sizingMap(m)
             setTimeout(() => {
                 if (noElementNotSet()){
-                    setMapState({ mode: mapStateRef.current?.mode})
+                    setPreviousMapState()
                 }
             }, 200)
         })
@@ -260,6 +260,12 @@ const MainPage:React.FC = () => {
         mapState.mode === mode ? setMapState({ mode: "default" }) : setMapState({ mode: mode})
     }
 
+    function deleteIncompleteMarker() {
+        const dicto = mapState.markers
+        dicto[mapState.currentPiano] = dicto[mapState.currentPiano].filter(e => e.isMarkerSet)
+        setMapState({markers: dicto})
+    }
+
     function adminAction(action: string) {
         const command: string = action.split(" ")[0].toLowerCase();
         switch (command) {
@@ -273,9 +279,7 @@ const MainPage:React.FC = () => {
                 changeMode("modifica")
                 break;
         }
-        const dicto = mapState.markers
-        dicto[mapState.currentPiano] = dicto[mapState.currentPiano].filter(e => e.isMarkerSet)
-        setMapState({markers: dicto})
+        deleteIncompleteMarker()
     }
 
     let history = useHistory();

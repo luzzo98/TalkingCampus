@@ -24,11 +24,11 @@ export interface MainpageContents {
 }
 
 export interface Room {
-    room_name: string,
+    type: string,
     occupied_seats: number,
     total_seats: number,
-    lesson_name: string,
-    start: string,
-    end: string
-    teacher: string
+    lesson_name?: string,
+    start?: string,
+    end?: string
+    teacher?: string
 }

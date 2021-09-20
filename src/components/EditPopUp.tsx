@@ -2,13 +2,14 @@ import React, {createRef, FormEvent, Ref, useReducer, useRef, useState} from "re
 import {Popup} from "react-leaflet";
 import {Button, Form, Input, Select} from "antd";
 import * as utils from "../utils/utils"
-require("../styles/pop_up/addPopUpStyle.scss")
+require("../styles/pop_up/editPopUpStyle.scss")
 
 interface props  {
     name?: string
     seats?: string
     type?: string
     onSubmit: (type: string, name: string, seats: string) => void
+    onDelete: () => void
 }
 
 interface PopFormState {
@@ -17,7 +18,7 @@ interface PopFormState {
     name: string
 }
 
-const EditPopUp: React.FC<props> = ({onSubmit, type, name, seats}) => {
+const EditPopUp: React.FC<props> = ({onSubmit, onDelete, type, name, seats}) => {
 
     const initState: PopFormState = {
         type: type ? type : "",
@@ -49,9 +50,18 @@ const EditPopUp: React.FC<props> = ({onSubmit, type, name, seats}) => {
         return icons
     }
 
+    const closePopup: () => void = () => (popupRef.current?.getElement()?.children[closeButtonIndex] as HTMLLinkElement).click()
+
+    function handleDelete(){
+        closePopup()
+        setTimeout(() => {
+            onDelete()
+        }, 10)
+    }
+
     function handleSubmit(e: FormEvent<HTMLFormElement>){
         if(formState.name !== "" && formState.type !== "" && formState.seats !== ""){
-            (popupRef.current?.getElement()?.children[closeButtonIndex] as HTMLLinkElement).click()
+            closePopup()
             setTimeout(() => {
                 onSubmit(formState.type, formState.name, formState.seats)
             }, 10)
@@ -92,7 +102,7 @@ const EditPopUp: React.FC<props> = ({onSubmit, type, name, seats}) => {
                 </Form.Item>
                 <hr/>
                 <div className={"ant-row div-buttons-popup"}>
-                    <Button className={"popup-buttons"}>Annulla</Button>
+                    <Button className={"popup-buttons"} onClick={handleDelete}>Annulla</Button>
                     <Button className={"popup-buttons"}
                             htmlType="submit"
                             id={"crea-marker"}>Crea</Button>
