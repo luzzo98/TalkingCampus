@@ -17,6 +17,7 @@ import EditPopUp from "./EditPopUp";
 import {message} from "antd";
 import {CSSTransition} from "react-transition-group";
 import {useMediaQuery} from "react-responsive";
+import set = Reflect.set;
 
 //Devono essere richiesti da db ovviamente
 let id: number = 20
@@ -143,12 +144,12 @@ const MainPage:React.FC = () => {
                                 dragend: (e) => {
                                     const newPos = (e.target as L.Marker).getLatLng()
                                     el.position = [newPos.lat, newPos.lng]
-                                    //el.position = e.target.position
                                 }
                             }}
                          >
                              {   !el.isMarkerSet ? <EditPopUp onSubmit={(type, name, seats) => {
                                                                         el.type = type
+                                                                        console.log("hei slime")
                                                                         el.isMarkerSet = true
                                                                       }
                                                              }/>
@@ -187,12 +188,9 @@ const MainPage:React.FC = () => {
 
     function sizingMap(m: Map) {
         if (isTabletOrMobile) {
-            console.log("é tablet o mobile bro!!!")
             if (isMobile) {
-                console.log("è mobile bro!!")
                 m.setMinZoom(mobileMinLevelZoom); m.setMaxZoom(mobileMaxLevelZoom); m.setZoom(mobileMinLevelZoom)
             } else {
-                console.log("ma non è mobile slime")
                 m.setMinZoom(screenDefaultZoom); m.setMaxZoom(screenMaxZoom); m.setZoom(screenDefaultZoom)
             }
             m.dragging.enable()
@@ -240,7 +238,7 @@ const MainPage:React.FC = () => {
             sizingMap(m)
             setTimeout(() => {
                 if (noElementNotSet()){
-                    setMapState({ mode: "default"})
+                    setMapState({ mode: mapStateRef.current?.mode})
                 }
             }, 200)
         })
@@ -258,21 +256,26 @@ const MainPage:React.FC = () => {
         )
     }
 
+    function changeMode(mode: string) {
+        mapState.mode === mode ? setMapState({ mode: "default" }) : setMapState({ mode: mode})
+    }
+
     function adminAction(action: string) {
         const command: string = action.split(" ")[0].toLowerCase();
-        if(mapState.mode == "default"){
-            switch (command) {
-                case "aggiungi":
-                    setMapState({ mode: "aggiungi" })
-                    break;
-                case "elimina":
-                    setMapState({ mode: "elimina" })
-                    break;
-                case "modifica":
-                    setMapState({ mode: "modifica" })
-                    break;
-            }
+        switch (command) {
+            case "aggiungi":
+                changeMode("aggiungi")
+                break;
+            case "elimina":
+                changeMode("elimina")
+                break;
+            case "modifica":
+                changeMode("modifica")
+                break;
         }
+        const dicto = mapState.markers
+        dicto[mapState.currentPiano] = dicto[mapState.currentPiano].filter(e => e.isMarkerSet)
+        setMapState({markers: dicto})
     }
 
     let history = useHistory();
