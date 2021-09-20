@@ -1,0 +1,21 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300';
+
+.modal-title{
+  text-align: center;
+}
+
+.leaflet-popup-content {
+
+  font-family: 'Open Sans Condensed';
+  font-weight: bold;
+  font-size: medium;
+
+  .prenote-class{
+    border-radius: 5px;
+    color: white;
+    background-color: #6157F5;
+    margin-bottom: 0;
+    box-shadow: none;
+  }
+
+}

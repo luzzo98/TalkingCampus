@@ -1,0 +1,30 @@
+.appbar-title {
+    padding: 1%;
+    background-color: #6157F5;
+
+    .ant-typography {
+      text-align: center;
+      color: white;
+    }
+}
+
+.header {
+  h1 {
+    margin-top: 2%;
+    font-family: "Open Sans Condensed";
+  }
+}
+
+.bottom-header {
+  padding: 2% 1%;
+  text-align: center;
+
+  .h4 {
+    margin-bottom: 2%;
+  }
+
+  hr {
+    margin: 0 0 5% 0;
+  }
+}
+

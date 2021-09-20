@@ -1,0 +1,35 @@
+.ant-row{
+  flex-flow: row;
+  margin-bottom: 5px;
+}
+
+.leaflet-popup-content-wrapper {
+  .leaflet-popup-content {
+    width: 200px;
+    margin: 20px 18px;
+  }
+}
+
+.ant-form-item-label {
+  flex-basis: 30%;
+  margin-right: 10px;
+}
+
+hr {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.div-buttons-popup {
+  .popup-buttons {
+    box-shadow: none;
+    color: white;
+    background-color: green;
+    margin-bottom: 0px;
+  }
+  .popup-buttons:first-child {
+    background-color: red;
+    color: white;
+    margin-right: 2px;
+  }
+}

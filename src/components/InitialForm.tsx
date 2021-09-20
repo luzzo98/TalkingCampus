@@ -1,15 +1,30 @@
-import React from "react";
+import React, {useState} from "react";
 import { Form, Input, Button, Tabs, Upload, Select } from 'antd';
 import { UploadOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {useHistory} from "react-router-dom";
 import 'antd/dist/antd.css';
+import {Link, Route} from "react-router-dom";
+import MainPage from "./MainPage";
+import * as utils from "../utils/utils";
+import {User} from "../Model";
+import img from "../assets/volto_uomo.jpg"
+import AppBarTitle from "./AppBarTitle";
+
 const { TabPane } = Tabs;
 const { Option } = Select;
 
-function InitialForm() {
+const mockUser: User = {
+    id: 0,
+    name: "Giovanni",
+    img: img,
+    role: "admin"
+}
 
+const InitialForm:React.FC = () => {
+
+    const [username, setUserName] = useState("")
+    const [passw, setPassw] = useState("")
     const history = useHistory();
-
     const [form] = Form.useForm();
 
     const formItemLayout = {
@@ -22,6 +37,7 @@ function InitialForm() {
             sm: { span: 20 },
         },
     };
+
     const addCoursLayoutWithOutLabel = {
         wrapperCol: {
             xs: { span: 24, offset: 0 },
@@ -32,9 +48,11 @@ function InitialForm() {
     const onFinish = (values: any) => {
         console.log('Success:', values);
     };
+
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
+
     const normFile = (e: any) => {
         //todo elimina il log
         console.log('Upload event:', e);
@@ -42,10 +60,11 @@ function InitialForm() {
             return e;
         }
         return e && e.fileList;
-    };
+    }
 
     return(
         <div className="card-container">
+            <AppBarTitle/>
             <Tabs type="card">
                 <TabPane tab="Login" key="1" className="tabpane-container">
                     <Form
@@ -68,7 +87,7 @@ function InitialForm() {
                                 message: 'Inserisci la tua email istituzionale'
                             }]}
                         >
-                            <Input/>
+                            <Input onChange={(e) => setUserName(e.target.value)}/>
                         </Form.Item>
 
                         <Form.Item
@@ -76,7 +95,7 @@ function InitialForm() {
                             label="Password"
                             rules={[{ required: true, message: 'Inserisci la tua password' }]}
                         >
-                            <Input.Password/>
+                            <Input.Password onChange={(e) => setPassw(e.target.value)}/>
                         </Form.Item>
 
                         <Form.Item
@@ -84,7 +103,10 @@ function InitialForm() {
                             wrapperCol={{ offset: 0, span: 24 }}
                         >
                             <Button type="primary" htmlType="submit">
-                                Accedi
+                                <Link to={{
+                                    pathname: "/main-page",
+                                    state: {user: mockUser, hooks: utils.getElements(mockUser)}
+                                }}>Accedi</Link>
                             </Button>
                         </Form.Item>
                     </Form>
@@ -93,7 +115,7 @@ function InitialForm() {
                     <Form
                         form={form}
                         name="basic"
-                        labelCol={{ span: 9 }}
+                        labelCol={{ span: 12 }}
                         wrapperCol={{ span: 15 }}
                         onFinish={onFinish}
                         onFinishFailed={onFinishFailed}
@@ -344,6 +366,7 @@ function InitialForm() {
                     </Form>
                 </TabPane>
             </Tabs>
+            <Route path={"/main-page"} component={MainPage}/>
         </div>
     );
 }

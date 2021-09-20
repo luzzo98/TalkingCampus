@@ -1,0 +1,122 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300';
+
+$black     : #000;
+$dark-grey : #333;
+$dark-grey-2: #4B4D52;
+$dark-grey-3: #5F6A72;
+$dark-grey-4: #738A90;
+$grey      : #404040;
+$hover_color: #F6E9D8;
+$light-grey: #f1f1f1;
+$white     : #fff;
+$start_color: #C2D2BD;
+$end_color: #2F4858M;
+$aside_background: #93B0A3;
+$logout_button: #620024;
+$gradient: linear-gradient(to bottom right, #FF8865, #FFC452, #F9F871);
+
+$main-font: 'Open Sans Condensed', sans-serif;
+$secondary-font: 'Marmelad', sans-serif;
+$font_size: 2rem;
+
+$bg: #2f2f2f;
+$fg: #06c17f;
+$border-width: .5rem;
+$corner-size: 3rem;
+$dur: .3s;
+
+$height : calc((100% * 16)/9);
+$shadow_box: rgba(0, 0, 0, 0.25) 0px 10px 20px,
+             rgba(0, 0, 0, 0.12) 0px 0px 10px,
+             rgba(0, 0, 0, 0.12) 0px 4px 6px,
+             rgba(0, 0, 0, 0.17) 0px 12px 13px,
+             rgba(0, 0, 0, 0.09) 0px -3px 5px;
+
+$shadow_box_mobile: rgba(0, 0, 0, 0.25) 0px 1px 2px,
+                    rgba(0, 0, 0, 0.12) 0px 0px 1px,
+                    rgba(0, 0, 0, 0.12) 0px 3px 2px;
+
+/* Using SCSS variables to store breakpoints */
+$breakpoint-mobile-screen: 736px;
+$breakpoint-desktop-screen: 1280px;
+$breakpoint-hd-screen: 1600px;
+
+$breakpoint-height-phone: 800px;
+
+@mixin transition {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+
+  -webkit-transition: .25s ease-in-out;
+  -moz-transition: .25s ease-in-out;
+  -o-transition: .25s ease-in-out;
+  transition: .25s ease-in-out;
+  margin: 0;
+  padding: 0;
+  -webkit-text-size-adjust: none;
+}
+
+@mixin button-transition($px_border, $color) {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0;
+  transition: all 0.3s;
+  border-top-width: $px_border;
+  border-bottom-width: $px_border;
+  border-top-style: solid;
+  border-bottom-style: solid;
+  border-top-color: $color;
+  border-bottom-color: $color;
+  border-radius: 10px;
+  transform: scale(0.1, 1);
+}
+
+@mixin resizable_hr( $margin_bottom_value ) {
+  margin-bottom: $margin_bottom_value;
+  color: $white !important;
+  height: 2px!important;
+}
+
+@mixin setSlideHorizontal($start_value, $end_value) {
+  from {
+    margin-left: $start_value;
+  }
+
+  to {
+    margin-left: $end_value;
+  }
+}
+
+@mixin setSlideVertical($start_value, $end_value) {
+
+  from {
+    margin-top: $start_value;
+  }
+
+  to {
+    margin-top: $end_value;
+  }
+}
+
+@mixin setSlideMenu($start_value, $end_value) {
+  from {
+    left: $start_value;
+  }
+
+  to {
+    left: $end_value;
+  }
+}
+
+@mixin setAnimation($animation_name, $duration: 1s, $direction: alternate) {
+  animation-name: $animation_name;
+  animation-duration: $duration;
+  animation-direction: $direction;
+}

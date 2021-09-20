@@ -1,0 +1,64 @@
+@use "../transitions";
+@import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300';
+
+.notifications-box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  width: 30%;
+
+  .ant-list-item-meta-content {
+    h4 {
+      text-align: center;
+    }
+  }
+
+  .ant-list-pagination {
+    padding: 2%;
+  }
+
+  .ant-list-items {
+    font-size: large;
+    .ant-list-item {
+      border: none;
+      display: flex;
+      align-items: center;
+      margin-bottom: 5%;
+      text-align: center;
+    }
+
+    .ant-list-item-action {
+      margin-top: 0px;
+    }
+
+    .notification-text {
+      flex-basis: 90%;
+      text-align: center;
+      font-size: 130%;
+      font-weight: bold;
+      font-family: 'Open Sans Condensed', sans-serif;
+      padding-left: 10%;
+      padding-right: 0%;
+    }
+
+  }
+
+  .ant-list-split.ant-list-something-after-last-item .ant-spin-container > .ant-list-items > .ant-list-item:last-child {
+    border-bottom: none;
+  }
+
+  .btn-notification {
+    border: none;
+      span.btn-icon {
+        font-size: 150%;
+        color: red;
+      }
+    }
+
+  .ant-list-pagination{
+    border: 0px solid transparent;
+  }
+
+}

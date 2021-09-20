@@ -1,41 +1,33 @@
 import React from 'react';
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
-import InitialForm from "./components/InitialForm";
+import {BrowserRouter as Router} from "react-router-dom";
 import './styles/App.css';
-import DaySelector from "./components/DaySelector";
+import {Routes} from "./routes/routes";
 
-interface hoursArray {
-    hours: {
-        start: string,
-        end: string,
-        day: 'lunedi' | 'martedi' | 'mercoledi' | 'giovedi' | 'venerdi',
-        room: string
-    }[]
-}
-
-const myHours:hoursArray["hours"] =[
-    { start:"10:00", end:"11:00", day:'lunedi', room:'Aula 3.3' },
-    { start:"20:00", end:"21:00", day:'martedi', room:'Aula 3.4' }
-]
-
-function App() {
+const App:React.FC = () => {
     return (
-        <Router>
-            <div>
-                <div className={"App"}>
-                    <div className={"BackgroundImg"}/>
-                </div>
-                <Switch>
-                    <Route path="/DaySelector">
-                        <DaySelector hours={myHours}/>
-                    </Route>
-                    <Route path="/">
-                        <InitialForm/>
-                    </Route>
-                </Switch>
-            </div>
-        </Router>
-  );
+  //       <Router>
+  //           <div>
+  //               <div className={"App"}>
+  //                   <div className={"BackgroundImg"}/>
+  //               </div>
+  //               <Switch>
+  //                   <Route path="/DaySelector">
+  //                       <DaySelector hours={myHours}/>
+  //                   </Route>
+  //                   <Route path="/">
+  //                       <InitialForm/>
+  //                   </Route>
+  //               </Switch>
+  //           </div>
+  //       </Router>
+  // );
+        <div className={"App"}>
+            <div className={"BackgroundImg"}/>
+            <Router>
+                <Routes/>
+            </Router>
+        </div>
+    );
 }
 
 export default App;
