@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import 'antd/dist/antd.css';
 import {List} from 'antd';
 import AppBarTitle from "./AppBarTitle";
@@ -8,6 +8,8 @@ require("../styles/studentPersonalArea/studentPersonalAreaStyle.scss")
 
 const StudentPersonalArea = () => {
 
+    const [isEntrance, setIsEntrance] = useState(true)
+
     const data = [
             'Nome: Giovanni',
             'Cognome: Rossi',
@@ -16,7 +18,7 @@ const StudentPersonalArea = () => {
     ];
 
     return (
-        <div className={"list-box slide-down"} id={"list-container"}>
+        <div className={"list-box " + (isEntrance ? "slide-down" : "slide-up")} id={"list-container"}>
             <AppBarTitle/>
             <SubAppBar sub_text={"Area Personale"}/>
             <List
@@ -30,7 +32,7 @@ const StudentPersonalArea = () => {
                 )}
             >
             </List>
-            <Footer/>
+            <Footer onBack={() => setIsEntrance(false)}/>
         </div>
     );
 }

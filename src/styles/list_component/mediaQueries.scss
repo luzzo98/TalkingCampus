@@ -1,0 +1,19 @@
+@use "./variables";
+
+//media per schermo fra 1280 e 1600
+@media (min-width: variables.$breakpoint-desktop-screen) and (max-width: variables.$breakpoint-hd-screen) {
+
+
+
+
+
+
+}
+
+@media (max-width: variables.$breakpoint-mobile-screen){
+
+  * {
+    font-size: small;
+  }
+
+}

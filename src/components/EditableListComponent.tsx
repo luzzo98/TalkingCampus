@@ -4,7 +4,6 @@ import {List, Button} from 'antd';
 import {CloseCircleOutlined} from "@ant-design/icons";
 import AppBarTitle from "./AppBarTitle";
 import Footer from "./Footer";
-import * as util from "../utils/utils"
 import SubAppBar from "./SubAppBar";
 require("../styles/list_component/notificationBoxStyle.scss")
 
@@ -18,7 +17,7 @@ function getInfos():ListItem[] {
     for (let i = 0; i < 23; i++) {
         listData.push({
             id: i,
-            content: 'I posti nell\'aula 3.3 stanno per terminare',
+            content: `I posti nell\'aula ${i} stanno per terminare`,
         });
     }
     return listData
@@ -27,18 +26,15 @@ function getInfos():ListItem[] {
 const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
     const[data, setData] = useState(getInfos)
+    const[isEntrance, setIsEntrance] = useState(true)
 
     function handleElimination(id: number){
         const elemId = `${id}`
-        util.removeClassByClass(elemId, "motion-in")
-        util.setClassById(elemId, "motion-out")
-        setTimeout(() =>
-                setData(data.filter(el => el.id != id)),
-            1000)
+        setData(data.filter(el => el.id != id))
     }
 
     return (
-            <div className={"notifications-box slide-down"} id={"list-container"}>
+            <div className={"notifications-box " + (isEntrance ? "slide-down" : "slide-up")} id={"list-container"}>
                 <AppBarTitle/>
                 <SubAppBar sub_text={sub_title}/>
                     <List
@@ -67,7 +63,7 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
                         )}
                     >
                     </List>
-                <Footer/>
+                <Footer onBack={() => setIsEntrance(false)}/>
             </div>
     );
 }

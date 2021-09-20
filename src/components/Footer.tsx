@@ -1,15 +1,17 @@
 import React from "react";
 import {Button} from "antd";
 import {useHistory} from "react-router-dom";
-import * as utils from "../utils/utils"
 require("../styles/footer/footer.scss")
 
-const AppBar: React.FC = () => {
+interface Props {
+    onBack: () => void
+}
+
+const AppBar: React.FC<Props> = ({onBack}) => {
 
     let history = useHistory()
     function handleClick(){
-        utils.removeClassByClass("list-container", "slide-down")
-        utils.setClassById("list-container", "slide-up")
+        onBack()
         //history.push("/main-page")
     }
 
