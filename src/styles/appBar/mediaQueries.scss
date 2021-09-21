@@ -1,24 +1,24 @@
-//@use "./variables";
-//
-////mobile
-//@media (max-width: variables.$breakpoint-mobile-screen){
-//
-//  #list-container {
-//    .bottom-header {
-//      .h4{
-//        font-size: x-large;
-//      }
-//    }
-//  }
-//
-//}
-//
-////tablet, Ipads
-//@media (min-width: variables.$breakpoint-mobile-screen) and (max-width: variables.$breakpoint-laptop-screen) {
-//
-//}
-//
-////Ipad pro, laptop
-//@media (min-width: variables.$breakpoint-laptop-screen) and (max-width: variables.$breakpoint-desktop-screen) {
-//
-//}
+@use "./variables";
+
+//mobile
+@media (max-width: variables.$breakpoint-mobile-screen){
+
+  #list-container {
+    .bottom-header {
+      .h4{
+        font-size: x-large;
+      }
+    }
+  }
+
+}
+
+//tablet, Ipads
+@media (min-width: variables.$breakpoint-mobile-screen) and (max-width: variables.$breakpoint-laptop-screen) {
+
+}
+
+//Ipad pro, laptop
+@media (min-width: variables.$breakpoint-laptop-screen) and (max-width: variables.$breakpoint-desktop-screen) {
+
+}

@@ -1,51 +1,51 @@
-//@use "./variables";
-//
-//@media (max-width: variables.$breakpoint-mobile-screen){
-//
-//  #list-container {
-//    width: 80%;
-//  }
-//
-//  .ant-spin-container {
-//    ul.ant-list-items {
-//      text-align: center;
-//      padding: 0;
-//      li.ant-list-item > span{
-//        font-size: 90%;
-//      }
-//    }
-//  }
-//
-//
-//
-//}
-//
-//@media (min-width: variables.$breakpoint-mobile-screen) and (max-width: variables.$breakpoint-laptop-screen) {
-//
-//  .ant-spin-container {
-//    ul.ant-list-items {
-//      li.ant-list-item > span{
-//        font-size: 130%;
-//      }
-//    }
-//  }
-//
-//}
-//
-//@media (min-width: variables.$breakpoint-laptop-screen) and (max-width: variables.$breakpoint-desktop-screen) {
-//
-//  #list-container {
-//    width: 80%;
-//  }
-//
-//  .ant-spin-container {
-//    ul.ant-list-items {
-//      text-align: center;
-//      padding: 0;
-//      li.ant-list-item > span{
-//        font-size: 150%;
-//      }
-//    }
-//  }
-//
-//}
+@use "./variables";
+
+@media (max-width: variables.$breakpoint-mobile-screen){
+
+  #list-container {
+    width: 80%;
+  }
+
+  .ant-spin-container {
+    ul.ant-list-items {
+      text-align: center;
+      padding: 0;
+      li.ant-list-item > span{
+        font-size: 90%;
+      }
+    }
+  }
+
+
+
+}
+
+@media (min-width: variables.$breakpoint-mobile-screen) and (max-width: variables.$breakpoint-laptop-screen) {
+
+  .ant-spin-container {
+    ul.ant-list-items {
+      li.ant-list-item > span{
+        font-size: 130%;
+      }
+    }
+  }
+
+}
+
+@media (min-width: variables.$breakpoint-laptop-screen) and (max-width: variables.$breakpoint-desktop-screen) {
+
+  #list-container {
+    width: 80%;
+  }
+
+  .ant-spin-container {
+    ul.ant-list-items {
+      text-align: center;
+      padding: 0;
+      li.ant-list-item > span{
+        font-size: 150%;
+      }
+    }
+  }
+
+}

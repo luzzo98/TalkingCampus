@@ -1,51 +1,51 @@
-//@import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300';
-//
-//.modal-title{
-//  text-align: center;
-//}
-//
-//.leaflet-popup-content {
-//
-//  font-family: 'Open Sans Condensed';
-//  font-weight: bold;
-//  font-size: medium;
-//
-//  .prenote-class{
-//    border-radius: 5px;
-//    color: white;
-//    background-color: #6157F5;
-//    margin-bottom: 0;
-//    box-shadow: none;
-//  }
-//
-//}
-//
-//.classroom-infos {
-//  a {
-//    color: #333;
-//  }
-//}
-//
-//.margin-bottom {
-//
-//  p:last-of-type {
-//    margin-bottom: 3%;
-//  }
-//}
-//
-//.sub-info-hidden {
-//  visibility: hidden;
-//  display: none;
-//  height: 0%;
-//}
-//
-//.sub-info-visible {
-//  visibility: visible;
-//  margin-left: 3%;
-//  margin-bottom: 7%;
-//
-//  p {
-//    margin: 1% 0;
-//    font-size: small;
-//  }
-//}
+@import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300';
+
+.modal-title{
+  text-align: center;
+}
+
+.leaflet-popup-content {
+
+  font-family: 'Open Sans Condensed';
+  font-weight: bold;
+  font-size: medium;
+
+  .prenote-class{
+    border-radius: 5px;
+    color: white;
+    background-color: #6157F5;
+    margin-bottom: 0;
+    box-shadow: none;
+  }
+
+}
+
+.classroom-infos {
+  a {
+    color: #333;
+  }
+}
+
+.margin-bottom {
+
+  p:last-of-type {
+    margin-bottom: 3%;
+  }
+}
+
+.sub-info-hidden {
+  visibility: hidden;
+  display: none;
+  height: 0%;
+}
+
+.sub-info-visible {
+  visibility: visible;
+  margin-left: 3%;
+  margin-bottom: 7%;
+
+  p {
+    margin: 1% 0;
+    font-size: small;
+  }
+}
