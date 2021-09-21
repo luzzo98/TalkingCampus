@@ -1,6 +1,9 @@
+@use "variables";
+@use "mediaQueries";
+
 .appbar-title {
-    padding: 1%;
     background-color: #6157F5;
+    width: 100%;
 
     .ant-typography {
       text-align: center;
@@ -11,7 +14,7 @@
 .header {
   h1 {
     margin-top: 2%;
-    font-family: "Open Sans Condensed";
+    font-family: variables.$font-family;
   }
 }
 
@@ -21,7 +24,7 @@
 
   .h4 {
     font-size: x-large;
-    font-family: "Open Sans Condensed";
+    font-family: variables.$font-family;
     margin-bottom: 2%;
   }
 

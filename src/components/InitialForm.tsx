@@ -9,6 +9,7 @@ import * as utils from "../utils/utils";
 import {User} from "../Model";
 import img from "../assets/volto_uomo.jpg"
 import AppBarTitle from "./AppBarTitle";
+require("../styles/initialForm/initialFormStyle.scss")
 
 const { TabPane } = Tabs;
 const { Option } = Select;
