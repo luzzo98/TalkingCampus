@@ -1,331 +1,331 @@
-@use "./variables";
-
-//media per schermo fra 1280 e 1600
-@media (min-width: variables.$breakpoint-desktop-screen) and (max-width: variables.$breakpoint-hd-screen) {
-
-  hr {
-    @include variables.resizable_hr(5%)
-  }
-
-  .main-container {
-    .card {
-
-      text-align: center;
-      display: inline-block !important;
-
-      h3 {
-        width: 100%;
-        height: auto;
-        display: inline-block;
-        margin-bottom: 0%;
-      }
-
-      padding-bottom: 2%;
-      background-color: black;
-      width: 100%;
-      height: 30%;
-
-      img.avatar-holder {
-        width: 75%;
-        height: 75%;
-        top: 0;
-        left: 0;
-        margin-left: 13%;
-        margin-right: 20%;
-        position: relative;
-      }
-
-      margin-bottom: 20%;
-
-    }
-
-    button.corner-button {
-      padding: 2%;
-    }
-
-    button.logout-button {
-      margin-top: 45%;
-    }
-  }
-}
-
-//per schermi fino al monitor sd: tablet e telefoni
-@media (max-width: variables.$breakpoint-desktop-screen){
-
-  div#map {
-    .leaflet-control-layers-base{
-      label {
-        div {
-          input[type="radio"] {
-            width: 11px;
-            height: 11px;
-            border-radius: 50px;
-            left: 0;
-            top: 0;
-            z-index: -1;
-            background-color: gradient(variables.$dark-grey, variables.$dark-grey-4);
-          }
-          span {
-            font-family: variables.$main-font;
-            text-transform: uppercase;
-            font-size: medium;
-            margin-left: 5px;
-          }
-        }
-      }
-    }
-  }
-
-  header {
-    .drawer {
-      left: 0px;
-      bottom: -86%;
-      display: inline-block;
-      height: 10%;
-      width: 100%;
-      padding-bottom: 0%;
-
-      h1 {
-        margin-bottom: 5%;
-      }
-
-      button {
-        box-shadow: variables.$shadow_box_mobile;
-      }
-
-      .card {
-        visibility: hidden;
-        height: 0;
-        margin: 0;
-        h3 {
-          visibility: hidden;
-          margin-bottom: 0%;
-        }
-      }
-
-      button.corner-button {
-        margin: 0 0 1.3% 0;
-        padding: 0%;
-        height: 13%;
-
-        span {
-          width: 100%;
-          height: 100%;
-          display: block;
-          text-align: center;
-          font-size: 65%;
-        }
-      }
-
-      div.card ~ button:first-of-type {
-        margin-top: 3%;
-      }
-
-    }
-
-    .drawer-toggle-label {
-      left: 87%
-    }
-
-  }
-
-  .leaflet-control-zoom {
-    margin-bottom: 2.2em !important;
-  }
-
-  header {
-    text-align: center;
-    #drawer-toggle-label {
-      width: 50px;
-      height: 50px;
-      font-size: small;
-    }
-  }
-
-  .main-container {
-    #drawer-toggle-label {
-      left: 86%;
-    }
-
-    #drawer-toggle:checked ~ nav > button {
-      visibility: visible;
-      opacity: 1;
-    }
-
-    #drawer-toggle:checked ~ #drawer {
-      height: 37%;
-    }
-
-    #drawer-toggle:checked ~ #drawer {
-      left: 0px;
-    }
-
-    #drawer-toggle:checked ~ #page-content {
-      margin-left: 86%;
-    }
-
-    #drawer-toggle:checked ~ #drawer-toggle-label,
-    #drawer-toggle:checked ~ header {
-      left: 86%;
-    }
-
-  }
-
-  header {
-    .slide-vertical-enter {
-      height: 10%;
-    }
-
-    .slide-vertical-enter-active {
-      height: 37%;
-      transition: height 500ms ease-in-out;
-    }
-
-    .slide-vertical-enter-done {
-      height: 37%;
-    }
-
-    .slide-vertical-exit {
-      height: 37%;
-    }
-
-    .slide-vertical-exit-active {
-      height: 10%;
-      transition: height 500ms ease-in-out;
-    }
-
-    .slide-vertical-exit-done {
-      height: 10%;
-    }
-  }
-
-
-  //ADD POPUP STYLE
-  form {
-    .ant-form-item {
-      margin-bottom: 5%;
-      line-height: 0.7;
-    }
-  }
-  .ant-form-item-control-input-content {
-    .ant-select {
-      .ant-select-selector {
-        height: variables.$height-form;
-        .ant-select-selection-item {
-          line-height: 20px;
-          font-size: small;
-        }
-        .ant-select-selection-search {
-          input {
-            height: auto;
-          }
-        }
-      }
-      line-height: 0.7;
-    }
-    .ant-input {
-      height: variables.$height-form;
-    }
-  }
-
-  .ant-form-item-control{
-    .ant-form-item-control-input {
-      min-height: 10px;
-    }
-  }
-
-  .leaflet-popup {
-    .leaflet-popup-content-wrapper {
-      .leaflet-popup-content {
-        width: 150px;
-        margin: 8px 8px;
-      }
-      .ant-form-item-label {
-        padding: 0;
-        label {
-          font-size: small;
-          height: auto;
-        }
-      }
-      hr {
-        margin-top: 5%;
-      }
-    }
-  }
-  //----------------------------
-
-  .leaflet-popup-content {
-    .h4 {
-      font-size: large;
-    }
-    hr {
-      margin: 0;
-    }
-    p {
-      margin: 5% 0;
-      font-size: small;
-    }
-  }
-
-
-}
-
-//smartphone lunghi
-@media screen and (min-device-height: variables.$breakpoint-height-phone)
-              and (max-width: variables.$breakpoint-mobile-screen){
-
-  .main-container {
-    .drawer {
-      button.corner-button {
-        margin: 0 0 2% 0;
-        padding: 0%;
-        height: 13%;
-
-        span {
-          width: 100%;
-          height: 100%;
-          display: block;
-          text-align: center;
-          font-size: 65%;
-        }
-      }
-      div.card ~ button:first-of-type {
-        margin-top: 5%;
-      }
-    }
-    #drawer-toggle:checked ~ #drawer {
-      height: 32%;
-    }
-  }
-
-}
-
-//tablet e telefoni lunghi
-@media screen and (min-device-height: variables.$breakpoint-height-phone)
-and (min-width: variables.$breakpoint-mobile-screen)
-and (max-width: variables.$breakpoint-desktop-screen) {
-
-  .main-container {
-    .drawer {
-      .corner-button {
-        margin-bottom: 3%;
-
-        span {
-          font-size: 80%;
-          padding-top: 1%;
-        }
-      }
-    }
-
-    #drawer-toggle-label {
-      left: 94%;
-    }
-
-    #drawer-toggle:checked ~ #drawer-toggle-label,
-    #drawer-toggle:checked ~ header {
-      left: 94%;
-    }
-
-  }
-
-}
+//@use "./variables";
+//
+////media per schermo fra 1280 e 1600
+//@media (min-width: variables.$breakpoint-desktop-screen) and (max-width: variables.$breakpoint-hd-screen) {
+//
+//  hr {
+//    @include variables.resizable_hr(5%)
+//  }
+//
+//  .main-container {
+//    .card {
+//
+//      text-align: center;
+//      display: inline-block !important;
+//
+//      h3 {
+//        width: 100%;
+//        height: auto;
+//        display: inline-block;
+//        margin-bottom: 0%;
+//      }
+//
+//      padding-bottom: 2%;
+//      background-color: black;
+//      width: 100%;
+//      height: 30%;
+//
+//      img.avatar-holder {
+//        width: 75%;
+//        height: 75%;
+//        top: 0;
+//        left: 0;
+//        margin-left: 13%;
+//        margin-right: 20%;
+//        position: relative;
+//      }
+//
+//      margin-bottom: 20%;
+//
+//    }
+//
+//    button.corner-button {
+//      padding: 2%;
+//    }
+//
+//    button.logout-button {
+//      margin-top: 45%;
+//    }
+//  }
+//}
+//
+////per schermi fino al monitor sd: tablet e telefoni
+//@media (max-width: variables.$breakpoint-desktop-screen){
+//
+//  div#map {
+//    .leaflet-control-layers-base{
+//      label {
+//        div {
+//          input[type="radio"] {
+//            width: 11px;
+//            height: 11px;
+//            border-radius: 50px;
+//            left: 0;
+//            top: 0;
+//            z-index: -1;
+//            background-color: gradient(variables.$dark-grey, variables.$dark-grey-4);
+//          }
+//          span {
+//            font-family: variables.$main-font;
+//            text-transform: uppercase;
+//            font-size: medium;
+//            margin-left: 5px;
+//          }
+//        }
+//      }
+//    }
+//  }
+//
+//  header {
+//    .drawer {
+//      left: 0px;
+//      bottom: -86%;
+//      display: inline-block;
+//      height: 10%;
+//      width: 100%;
+//      padding-bottom: 0%;
+//
+//      h1 {
+//        margin-bottom: 5%;
+//      }
+//
+//      button {
+//        box-shadow: variables.$shadow_box_mobile;
+//      }
+//
+//      .card {
+//        visibility: hidden;
+//        height: 0;
+//        margin: 0;
+//        h3 {
+//          visibility: hidden;
+//          margin-bottom: 0%;
+//        }
+//      }
+//
+//      button.corner-button {
+//        margin: 0 0 1.3% 0;
+//        padding: 0%;
+//        height: 13%;
+//
+//        span {
+//          width: 100%;
+//          height: 100%;
+//          display: block;
+//          text-align: center;
+//          font-size: 65%;
+//        }
+//      }
+//
+//      div.card ~ button:first-of-type {
+//        margin-top: 3%;
+//      }
+//
+//    }
+//
+//    .drawer-toggle-label {
+//      left: 87%
+//    }
+//
+//  }
+//
+//  .leaflet-control-zoom {
+//    margin-bottom: 2.2em !important;
+//  }
+//
+//  header {
+//    text-align: center;
+//    #drawer-toggle-label {
+//      width: 50px;
+//      height: 50px;
+//      font-size: small;
+//    }
+//  }
+//
+//  .main-container {
+//    #drawer-toggle-label {
+//      left: 86%;
+//    }
+//
+//    #drawer-toggle:checked ~ nav > button {
+//      visibility: visible;
+//      opacity: 1;
+//    }
+//
+//    #drawer-toggle:checked ~ #drawer {
+//      height: 37%;
+//    }
+//
+//    #drawer-toggle:checked ~ #drawer {
+//      left: 0px;
+//    }
+//
+//    #drawer-toggle:checked ~ #page-content {
+//      margin-left: 86%;
+//    }
+//
+//    #drawer-toggle:checked ~ #drawer-toggle-label,
+//    #drawer-toggle:checked ~ header {
+//      left: 86%;
+//    }
+//
+//  }
+//
+//  header {
+//    .slide-vertical-enter {
+//      height: 10%;
+//    }
+//
+//    .slide-vertical-enter-active {
+//      height: 37%;
+//      transition: height 500ms ease-in-out;
+//    }
+//
+//    .slide-vertical-enter-done {
+//      height: 37%;
+//    }
+//
+//    .slide-vertical-exit {
+//      height: 37%;
+//    }
+//
+//    .slide-vertical-exit-active {
+//      height: 10%;
+//      transition: height 500ms ease-in-out;
+//    }
+//
+//    .slide-vertical-exit-done {
+//      height: 10%;
+//    }
+//  }
+//
+//
+//  //ADD POPUP STYLE
+//  form {
+//    .ant-form-item {
+//      margin-bottom: 5%;
+//      line-height: 0.7;
+//    }
+//  }
+//  .ant-form-item-control-input-content {
+//    .ant-select {
+//      .ant-select-selector {
+//        height: variables.$height-form;
+//        .ant-select-selection-item {
+//          line-height: 20px;
+//          font-size: small;
+//        }
+//        .ant-select-selection-search {
+//          input {
+//            height: auto;
+//          }
+//        }
+//      }
+//      line-height: 0.7;
+//    }
+//    .ant-input {
+//      height: variables.$height-form;
+//    }
+//  }
+//
+//  .ant-form-item-control{
+//    .ant-form-item-control-input {
+//      min-height: 10px;
+//    }
+//  }
+//
+//  .leaflet-popup {
+//    .leaflet-popup-content-wrapper {
+//      .leaflet-popup-content {
+//        width: 150px;
+//        margin: 8px 8px;
+//      }
+//      .ant-form-item-label {
+//        padding: 0;
+//        label {
+//          font-size: small;
+//          height: auto;
+//        }
+//      }
+//      hr {
+//        margin-top: 5%;
+//      }
+//    }
+//  }
+//  //----------------------------
+//
+//  .leaflet-popup-content {
+//    .h4 {
+//      font-size: large;
+//    }
+//    hr {
+//      margin: 0;
+//    }
+//    p {
+//      margin: 5% 0;
+//      font-size: small;
+//    }
+//  }
+//
+//
+//}
+//
+////smartphone lunghi
+//@media screen and (min-device-height: variables.$breakpoint-height-phone)
+//              and (max-width: variables.$breakpoint-mobile-screen){
+//
+//  .main-container {
+//    .drawer {
+//      button.corner-button {
+//        margin: 0 0 2% 0;
+//        padding: 0%;
+//        height: 13%;
+//
+//        span {
+//          width: 100%;
+//          height: 100%;
+//          display: block;
+//          text-align: center;
+//          font-size: 65%;
+//        }
+//      }
+//      div.card ~ button:first-of-type {
+//        margin-top: 5%;
+//      }
+//    }
+//    #drawer-toggle:checked ~ #drawer {
+//      height: 32%;
+//    }
+//  }
+//
+//}
+//
+////tablet e telefoni lunghi
+//@media screen and (min-device-height: variables.$breakpoint-height-phone)
+//and (min-width: variables.$breakpoint-mobile-screen)
+//and (max-width: variables.$breakpoint-desktop-screen) {
+//
+//  .main-container {
+//    .drawer {
+//      .corner-button {
+//        margin-bottom: 3%;
+//
+//        span {
+//          font-size: 80%;
+//          padding-top: 1%;
+//        }
+//      }
+//    }
+//
+//    #drawer-toggle-label {
+//      left: 94%;
+//    }
+//
+//    #drawer-toggle:checked ~ #drawer-toggle-label,
+//    #drawer-toggle:checked ~ header {
+//      left: 94%;
+//    }
+//
+//  }
+//
+//}

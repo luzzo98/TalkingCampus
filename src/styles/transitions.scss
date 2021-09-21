@@ -1,35 +1,35 @@
-@keyframes move-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes move-out {
-  from { opacity: 1; }
-  to   { opacity: 0; }
-}
-
-@keyframes slide-down {
-  from {top: -50%}
-  to {top: 50%}
-}
-
-@keyframes slide-up {
-  from {top: 50%}
-  to {top: -50%}
-}
-
-.slide-down {
-  animation: slide-down 1s ease-out;
-}
-
-.slide-up {
-  animation: slide-up 1s ease-out;
-}
-
-.motion-out {
-  animation: move-out 1s ease forwards;
-}
-
-.motion-in {
-  animation: move-in 1s ease forwards;
-}
+//@keyframes move-in {
+//  from { opacity: 0; }
+//  to   { opacity: 1; }
+//}
+//
+//@keyframes move-out {
+//  from { opacity: 1; }
+//  to   { opacity: 0; }
+//}
+//
+//@keyframes slide-down {
+//  from {top: -50%}
+//  to {top: 50%}
+//}
+//
+//@keyframes slide-up {
+//  from {top: 50%}
+//  to {top: -50%}
+//}
+//
+//.slide-down {
+//  animation: slide-down 1s ease-out;
+//}
+//
+//.slide-up {
+//  animation: slide-up 1s ease-out;
+//}
+//
+//.motion-out {
+//  animation: move-out 1s ease forwards;
+//}
+//
+//.motion-in {
+//  animation: move-in 1s ease forwards;
+//}
