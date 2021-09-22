@@ -1,6 +1,6 @@
 @use "./variables";
 
-//media per schermo fra 1280 e 1600
+//media per schermo fra 1224 e 1600
 @media (min-width: variables.$breakpoint-desktop-screen) and (max-width: variables.$breakpoint-hd-screen) {
 
   hr {
@@ -50,7 +50,7 @@
 }
 
 //per schermi fino al monitor sd: tablet e telefoni
-@media (max-width: variables.$breakpoint-desktop-screen){
+@media (max-width: variables.$breakpoint-laptop-screen){
 
   div#map {
     .leaflet-control-layers-base{
@@ -129,46 +129,10 @@
 
   }
 
-  .leaflet-control-zoom {
-    margin-bottom: 2.2em !important;
-  }
-
-  header {
-    text-align: center;
-    #drawer-toggle-label {
-      width: 50px;
-      height: 50px;
-      font-size: small;
+  .leaflet-bottom {
+    .leaflet-control-zoom {
+      margin-bottom: 60%;
     }
-  }
-
-  .main-container {
-    #drawer-toggle-label {
-      left: 86%;
-    }
-
-    #drawer-toggle:checked ~ nav > button {
-      visibility: visible;
-      opacity: 1;
-    }
-
-    #drawer-toggle:checked ~ #drawer {
-      height: 37%;
-    }
-
-    #drawer-toggle:checked ~ #drawer {
-      left: 0px;
-    }
-
-    #drawer-toggle:checked ~ #page-content {
-      margin-left: 86%;
-    }
-
-    #drawer-toggle:checked ~ #drawer-toggle-label,
-    #drawer-toggle:checked ~ header {
-      left: 86%;
-    }
-
   }
 
   header {
@@ -270,8 +234,8 @@
 
 }
 
-//smartphone lunghi
-@media screen and (min-device-height: variables.$breakpoint-height-phone)
+//smartphone corti
+@media screen and (max-device-height: variables.$breakpoint-height-phone)
               and (max-width: variables.$breakpoint-mobile-screen){
 
   .main-container {
@@ -306,7 +270,19 @@ and (min-width: variables.$breakpoint-mobile-screen)
 and (max-width: variables.$breakpoint-desktop-screen) {
 
   .main-container {
+
+    header {
+      .drawer-toggle-label{
+        margin: 2% 0% 0% 6%;
+      }
+    }
+
     .drawer {
+
+      h1.mobile-logo {
+        margin-bottom: 3%;
+      }
+
       .corner-button {
         margin-bottom: 3%;
 
@@ -315,15 +291,6 @@ and (max-width: variables.$breakpoint-desktop-screen) {
           padding-top: 1%;
         }
       }
-    }
-
-    #drawer-toggle-label {
-      left: 94%;
-    }
-
-    #drawer-toggle:checked ~ #drawer-toggle-label,
-    #drawer-toggle:checked ~ header {
-      left: 94%;
     }
 
   }

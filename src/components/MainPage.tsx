@@ -110,10 +110,11 @@ const MainPage : React.FC = () => {
     const mapStateRef = useRef<MapState>()
     mapStateRef.current = mapState
     const isMobile: boolean = useMediaQuery({ query: '(max-width: 736px)' })
-    const isTabletOrMobile: boolean = useMediaQuery({ query: '(max-width: 1240px)' })
+    const isTabletOrMobile: boolean = useMediaQuery({ query: '(max-width: 1024px)' })
 
     useEffect(() => {
-        message.info("Talking campus mode: " + mapState.mode,0.7);
+        if (mainContents.user.role === "admin")
+            message.info("Talking campus mode: " + mapState.mode,0.7)
     }, [mapState.mode])
 
     function renderMarkers(floor: string) {
@@ -134,7 +135,9 @@ const MainPage : React.FC = () => {
                             icon={utils.generateIcon(el.type, el.id)}
                             eventHandlers={{
                                 add: (e) => {
+                                    console.log("Marker settato? " + el.isMarkerSet)
                                     if(!el.isMarkerSet) {
+                                        console.log("Entro qui coglioni");
                                         (e.target as L.Marker).openPopup()
                                     }
                                 },
@@ -235,7 +238,8 @@ const MainPage : React.FC = () => {
             }
         })
         m.on('popupclose', () => {
-            sizingMap(m)
+            if(!isTabletOrMobile || isLowestZoomLevel(m))
+                sizingMap(m)
             setTimeout(() => {
                 if (noElementNotSet()){
                     setPreviousMapState()
@@ -279,6 +283,8 @@ const MainPage : React.FC = () => {
                 changeMode("modifica")
                 break;
         }
+        if(isTabletOrMobile && mapState.mode !== "default")
+            setIsMenuVisible(false)
         deleteIncompleteMarker()
     }
 
@@ -303,9 +309,9 @@ const MainPage : React.FC = () => {
                         onClick={() => setIsMenuVisible(prev => !prev)}/>
                     </CSSTransition>
                     <CSSTransition in = {isMenuVisible}
-                                   timeout ={isMobile ? 300 : 500}
-                                   classNames = {isMobile ? "slide-vertical" : "drawer-slide"}
-                                   unmountOnExit={!isMobile}>
+                                   timeout ={isTabletOrMobile ? 300 : 500}
+                                   classNames = {isTabletOrMobile ? "slide-vertical" : "drawer-slide"}
+                                   unmountOnExit={!isTabletOrMobile}>
                         <nav className="drawer">
                             <h1 className="mobile-logo">Talking Campus</h1>
                             <div className="card">

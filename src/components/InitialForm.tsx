@@ -18,7 +18,7 @@ const mockUser: User = {
     id: 0,
     name: "Giovanni",
     img: img,
-    role: "student"
+    role: "admin"
 }
 
 const InitialForm:React.FC = () => {
