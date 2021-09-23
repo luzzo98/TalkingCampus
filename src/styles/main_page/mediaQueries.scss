@@ -1,7 +1,7 @@
 @use "./variables";
 
 //media per schermo fra 1224 e 1600
-@media (min-width: variables.$breakpoint-desktop-screen) and (max-width: variables.$breakpoint-hd-screen) {
+@media (min-width: 1024px) and (max-width: 1800px) {
 
   hr {
     @include variables.resizable_hr(5%)
@@ -50,7 +50,7 @@
 }
 
 //per schermi fino al monitor sd: tablet e telefoni
-@media (max-width: variables.$breakpoint-laptop-screen){
+@media (max-width: 1024px){
 
   div#map {
     .leaflet-control-layers-base{
@@ -86,7 +86,7 @@
       padding-bottom: 0%;
 
       h1 {
-        margin-bottom: 5%;
+        margin-bottom: 4%;
       }
 
       button {
@@ -117,14 +117,15 @@
         }
       }
 
-      div.card ~ button:first-of-type {
-        margin-top: 3%;
+      div.card ~ button.corner-button:first-of-type {
+        margin-top: 0;
       }
 
     }
 
     .drawer-toggle-label {
-      left: 87%
+      top: 2.5%;
+      left: 90%
     }
 
   }
@@ -135,73 +136,58 @@
     }
   }
 
-  header {
-    .slide-vertical-enter {
-      height: 10%;
-    }
-
-    .slide-vertical-enter-active {
-      height: 37%;
-      transition: height 500ms ease-in-out;
-    }
-
-    .slide-vertical-enter-done {
-      height: 37%;
-    }
-
-    .slide-vertical-exit {
-      height: 37%;
-    }
-
-    .slide-vertical-exit-active {
-      height: 10%;
-      transition: height 500ms ease-in-out;
-    }
-
-    .slide-vertical-exit-done {
-      height: 10%;
-    }
-  }
-
   //ADD POPUP STYLE
   //----------------------------
-
-  .leaflet-popup-content {
-    form {
-      .ant-form-item {
-        margin-bottom: 5%;
-        line-height: 0.7;
-      }
-    }
-    .ant-form-item-control-input-content {
-      .ant-select {
-        .ant-select-selector {
-          height: variables.$height-form;
-          .ant-select-selection-item {
-            line-height: 20px;
-            font-size: small;
-          }
-          .ant-select-selection-search {
-            input {
-              height: auto;
-            }
-          }
-        }
-        line-height: 0.7;
-      }
-      .ant-input {
-        height: variables.$height-form;
-      }
-    }
-
-    .ant-form-item-control{
-      .ant-form-item-control-input {
-        min-height: 10px;
-      }
-    }
-
     .leaflet-popup {
       .leaflet-popup-content-wrapper {
+        form {
+          .ant-form-item {
+            line-height: 0.7;
+
+            .ant-form-item-label {
+              flex: 0 0 30%;
+            }
+            .ant-form-item-control{
+              flex: 0 0 60%;
+            }
+          }
+
+          .ant-form-item:first-of-type {
+            margin-top: 12%;
+          }
+
+        }
+        .ant-form-item-control-input-content {
+          .ant-select {
+            .ant-select-selector {
+              height: variables.$height-form;
+              .ant-select-selection-item {
+                line-height: 20px;
+                padding: 0;
+                font-size: small;
+              }
+              .ant-select-selection-search {
+                input {
+                  height: auto;
+                }
+              }
+            }
+            line-height: 0.7;
+            .ant-select-arrow {
+              top: 60%;
+              left: 80%
+            }
+          }
+          .ant-input {
+            height: variables.$height-form;
+          }
+        }
+
+        .ant-form-item-control{
+          .ant-form-item-control-input {
+            min-height: 10px;
+          }
+        }
         .leaflet-popup-content {
           width: 150px;
           margin: 8px 8px;
@@ -229,62 +215,89 @@
       margin: 5% 0;
       font-size: small;
     }
-  }
+}
 
+//smartphone più lunghi che larghi
+@media screen and (max-device-height: 768px)
+              and (max-width: 480px){
+
+  .main-container {
+    header {
+      .drawer-toggle-label{
+        left: 87%;
+        top: 1.9%
+      }
+
+      .drawer {
+        height: 40%;
+        h1.mobile-logo {
+          margin-bottom: 3%;
+        }
+
+        button.corner-button {
+          margin: 0 0 1.5% 0;
+          padding: 0%;
+          height: 13%;
+
+          span {
+            width: 100%;
+            height: 100%;
+            display: block;
+            text-align: center;
+            font-size: 65%;
+          }
+        }
+        div.card ~ button:first-of-type {
+          margin-top: 5%;
+        }
+      }
+    }
+  }
 
 }
 
-//smartphone corti
-@media screen and (max-device-height: variables.$breakpoint-height-phone)
-              and (max-width: variables.$breakpoint-mobile-screen){
+//smartphone lunghi e stretti
+@media screen and (min-device-height: 768px)
+and (max-width: 768px){
 
   .main-container {
-    .drawer {
-      button.corner-button {
-        margin: 0 0 2% 0;
-        padding: 0%;
-        height: 13%;
-
-        span {
-          width: 100%;
-          height: 100%;
-          display: block;
-          text-align: center;
-          font-size: 65%;
-        }
-      }
-      div.card ~ button:first-of-type {
-        margin-top: 5%;
+    header {
+      .drawer-toggle-label{
+        left: 87%;
+        top: 1.6%
       }
     }
-    #drawer-toggle:checked ~ #drawer {
-      height: 32%;
+    main {
+      nav.slide-vertical-enter-done {
+        height: 30%;
+      }
+      .mobile-logo {
+        margin-bottom: 8%;
+      }
     }
   }
 
 }
 
 //tablet e telefoni lunghi
-@media screen and (min-device-height: variables.$breakpoint-height-phone)
-and (min-width: variables.$breakpoint-mobile-screen)
-and (max-width: variables.$breakpoint-desktop-screen) {
+@media screen and (min-device-height: 768px)
+and (min-width: 768px)
+and (max-width: 1023px) {
 
   .main-container {
-
     header {
       .drawer-toggle-label{
-        margin: 2% 0% 0% 6%;
+        top: 2.3%;
+        left: 93.5%
+      }
+      h1.mobile-logo {
+        margin-bottom: 5%;
       }
     }
 
     .drawer {
-
-      h1.mobile-logo {
-        margin-bottom: 3%;
-      }
-
       .corner-button {
-        margin-bottom: 3%;
+        margin-bottom: 2%;
 
         span {
           font-size: 80%;
@@ -295,4 +308,33 @@ and (max-width: variables.$breakpoint-desktop-screen) {
 
   }
 
+}
+
+@media screen and (max-width: 321px){
+  .main-container {
+    header {
+      .drawer-toggle-label {
+        left: 83.9%;
+        top: 1.6%
+      }
+      nav.slide-vertical-enter-done {
+        height: 38%;
+      }
+      nav.drawer {
+        h1.mobile-logo {
+          margin-bottom: 2%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 321px) and (min-device-height: 600px){
+  div.main-container {
+    header {
+      nav.slide-vertical-enter-done {
+        height: 30%;
+      }
+    }
+  }
 }

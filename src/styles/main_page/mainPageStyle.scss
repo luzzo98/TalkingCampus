@@ -189,6 +189,36 @@ main {
   }
 }
 
+.main-container {
+  main {
+    .slide-vertical-enter {
+      height: 9%;
+    }
+
+    .slide-vertical-enter-active {
+      height: 37%;
+      transition: height 500ms ease-in-out;
+    }
+
+    .slide-vertical-enter-done {
+      height: 37%;
+    }
+
+    .slide-vertical-exit {
+      height: 37%;
+    }
+
+    .slide-vertical-exit-active {
+      height: 9%;
+      transition: height 500ms ease-in-out;
+    }
+
+    .slide-vertical-exit-done {
+      height: 9%;
+    }
+  }
+}
+
 header {
   display: block;
   width: 100%;

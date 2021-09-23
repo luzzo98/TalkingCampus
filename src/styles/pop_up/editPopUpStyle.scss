@@ -1,14 +1,11 @@
 .leaflet-popup-content {
+
+  width: 120%;
+  margin: 20px 18px;
+
   .ant-row{
     flex-flow: row;
     margin-bottom: 5px;
-  }
-
-  .leaflet-popup-content-wrapper {
-    .leaflet-popup-content {
-      width: 200px;
-      margin: 20px 18px;
-    }
   }
 
   .ant-form-item-label {

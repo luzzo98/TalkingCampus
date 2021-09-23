@@ -78,7 +78,7 @@ const EditPopUp: React.FC<props> = ({onSubmit, onDelete, type, name, seats}) => 
         >
             <Form onSubmitCapture={(e) => handleSubmit(e)}>
                 <Form.Item
-                    label="Stanza:"
+                    label="Stanza"
                     name="stanza"
                     rules={[{ required: true, message:"parametro richiesto!!!"}]}
                 >

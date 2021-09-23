@@ -38,12 +38,6 @@ $shadow_box_mobile: rgba(0, 0, 0, 0.25) 0px 1px 2px,
                     rgba(0, 0, 0, 0.12) 0px 3px 2px;
 
 /* Using SCSS variables to store breakpoints */
-$breakpoint-mobile-screen: 768px;
-$breakpoint-laptop-screen: 1024px;
-$breakpoint-desktop-screen: 1224px;
-$breakpoint-hd-screen: 1800px;
-
-$breakpoint-height-phone: 768px;
 
 @mixin transition {
   -webkit-box-sizing: border-box;
