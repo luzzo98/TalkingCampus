@@ -33,58 +33,6 @@ html {
   }
 }
 
-#container{
-  position: relative;
-  left: 0;
-  transition: left 300ms ease;
-  display: inline-block;
-  width: 100%;
-
-  #content{
-    position: relative;
-    width: 100%;
-    background: variables.$grey;
-    z-index: 1;
-    float: left;
-    overflow: hidden;
-
-    .left-burger{
-      position: relative;
-      width: 50%;
-      float: left;
-      background: transparent;
-      z-index: 100;
-
-      h2{
-        position: relative;
-        z-index: auto;
-      }
-
-      .triangle{
-      width: 0;
-      height: 0;
-      border-top: solid variables.$light-grey;
-      border-right: solid transparent;
-      border-left: none;
-      border-bottom: none;
-      position: absolute;
-      }
-    }
-    .right-slider{
-      position: relative;
-      width: 50%;
-      float: left;
-      background: transparent;
-
-      h2{
-        position: absolute;
-        bottom: 30px;
-        right: 30px;
-      }
-    }
-  }
-}
-
 main {
   padding-left: 0px;
 
@@ -351,7 +299,6 @@ header {
 .logout-button {
   color: white;
   background-color: variables.$logout_button;
-  margin-top: 28%;
 }
 
 .corner-button::before {

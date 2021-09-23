@@ -135,9 +135,7 @@ const MainPage : React.FC = () => {
                             icon={utils.generateIcon(el.type, el.id)}
                             eventHandlers={{
                                 add: (e) => {
-                                    console.log("Marker settato? " + el.isMarkerSet)
                                     if(!el.isMarkerSet) {
-                                        console.log("Entro qui coglioni");
                                         (e.target as L.Marker).openPopup()
                                     }
                                 },

@@ -1,0 +1,80 @@
+@media (max-width: 1024px) {
+
+  .leaflet-popup {
+    .leaflet-popup-content-wrapper {
+      form {
+        .ant-form-item {
+          line-height: 0.7;
+
+          .ant-form-item-label {
+            flex: 0 0 30%;
+          }
+
+          .ant-form-item-control {
+            flex: 0 0 60%;
+          }
+        }
+
+        .ant-form-item:first-of-type {
+          margin-top: 12%;
+        }
+
+      }
+
+      .ant-form-item-control-input-content {
+        .ant-select {
+          .ant-select-selector {
+            height: 20px;
+
+            .ant-select-selection-item {
+              line-height: 20px;
+              padding: 0;
+              font-size: small;
+            }
+
+            .ant-select-selection-search {
+              input {
+                height: auto;
+              }
+            }
+          }
+
+          line-height: 0.7;
+
+          .ant-select-arrow {
+            top: 60%;
+            left: 80%
+          }
+        }
+
+        .ant-input {
+          height: 20px;
+        }
+      }
+
+      .ant-form-item-control {
+        .ant-form-item-control-input {
+          min-height: 10px;
+        }
+      }
+
+      .leaflet-popup-content {
+        width: 150px;
+        margin: 8px 8px;
+      }
+
+      .ant-form-item-label {
+        padding: 0;
+
+        label {
+          font-size: small;
+          height: auto;
+        }
+      }
+
+      hr {
+        margin-top: 5%;
+      }
+    }
+  }
+}
