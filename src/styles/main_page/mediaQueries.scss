@@ -23,6 +23,9 @@
     }
   }
   header {
+    .drawer-toggle-label {
+      display: none;
+    }
     .drawer {
       width: 100%;
       padding-bottom: 0%;
@@ -51,35 +54,74 @@
   }
 }
 
-@media (min-width: 1025px) and (max-width: 1800px) {
+@media (min-width: 1025px) and (max-width: 1280px) {
 
-  hr {
-    @include variables.resizable_hr(5%)
+  .main-container {
+    label {
+      top: 0.5%;
+    }
+    .drawer{
+      h1 {
+        font-size: 110%;
+        margin-bottom: 16%;
+      }
+      .card {
+
+        h3 {
+          height: auto;
+          margin-bottom: 0%;
+        }
+
+        padding-bottom: 2%;
+        width: 100%;
+
+        img.avatar-holder {
+          width: 75%;
+          height: 75%;
+          top: 0;
+          left: 0;
+          margin-left: 13%;
+          margin-right: 20%;
+          position: relative;
+        }
+
+        margin-bottom: 20%;
+
+      }
+    }
+
+    button.corner-button {
+      padding: 2%;
+      span {
+        font-size: x-large;
+      }
+    }
+
+    button.logout-button {
+      margin-top: 70%;
+    }
+
   }
+}
+
+@media (min-width: 1281px) and (max-width: 1800px) {
 
   .main-container {
     .card {
-      text-align: center;
 
       h3 {
-        width: 100%;
         height: auto;
         display: inline-block;
-        margin-bottom: 0%;
+        margin-bottom: 0;
       }
 
       padding-bottom: 2%;
-      background-color: black;
-      width: 100%;
-      height: 30%;
 
       img.avatar-holder {
         width: 75%;
         height: 75%;
         top: 0;
         left: 0;
-        margin-left: 13%;
-        margin-right: 20%;
         position: relative;
       }
 
@@ -89,24 +131,29 @@
 
     button.corner-button {
       padding: 2%;
+      span {
+        font-size: x-large;
+      }
     }
+
+    button.logout-button {
+      margin-top: 40%;
+    }
+
   }
 }
 
-@media (max-device-height: 600px) and (max-width: 1279px) {
+
+@media (min-device-height: 550px) and (max-width: 400px) {
   div.main-container {
     header {
-      .drawer-toggle-label {
-        left: 85%;
-        top: 0.5%;
-      }
       nav.drawer {
         h1.mobile-logo {
           margin-top: 1%;
-          margin-bottom: 4%;
+          margin-bottom: 7%;
         }
         .corner-button{
-          margin-bottom: 0.5%;
+          margin-bottom: 1%;
           text-align: center;
           span {
             position: relative;
@@ -118,125 +165,163 @@
   }
 }
 
-@media (min-device-height: 600px) and (max-device-height: 700px) and (max-width: 1279px) {
+@media (min-device-height: 600px) and (min-width: 401px) and (max-width: 540px) {
   div.main-container {
     header {
-      .drawer-toggle-label {
-        left: 86%;
-        top: 0.7%;
-      }
       nav.drawer {
         h1.mobile-logo {
           margin-top: 1%;
-          margin-bottom: 7%;
+          margin-bottom: 5%;
         }
         .corner-button{
-          margin-bottom: 1.2%;
+          margin-bottom: 1%;
         }
       }
     }
   }
 }
 
-@media (min-device-height: 701px) and (max-device-height: 800px) and (max-width: 1279px) {
+@media (min-device-height: 600px) and (min-width: 541px) and (max-width: 768px) {
   div.main-container {
     header {
-      .drawer-toggle-label {
-        left: 85%;
-        top: 0.5%;
-      }
       nav.drawer {
         h1.mobile-logo {
           margin-top: 1%;
+          margin-bottom: 4%;
+        }
+        .corner-button{
+          margin-bottom: 0.5%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-device-height: 600px) and (min-width: 768px) and (max-width: 1024px) {
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 1%;
+          margin-bottom: 3%;
+        }
+        .corner-button{
+          margin-bottom: 0.4%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-device-height: 700px) and (max-width: 400px) {
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 3%;
           margin-bottom: 9%;
         }
         .corner-button{
           margin-bottom: 2%;
+          text-align: center;
+          span {
+            position: relative;
+            font-size: large;
+          }
         }
       }
     }
   }
 }
 
-@media (min-device-height: 801px) and (max-width: 1279px){
+@media (min-device-height: 700px) and (min-width: 401px) and (max-width: 541px){
   div.main-container {
     header {
-      .drawer-toggle-label {
-        left: 85%;
-        top: 2%;
-      }
       nav.drawer {
         h1.mobile-logo {
-          margin-top: 5%;
+          margin-top: 3%;
+          margin-bottom: 5.7%;
+        }
+        .corner-button{
+          margin-bottom: 1.5%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-device-height: 700px) and (min-width: 541px) and (max-width: 768px){
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 2%;
+          margin-bottom: 5%;
+        }
+        .corner-button{
+          margin-bottom: 0.8%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-device-height: 700px) and (min-width: 769px) and (max-width: 1024px){
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 1%;
+          margin-bottom: 4.3%;
+        }
+        .corner-button{
+          margin-bottom: 0.5%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-device-height: 1000px) and (max-width: 768px){
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 3%;
           margin-bottom: 9%;
+          font-size: xxx-large;
+        }
+        .corner-button{
+          margin-bottom: 2%;
+          span {
+            position: relative;
+            padding-top: 1%;
+            font-size: x-large;
+          }
         }
       }
     }
   }
 }
 
-@media (min-width: 425px) and (max-width: 768px) and (max-device-height: 500px){
-
+@media screen and (min-device-height: 1000px) and (min-width: 769px) and (max-width: 1024px){
   div.main-container {
-    main {
-      header {
-        .drawer-toggle-label {
-          top: 1%;
-          left: 89%;
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 6%;
+          margin-bottom: 6%;
+          font-size: xxx-large;
         }
-        nav.drawer {
-          h1.mobile-logo {
-            margin-top: 1%;
-            margin-bottom: 1%;
+        .corner-button{
+          margin-bottom: 2%;
+          span {
+            position: relative;
+            padding-top: 1.5%;
+            font-size: xx-large;
           }
         }
       }
     }
   }
-
 }
-
-@media (min-width: 425px) and (max-width: 768px) and (min-device-height: 501px){
-
-  div.main-container {
-    main {
-      header {
-        .drawer-toggle-label {
-          top: 1%;
-          left: 89%;
-        }
-        nav.drawer {
-          h1.mobile-logo {
-            margin-top: 1%;
-            margin-bottom: 4%;
-          }
-          .corner-button{
-            margin-bottom: 0.7%;
-            text-align: center;
-          }
-        }
-      }
-    }
-  }
-
-}
-
-//@media (min-device-height: 1025px) and (max-width: 1800px){
-//  div.main-container {
-//    header {
-//      nav.drawer {
-//        h1.mobile-logo {
-//          margin-top: 2.8%;
-//          margin-bottom: 8%;
-//          font-size: xxx-large;
-//        }
-//      }
-//
-//      button.corner-button {
-//        font-size: xxx-large;
-//        padding-top: 1.7%;
-//        margin-bottom: 2%;
-//      }
-//    }
-//  }
-//}

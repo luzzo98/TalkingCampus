@@ -13,7 +13,7 @@ import {useHistory, useLocation} from "react-router-dom";
 import * as utils from "../utils/utils";
 import DeletePopUp from "./DeletePopUp";
 import EditPopUp from "./EditPopUp";
-import {message} from "antd";
+import {message, Tooltip} from "antd";
 import {CSSTransition} from "react-transition-group";
 import {useMediaQuery} from "react-responsive";
 
@@ -83,6 +83,7 @@ const MainPage : React.FC = () => {
 
     const [isMenuVisible, setIsMenuVisible] = useState(false)
     const [isOpeningView, setIsOpeningView] = useState(true)
+    const [isOpenTooltip, setIsOpenTooltip] = useState(true)
     const center: LatLngExpression = [40.743, -74.185];
     const mobileCenter: LatLngExpression = [40.753, -74.176];
 
@@ -116,6 +117,10 @@ const MainPage : React.FC = () => {
         if (mainContents.user.role === "admin")
             message.info("Talking campus mode: " + mapState.mode,0.7)
     }, [mapState.mode])
+
+    useEffect(() => {
+        console.log("Value: " + isMenuVisible)
+    }, [isMenuVisible])
 
     function renderMarkers(floor: string) {
         const mockRoom: Room = {
@@ -304,14 +309,23 @@ const MainPage : React.FC = () => {
                     <CSSTransition in={isMenuVisible} timeout={500} classNames="toggle-slide" mountOnEnter>
                     <label htmlFor="drawer-toggle"
                         className={"drawer-toggle-label " + (isOpeningView ? "" : "hidden-label")}
-                        onClick={() => setIsMenuVisible(prev => !prev)}/>
+                        onClick={() => !isTabletOrMobile ? setIsMenuVisible(prev => !prev) : null}/>
                     </CSSTransition>
                     <CSSTransition in = {isMenuVisible}
                                    timeout ={isTabletOrMobile ? 300 : 500}
                                    classNames = {isTabletOrMobile ? "slide-vertical" : "drawer-slide"}
                                    unmountOnExit={!isTabletOrMobile}>
                         <nav className="drawer">
-                            <h1 className="mobile-logo">Talking Campus</h1>
+                            <Tooltip color={"#F6E9D8"}
+                                     title={"clicca qui per visualizzare il menù"}
+                                     placement={"bottom"}
+                                     afterVisibleChange={() => !isMenuVisible ?
+                                         setTimeout(() => setIsOpenTooltip(false), 1000) : setIsOpenTooltip(true)}
+                                     visible={!isMenuVisible && isTabletOrMobile && isOpenTooltip}
+                            >
+                                <h1 className="mobile-logo"
+                                    onClick={() => isTabletOrMobile ? setIsMenuVisible(prev => !prev) : null}>Talking Campus</h1>
+                            </Tooltip>
                             <div className="card">
                                 <h3>Ciao {mainContents.user.name}!</h3>
                                 <img src={mainContents.user.img} className="avatar-holder"/>

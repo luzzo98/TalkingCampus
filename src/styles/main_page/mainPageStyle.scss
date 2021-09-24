@@ -21,12 +21,10 @@ html {
   h1 {
     font-family: variables.$main-font;
     color: variables.$white;
-    margin: 3% 10% 15% 10%;
-    text-align: left;
+    margin: 5% 10% 13% 10%;
     font-weight: 400;
     white-space: nowrap;
     background-color: transparent;
-    font-style: normal;
     letter-spacing: 0px;
     font-size: variables.$font_size;
     height: variables.$height;
@@ -111,7 +109,7 @@ main {
   width: 24px;
   background: variables.$white;
   left: 13px;
-  top: 20px;
+  top: 53%;
   box-shadow: 0 6px 0 variables.$white, 0 12px 0 variables.$white;
 }
 
@@ -177,9 +175,11 @@ header {
   font-size: 30px;
   line-height: 30px;
   z-index: 0;
-
   .hidden-label {
     visibility: hidden;
+  }
+  #drawer-toggle {
+    display: none;
   }
 }
 
@@ -198,7 +198,7 @@ header {
   padding: 10px;
 
   h1 {
-    font-size: 2rem;
+    font-size: 130%;
     height: auto;
     text-align: center;
   }
@@ -272,7 +272,7 @@ header {
   button {
     width: 100%;
     margin-bottom: 15%;
-    border: 0px;
+    border: 0;
     box-shadow: variables.$shadow_box;
   }
 }
@@ -284,20 +284,16 @@ header {
   padding: 5%;
   background-color: variables.$hover_color;
   border-radius: 10px;
-}
-
-.corner-button {
-
   span {
     font-family: variables.$main-font;
-    font-size: 75%;
+    font-size: xx-large;
     transition: all 0.3s;
   }
-
 }
 
 .logout-button {
   color: white;
+  margin-top: 25%;
   background-color: variables.$logout_button;
 }
 
@@ -370,7 +366,23 @@ header {
 }
 
 .ant-message-notice-content {
- background: variables.$hover_color;
+  background: variables.$hover_color;
   font-family: variables.$main-font;
   font-size: large;
 }
+
+.fade-in {
+  transition: opacity .25s ease-in-out;
+  transition-delay: 1s;
+  opacity: 0;
+}
+
+.ant-tooltip-content {
+  font-family: variables.$main-font;
+  font-size: large;
+  .ant-tooltip-inner {
+    color: black;
+  }
+}
+
+
