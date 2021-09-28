@@ -120,7 +120,7 @@ const MainPage : React.FC = () => {
 
     function renderMarkers(floor: string) {
         const mockRoom: Room = {
-            type: "Aula",
+            type: "aula",
             occupied_seats: 23,
             total_seats: 80,
             lesson_name: "Sistemi Operativi",
