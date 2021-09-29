@@ -1,6 +1,7 @@
-const mongoose = require("mongoose");
+//const mongoose = require("mongoose");
 const cors = require("cors");
 const express = require("express");
+const MongoClient = require("mongo").MongoClient;
 
 const app = express();
 const PORT = 80;
@@ -13,7 +14,8 @@ app.use(express.json());
 //...
 
 //connessione a mongo db
-mongoose.connect('mongodb://mongo:27017/talkingCampus');
+MongoClient.connect('mongodb://mongo:27017/talkingCampus');
+//mongoose.connect('mongodb://mongo:27017/talkingCampus');
 
 //il server è on
 app.listen(PORT, function () {
