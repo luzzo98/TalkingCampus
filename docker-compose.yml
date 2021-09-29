@@ -10,13 +10,13 @@ services:
     depends_on:
       - mongo
     networks:
-      - mongo_net
-      - front_net
+      - mongo-net
+      - front-net
 
   mongo:
     image: mongo
     networks:
-      - mongo_net
+      - mongo-net
     volumes:
       - ./mongo_scripts/:/docker-entrypoint-initdb.d/
   
