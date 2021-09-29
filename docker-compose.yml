@@ -1,0 +1,25 @@
+version: "3.8"
+services: 
+  frontend: 
+    build: ./frontend
+    networks:
+      - front_net
+
+  backend:
+    build: ./backend
+    depends_on:
+      - mongo
+    networks:
+      - mongo_net
+      - front_net
+
+  mongo:
+    image: mongo
+    networks:
+      - mongo_net
+    volumes:
+      - ./mongo_scripts:/docker-entrypoint-initdb.d
+  
+  networks:
+    front_net:
+    mongo_net:
