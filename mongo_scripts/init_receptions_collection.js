@@ -1,3 +1,4 @@
+use talkingCampus
 db.createCollection("receptions", {
   validator: {
     $jsonSchema: {
