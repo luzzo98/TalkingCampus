@@ -20,6 +20,6 @@ services:
     volumes:
       - ./mongo_scripts/:/docker-entrypoint-initdb.d/
   
-  networks:
-    frontnet:
-    mongonet:
+networks:
+  frontnet:
+  mongonet:
