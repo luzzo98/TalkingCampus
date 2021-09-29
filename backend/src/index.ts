@@ -2,7 +2,6 @@
 const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
-const MongoClient = require("mongo").MongoClient;
 
 const app = express();
 const PORT = 80;
@@ -15,7 +14,6 @@ app.use(express.json());
 //...
 
 //connessione a mongo db
-//MongoClient.connect('mongodb://mongo:27017/talkingCampus');
 mongoose.connect('mongodb://mongo:27017/talkingCampus');
 
 //il server è on
