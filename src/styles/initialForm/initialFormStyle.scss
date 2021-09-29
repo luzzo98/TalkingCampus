@@ -21,13 +21,8 @@
   }
 
   .appbar-title{
-    //width: 433px;
-    border-radius: 3pt 3pt 0 0 !important;
+    border-radius: 5pt 5pt 0 0 !important;
   }
-
-  /*.ant-tabs-tab {*/
-  /*  border-radius: 3pt 3pt 0 0 !important;*/
-  /*}*/
 
   /*----------- form -----------*/
 
@@ -46,17 +41,16 @@
     /*background-color: white;*/
   }
 
+  .card-container p {
+    margin: 0;
+  }
+
+  /*----------- tabs initialForm -----------*/
   .ant-tabs-nav-wrap {
     background-color: white !important;
   }
-
-
-
   .ant-tabs-tabpane {
     width: 100%;
-  }
-  .card-container p {
-    margin: 0;
   }
   .card-container > div > .ant-tabs-card .ant-tabs-content {
     margin-top: -16px;
@@ -76,11 +70,6 @@
     background: #fff;
     //background: rgba(255, 255, 255, 0.7);
   }
-  //.card-container > div > .ant-tabs-card .ant-tabs-tab,
-  //[data-theme='compact'] .card-container > .ant-tabs-card .ant-tabs-tab {
-  //  background: #f1efe2;
-  //  border-color: transparent;
-  //}
   .card-container > div > .ant-tabs-card .ant-tabs-tab-active,
   [data-theme='compact'] .card-container > .ant-tabs-card .ant-tabs-tab-active {
     background: #fff;
@@ -101,21 +90,13 @@
     }
 
     .card-container {
-      display: flex;
-      position: relative;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      width: auto;
-      margin: 0 10%;
-    }
-  }
-
-  @media only screen
-  and (min-device-width: 0px)
-  and (max-device-width: 575px) {
-    .lesson-timetable-button {
-      margin: 5pt 0 0 0 !important;
+        display: flex;
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: auto;
+        margin: 0 10%;
     }
   }
 
@@ -136,21 +117,46 @@
   .ant-form-item-control-input-content {
     text-align: center !important;
   }
-
   .lesson-timetable-button {
     margin: 5pt 15pt 0 0;
   }
 
-  /*.receipt-button {*/
-  /*  text-align: center;*/
-  /*}*/
+  .button-space {
+    display: flex;
+    width:100%;
+  }
+  .button-space > div {
+    width: 50%;
+    text-align: center !important;
+  }
 
   .day-selector {
     background: #fff;
-    padding: 1% 5%;
-    border-radius: 5pt;
+    padding: 1% 4%;
+    border-radius: 0 0 5pt 5pt;
     max-height: 300pt;
     overflow-y: scroll;
+  }
+
+
+  .hour {
+    width: 100%;
+  }
+  .hour-line {
+    width: 92% !important;
+  }
+  @media (min-width: 575px) {
+    .hour {
+      width: auto;
+    }
+    .hour-line {
+      width: 100% !important;
+    }
+  }
+
+  .hour-line {
+    display: flex;
+    width: 100%;
   }
 
   .hour-line > div {
@@ -165,8 +171,15 @@
     margin-top: 25pt;
   }
 
-  /*button > a {*/
-  /*  text-decoration: none;*/
-  /*}*/
+  .hours-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+  }
+}
 
+.hours-container > .appbar-title {
+  padding: 1% 20% 3% 20%;
+  white-space: nowrap;
 }

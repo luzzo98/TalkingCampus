@@ -210,7 +210,7 @@ const InitialForm:React.FC = () => {
                                                     return Promise.resolve();
                                                 }
 
-                                                return Promise.reject(new Error('Le due password che hai inserito non sono uguali'));
+                                                return Promise.reject(new Error('Le due password non sono uguali'));
                                             },
                                         }),
                                     ]}
@@ -283,7 +283,7 @@ const InitialForm:React.FC = () => {
                                                        if (!value || getFieldValue('password') === value) {
                                                            return Promise.resolve();
                                                        }
-                                                       return Promise.reject(new Error('Le due password che hai inserito non sono uguali'));
+                                                       return Promise.reject(new Error('Le due password non sono uguali'));
                                                    },
                                                }),
                                            ]}
@@ -308,7 +308,6 @@ const InitialForm:React.FC = () => {
                                                     required={true}
                                                     key={field.key}
                                                 >
-                                                    {index > 0 ? (<Divider/>) : null}
                                                     <Form.Item
                                                         {...field}
                                                         validateTrigger={['onChange', 'onBlur']}
@@ -319,14 +318,9 @@ const InitialForm:React.FC = () => {
                                                                 message: "Inserisci un corso insegnato o elimina il campo",
                                                             },
                                                         ]}
-                                                        noStyle
                                                     >
-                                                        <Input style={{ width: '90%' }} />
+                                                        <Input/>
                                                     </Form.Item>
-                                                    <MinusCircleOutlined
-                                                        className="dynamic-delete-button"
-                                                        onClick={() => remove(field.name)}
-                                                    />
                                                     <Button
                                                         className="lesson-timetable-button"
                                                         type="default"
@@ -334,6 +328,11 @@ const InitialForm:React.FC = () => {
                                                         onClick={() => history.push('/DaySelector')}>
                                                         Definisci l'orario delle lezioni
                                                     </Button>
+                                                    <MinusCircleOutlined
+                                                        className="dynamic-delete-button"
+                                                        onClick={() => remove(field.name)}
+                                                    />
+                                                    <Divider style={{marginBottom: '6pt'}}/>
                                                 </Form.Item>
                                             ))}
                                             <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
