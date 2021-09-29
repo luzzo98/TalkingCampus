@@ -3,23 +3,23 @@ services:
   frontend: 
     build: ./frontend
     networks:
-      - front_net
+      - frontnet
 
   backend:
     build: ./backend
     depends_on:
       - mongo
     networks:
-      - mongo-net
-      - front-net
+      - mongonet
+      - frontnet
 
   mongo:
     image: mongo
     networks:
-      - mongo-net
+      - mongonet
     volumes:
       - ./mongo_scripts/:/docker-entrypoint-initdb.d/
   
   networks:
-    front-net:
-    mongo-net:
+    frontnet:
+    mongonet:
