@@ -3,6 +3,8 @@ services:
   frontend: 
     restart: always
     build: ./frontend
+    ports: 
+    - 3000:3000
     networks:
       - frontnet
 
@@ -18,6 +20,8 @@ services:
   mongo:
     restart: always
     image: mongo
+    ports:
+    - 27017:27017
     networks:
       - mongonet
     volumes:
