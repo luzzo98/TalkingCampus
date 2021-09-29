@@ -1,4 +1,4 @@
-use talkingCampus
+db = new Mongo().getDB("talkingCampus")
 db.rooms.insertMany([
     {"name":"Aula 1.1", "maximum_seats":NumberInt(100), "type":"Aula", "position":[40.757059, -74.198484]},
     {"name":"Aula Studio 1.1", "maximum_seats":NumberInt(50), "type":"Aula Studio", "position":[40.750755, -74.195824]},
