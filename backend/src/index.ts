@@ -13,7 +13,7 @@ app.use(express.json());
 //...
 
 //connessione a mongo db
-mongoose.connect('mongodb://localhost:27017/talking-campus');
+mongoose.connect('mongodb://mongo:27017/talking-campus');
 
 //il server è on
 app.listen(PORT, function () {

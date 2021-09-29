@@ -1,11 +1,13 @@
 version: "3"
 services: 
   frontend: 
+    restart: always
     build: ./frontend
     networks:
       - frontnet
 
   backend:
+    restart: always
     build: ./backend
     depends_on:
       - mongo
@@ -14,6 +16,7 @@ services:
       - frontnet
 
   mongo:
+    restart: always
     image: mongo
     networks:
       - mongonet
