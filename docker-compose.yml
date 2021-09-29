@@ -18,7 +18,7 @@ services:
     networks:
       - mongo_net
     volumes:
-      - ./mongo_scripts:/docker-entrypoint-initdb.d
+      - ./mongo_scripts/:/docker-entrypoint-initdb.d/
   
   networks:
     front_net:
