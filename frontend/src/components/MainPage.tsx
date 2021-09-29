@@ -9,13 +9,13 @@ import floor1 from "../assets/floor1.svg"
 import floor2 from "../assets/floor2.svg"
 import groundFloor from "../assets/groundFloor.svg"
 import DefaultPopUp from "./DefaultPopUp";
-import {useHistory, useLocation} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import * as utils from "../utils/utils";
 import DeletePopUp from "./DeletePopUp";
 import EditPopUp from "./EditPopUp";
 import {message} from "antd";
-import {CSSTransition} from "react-transition-group";
 import {useMediaQuery} from "react-responsive";
+import MainMenu from "./MainMenu";
 
 //Devono essere richiesti da db ovviamente
 let id: number = 20
@@ -81,8 +81,9 @@ interface MapState {
 
 const MainPage : React.FC = () => {
 
-    const [isMenuVisible, setIsMenuVisible] = useState(false)
+    const [isMenuVisibleForMap, setMenuVisibleForMap] = useState(true)
     const [isOpeningView, setIsOpeningView] = useState(true)
+
     const center: LatLngExpression = [40.743, -74.185];
     const mobileCenter: LatLngExpression = [40.753, -74.176];
 
@@ -119,7 +120,7 @@ const MainPage : React.FC = () => {
 
     function renderMarkers(floor: string) {
         const mockRoom: Room = {
-            type: "Aula",
+            type: "aula",
             occupied_seats: 23,
             total_seats: 80,
             lesson_name: "Sistemi Operativi",
@@ -201,13 +202,7 @@ const MainPage : React.FC = () => {
             m.setMaxZoom(screenDefaultZoom); m.setMinZoom(screenDefaultZoom); m.setView(center)
             m.dragging.disable()
         }
-        openMenu()
-    }
-
-    function openMenu() {
-        if (!isMenuVisible) {
-            setIsMenuVisible(true)
-        }
+        setMenuVisibleForMap(true)
     }
 
     function isLowestZoomLevel(m: Map): boolean {
@@ -229,9 +224,9 @@ const MainPage : React.FC = () => {
         m.on("zoom", () => {
             if (isLowestZoomLevel(m)) {
                 m.panTo(mobileCenter); m.dragging.disable();
-                setIsMenuVisible(true)
+                setMenuVisibleForMap(true)
             } else {
-                setIsMenuVisible(false)
+                setMenuVisibleForMap(false)
                 m.dragging.enable()
             }
         })
@@ -246,20 +241,9 @@ const MainPage : React.FC = () => {
         })
     }
 
-    const buttons: JSX.Element[] = createButtons()
-
-    function createButtons(): JSX.Element[] {
-        return mainContents.hooks.map(
-            el =>
-                <button className="corner-button"
-                        onClick={() => mainContents.user.role !== 'admin' ? closeMenu(el[1]) : adminAction(el[0])}>
-                    <span>{el[0]}</span>
-                </button>
-        )
-    }
-
     function changeMode(mode: string) {
         mapState.mode === mode ? setMapState({ mode: "default" }) : setMapState({ mode: mode})
+        deleteIncompleteMarker()
     }
 
     function deleteIncompleteMarker() {
@@ -268,83 +252,36 @@ const MainPage : React.FC = () => {
         setMapState({markers: dicto})
     }
 
-    function adminAction(action: string) {
-        const command: string = action.split(" ")[0].toLowerCase();
-        switch (command) {
-            case "aggiungi":
-                changeMode("aggiungi")
-                break;
-            case "elimina":
-                changeMode("elimina")
-                break;
-            case "modifica":
-                changeMode("modifica")
-                break;
-        }
-        if(isTabletOrMobile && mapState.mode !== "default")
-            setIsMenuVisible(false)
-        deleteIncompleteMarker()
-    }
-
-    let history = useHistory();
-
-    function closeMenu(path: string) {
-        setIsMenuVisible(false)
-        setIsOpeningView(false)
-        setTimeout(() => {
-            history.push(path)
-        }, 900)
-    }
-
     return (
         <div className={"main-container"}>
             <main className={"main " + (isOpeningView ? "" : "slide-right")}>
-                <header id="main-nav" className={"slide-left"}>
-                    <input type="checkbox" id="drawer-toggle" name="drawer-toggle"/>
-                    <CSSTransition in={isMenuVisible} timeout={500} classNames="toggle-slide" mountOnEnter>
-                    <label htmlFor="drawer-toggle"
-                        className={"drawer-toggle-label " + (isOpeningView ? "" : "hidden-label")}
-                        onClick={() => setIsMenuVisible(prev => !prev)}/>
-                    </CSSTransition>
-                    <CSSTransition in = {isMenuVisible}
-                                   timeout ={isTabletOrMobile ? 300 : 500}
-                                   classNames = {isTabletOrMobile ? "slide-vertical" : "drawer-slide"}
-                                   unmountOnExit={!isTabletOrMobile}>
-                        <nav className="drawer">
-                            <h1 className="mobile-logo">Talking Campus</h1>
-                            <div className="card">
-                                <h3>Ciao {mainContents.user.name}!</h3>
-                                <img src={mainContents.user.img} className="avatar-holder"/>
-                            </div>
-                            {buttons}
-                            <button className="corner-button logout-button" onClick={() => closeMenu("/")}>
-                                <span>Logout</span>
-                            </button>
-                        </nav>
-                    </CSSTransition>
-                </header>
-                    <MapContainer center={center}
-                                  id={'map'}
-                                  maxZoom={defaultZoom} minZoom={defaultZoom} zoom={defaultZoom}
-                                  whenCreated={handleMapEvent}
-                                  zoomControl={false} scrollWheelZoom={false} doubleClickZoom={false}
-                                  dragging={false}
-                                  bounds={bounds}
-                                  className={"slide-left"}
-                                  keyboard={false} >
-                        <LayersControl position="bottomright" collapsed={!isOpeningView}>
-                            <LayersControl.BaseLayer name="piano 2">
-                                <ImageOverlay url={floor2} bounds={bounds}/>
-                            </LayersControl.BaseLayer>
-                            <LayersControl.BaseLayer name="piano 1">
-                                <ImageOverlay url={floor1} bounds={bounds}/>
-                            </LayersControl.BaseLayer>
-                            <LayersControl.BaseLayer checked name="piano 0">
-                                <ImageOverlay url={groundFloor} bounds={bounds}/>
-                            </LayersControl.BaseLayer>
-                        </LayersControl>
-                        {renderMarkers(mapState.currentPiano)}
-                    </MapContainer>
+                <MainMenu toggleVisibility={isOpeningView}
+                          visibilityFromMap={isMenuVisibleForMap}
+                          mainContents={mainContents}
+                          onChangeMode={changeMode}
+                          onClosure={() => setIsOpeningView(false)}/>
+                <MapContainer center={center}
+                              id={'map'}
+                              maxZoom={defaultZoom} minZoom={defaultZoom} zoom={defaultZoom}
+                              whenCreated={handleMapEvent}
+                              zoomControl={false} scrollWheelZoom={false} doubleClickZoom={false}
+                              dragging={false}
+                              bounds={bounds}
+                              className={"slide-left"}
+                              keyboard={false} >
+                    <LayersControl position="bottomright" collapsed={!isOpeningView}>
+                        <LayersControl.BaseLayer name="piano 2">
+                            <ImageOverlay url={floor2} bounds={bounds}/>
+                        </LayersControl.BaseLayer>
+                        <LayersControl.BaseLayer name="piano 1">
+                            <ImageOverlay url={floor1} bounds={bounds}/>
+                        </LayersControl.BaseLayer>
+                        <LayersControl.BaseLayer checked name="piano 0">
+                            <ImageOverlay url={groundFloor} bounds={bounds}/>
+                        </LayersControl.BaseLayer>
+                    </LayersControl>
+                    {renderMarkers(mapState.currentPiano)}
+                </MapContainer>
             </main>
         </div>
     );

@@ -1,0 +1,114 @@
+@use "./variables";
+@import url('https://fonts.googleapis.com/css?family=Krub:400,700');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, .main-container {
+  width: 100%;
+  height: 100%;
+}
+
+.main-container {
+  background: #202020;
+  font-family: 'Krub', sans-serif;
+}
+
+@mixin info-item-style {
+  text-align: left;
+  color: variables.$dark-grey;
+  white-space: nowrap;
+}
+
+.card {
+  position: relative;
+  margin-bottom: 20%;
+  z-index: 10;
+  width: 100%;
+  height: 30%;
+  background: variables.$gradient !important;
+  border: 0px solid white !important;
+  overflow: hidden;
+  box-shadow: variables.$shadow_box;
+
+  h3 {
+    font-family: variables.$main-font;
+    color: variables.$white;
+    font-size: xx-large;
+    text-align: center;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    margin-top: 3%;
+  }
+
+  .avatar-holder {
+    position: absolute;
+    margin-top: 5%;
+    margin-left: 13%;
+    margin-right: 13%;
+    text-align: center;
+    top: 40px;
+    right: 0;
+    left: 5%;
+    width: 200px;
+    height: 180px;
+    border-radius: 50%;
+    overflow: hidden;
+    animation: fadeIn 3s;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+@keyframes fadeInMove {
+  0% {
+    opacity: 0;
+    left: -300px;
+  }
+  100% {
+    opacity: 1;
+    left: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+@keyframes htmlSkill {
+  0% {width: 0;}
+  100% {width: 95%;}
+}
+
+@keyframes cssSkill {
+  0% {width: 0;}
+  100% {width: 90%;}
+}
+
+@keyframes jsSkill {
+  0% {width: 0;}
+  100% {width: 75%;}
+}
+
+@keyframes mvBottom {
+  0% {bottom: -150px;}
+  100% {bottom: 10px;}
+}
+
+@keyframes mvTop {
+  0% {top: -150px;}
+  100% {top: 40px;}
+}
+
+@keyframes dsTop {
+  0% {top: -150px;}
+  100% {top: 0;}
+}

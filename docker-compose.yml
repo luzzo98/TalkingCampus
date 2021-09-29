@@ -1,0 +1,32 @@
+version: "3"
+services: 
+  frontend: 
+    restart: always
+    build: ./frontend
+    ports: 
+    - 3000:3000
+    networks:
+      - frontnet
+
+  backend:
+    restart: always
+    build: ./backend
+    depends_on:
+      - mongo
+    networks:
+      - mongonet
+      - frontnet
+
+  mongo:
+    restart: always
+    image: mongo
+    ports:
+    - 27017:27017
+    networks:
+      - mongonet
+    volumes:
+      - ./mongo_scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+  
+networks:
+  frontnet:
+  mongonet:

@@ -1,0 +1,342 @@
+@use "./variables";
+
+//per schermi fino al laptop sd: tablet e telefoni
+@media (max-width: 1024px){
+
+  div#map {
+    .leaflet-control-layers-base{
+      label {
+        div {
+          input[type="radio"] {
+            width: 11px;
+            height: 11px;
+            border-radius: 50px;
+          }
+          span {
+            font-family: variables.$main-font;
+            text-transform: uppercase;
+            font-size: medium;
+            margin-left: 5px;
+          }
+        }
+      }
+    }
+  }
+  header {
+    .drawer-toggle-label {
+      display: none;
+    }
+    .drawer {
+      width: 100%;
+      height: 9%;
+      padding-bottom: 0%;
+      button.corner-button {
+        margin: 0 0 1.5% 0;
+        padding: 0%;
+        height: 13%;
+        box-shadow: variables.$shadow_box_mobile;
+        span {
+          width: 100%;
+          height: 100%;
+          display: block;
+          text-align: center;
+          font-size: 65%;
+        }
+      }
+      .card {
+        display: none;
+      }
+    }
+
+    .slide-closing-exit {
+      height: 37%;
+    }
+    .slide-closing-exit-active {
+      height: 0;
+      padding: 0;
+      transition: all 500ms ease-in-out;
+    }
+    .slide-closing-exit-done {
+      padding: 0;
+      height: 0;
+    }
+
+  }
+  .leaflet-bottom {
+    .leaflet-control-zoom {
+      margin-bottom: 60%;
+    }
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+
+  .main-container {
+    label {
+      top: 0.5%;
+    }
+    .drawer{
+      h1 {
+        font-size: 110%;
+        margin-bottom: 16%;
+      }
+      .card {
+
+        h3 {
+          height: auto;
+          margin-bottom: 0%;
+        }
+
+        padding-bottom: 2%;
+        width: 100%;
+
+        img.avatar-holder {
+          width: 75%;
+          height: 75%;
+          top: 0;
+          left: 0;
+          margin-left: 13%;
+          margin-right: 20%;
+          position: relative;
+        }
+
+        margin-bottom: 20%;
+
+      }
+    }
+
+    button.corner-button {
+      padding: 2%;
+      span {
+        font-size: x-large;
+      }
+    }
+
+    button.logout-button {
+      margin-top: 70%;
+    }
+
+  }
+}
+
+@media (min-width: 1281px) and (max-width: 1800px) {
+
+  .main-container {
+    .card {
+
+      h3 {
+        height: auto;
+        display: inline-block;
+        margin-bottom: 0;
+      }
+
+      padding-bottom: 2%;
+
+      img.avatar-holder {
+        width: 75%;
+        height: 75%;
+        top: 0;
+        left: 0;
+        position: relative;
+      }
+
+      margin-bottom: 20%;
+
+    }
+
+    button.corner-button {
+      padding: 2%;
+      span {
+        font-size: x-large;
+      }
+    }
+
+    button.logout-button {
+      margin-top: 40%;
+    }
+
+  }
+}
+
+
+@media (min-device-height: 550px) and (max-width: 400px) {
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 1%;
+          margin-bottom: 7%;
+        }
+        .corner-button{
+          margin-bottom: 1%;
+          text-align: center;
+          span {
+            position: relative;
+            font-size: medium;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-device-height: 600px) and (min-width: 401px) and (max-width: 540px) {
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 1%;
+          margin-bottom: 5%;
+        }
+        .corner-button{
+          margin-bottom: 1%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-device-height: 600px) and (min-width: 541px) and (max-width: 768px) {
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 1%;
+          margin-bottom: 4%;
+        }
+        .corner-button{
+          margin-bottom: 0.5%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-device-height: 600px) and (min-width: 768px) and (max-width: 1024px) {
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 1%;
+          margin-bottom: 3%;
+        }
+        .corner-button{
+          margin-bottom: 0.4%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-device-height: 700px) and (max-width: 400px) {
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 3%;
+          margin-bottom: 9%;
+        }
+        .corner-button{
+          margin-bottom: 2%;
+          text-align: center;
+          span {
+            position: relative;
+            font-size: x-large;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-device-height: 700px) and (min-width: 401px) and (max-width: 541px){
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 3%;
+          margin-bottom: 5.7%;
+        }
+        .corner-button{
+          margin-bottom: 1.5%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-device-height: 700px) and (min-width: 541px) and (max-width: 768px){
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 2%;
+          margin-bottom: 5%;
+        }
+        .corner-button{
+          margin-bottom: 0.8%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-device-height: 700px) and (min-width: 769px) and (max-width: 1024px){
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 1%;
+          margin-bottom: 4.3%;
+        }
+        .corner-button{
+          margin-bottom: 0.5%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-device-height: 1000px) and (max-width: 768px){
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 3%;
+          margin-bottom: 9%;
+          font-size: xxx-large;
+        }
+        .corner-button{
+          margin-bottom: 2%;
+          span {
+            position: relative;
+            padding-top: 1%;
+            font-size: x-large;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-device-height: 1000px) and (min-width: 769px) and (max-width: 1024px){
+  div.main-container {
+    header {
+      nav.drawer {
+        h1.mobile-logo {
+          margin-top: 6%;
+          margin-bottom: 6%;
+          font-size: xxx-large;
+        }
+        .corner-button{
+          margin-bottom: 2%;
+          span {
+            position: relative;
+            padding-top: 1.5%;
+            font-size: xx-large;
+          }
+        }
+      }
+    }
+  }
+}
