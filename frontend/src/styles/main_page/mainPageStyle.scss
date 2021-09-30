@@ -234,34 +234,34 @@ header {
   left: 0
 }
 
-.slide-right-enter {
+.slide-left-right-enter {
   opacity: 1;
   margin-left: 100%;
 }
 
-.slide-right-enter-active {
+.slide-left-right-enter-active {
   opacity: 1;
   margin-left: 0%;
   transition: margin-left 800ms ease-in-out;
 }
 
-.slide-right-enter-done {
+.slide-left-right-enter-done {
   opacity: 1;
   margin-left: 0%;
 }
 
-.slide-right-exit {
+.slide-left-right-exit {
   opacity: 1;
   margin-left: 0%;
 }
 
-.slide-right-exit-active {
+.slide-left-right-exit-active {
   opacity: 1;
   margin-left: 100%;
   transition: margin-left 800ms ease-in-out;
 }
 
-.slide-right-exit-done {
+.slide-left-right-exit-done {
   opacity: 1;
   margin-left: 100%;
 }

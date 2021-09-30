@@ -4,11 +4,18 @@ import {List} from 'antd';
 import AppBarTitle from "./AppBarTitle";
 import Footer from "./Footer";
 import SubAppBar from "./SubAppBar";
-require("../styles/studentPersonalArea/studentPersonalAreaStyle.scss")
+import {CSSTransition} from "react-transition-group";
+require("../styles/userPagesComponents/studentPersonalArea/studentPersonalAreaStyle.scss")
 
 const StudentPersonalArea = () => {
 
-    const [isEntrance, setIsEntrance] = useState(true)
+    const [isEntrance, setIsEntrance] = useState(() => {
+            setTimeout(() => {
+                setIsEntrance(true)
+            }, 0);
+            return false;
+        }
+    );
 
     const data = [
             'Nome: Giovanni',
@@ -18,22 +25,28 @@ const StudentPersonalArea = () => {
     ];
 
     return (
-        <div className={"list-box " + (isEntrance ? "slide-down" : "slide-up")} id={"list-container"}>
-            <AppBarTitle/>
-            <SubAppBar sub_text={"Area Personale"}/>
-            <List
-                size="large"
-                dataSource={data}
-                renderItem={(item) => (
-                    <List.Item
-                        key={`${10_000}`}>
-                        <span className={"notification-text"}>{item}</span>
-                    </List.Item>
-                )}
-            >
-            </List>
-            <Footer onBack={() => setIsEntrance(false)}/>
-        </div>
+        <CSSTransition
+            in={isEntrance}
+            timeout={800}
+            classNames="slide-up-down"
+        >
+            <div className={"list-box"} id={"list-container"}>
+                <AppBarTitle/>
+                <SubAppBar sub_text={"Area Personale"}/>
+                <List
+                    size="large"
+                    dataSource={data}
+                    renderItem={(item) => (
+                        <List.Item
+                            key={`${10_000}`}>
+                            <span className={"notification-text"}>{item}</span>
+                        </List.Item>
+                    )}
+                >
+                </List>
+                <Footer onBack={() => setIsEntrance(false)}/>
+            </div>
+        </CSSTransition>
     );
 }
 

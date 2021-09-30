@@ -5,7 +5,8 @@ import {CloseCircleOutlined} from "@ant-design/icons";
 import AppBarTitle from "./AppBarTitle";
 import Footer from "./Footer";
 import SubAppBar from "./SubAppBar";
-require("../styles/list_component/notificationBoxStyle.scss")
+import {CSSTransition} from "react-transition-group";
+require("../styles/userPagesComponents/list_component/notificationBoxStyle.scss")
 
 interface ListItem {
     id: number
@@ -26,7 +27,14 @@ function getInfos():ListItem[] {
 const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
     const[data, setData] = useState(getInfos)
-    const[isEntrance, setIsEntrance] = useState(true)
+    const [isOpeningView, setIsOpeningView] = useState(() => {
+        setTimeout(() => { setIsOpeningView(true) }, 0);
+        return false
+    })
+    const[isEntrance, setIsEntrance] = useState(() => {
+        setTimeout(() => { setIsEntrance(true) }, 0);
+        return false
+    })
 
     function handleElimination(id: number){
         const elemId = `${id}`
@@ -34,7 +42,12 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
     }
 
     return (
-            <div className={"notifications-box " + (isEntrance ? "slide-down" : "slide-up")} id={"list-container"}>
+        <CSSTransition
+            in={isEntrance}
+            timeout={800}
+            classNames="slide-up-down"
+        >
+            <div className={"notifications-box"} id={"list-container"}>
                 <AppBarTitle/>
                 <SubAppBar sub_text={sub_title}/>
                     <List
@@ -65,6 +78,7 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
                     </List>
                 <Footer onBack={() => setIsEntrance(false)}/>
             </div>
+        </CSSTransition>
     );
 }
 
