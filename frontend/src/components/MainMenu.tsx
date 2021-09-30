@@ -18,7 +18,7 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
 
     const isTabletOrMobile: boolean = useMediaQuery({ query: '(max-width: 1024px)' })
     const [toggleIsOn, setToggleOnOff] = useState(() => {
-        setTimeout(() => { setToggleOnOff(true) }, 100);
+        setTimeout(() => { setToggleOnOff(true) }, 0);
         return false
     })
     const [isOpenTooltip, setIsOpenTooltip] = useState(() => {
