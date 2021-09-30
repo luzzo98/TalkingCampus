@@ -1,7 +1,5 @@
 db = new Mongo().getDB("talkingCampus")
 
-
-
 db.createCollection("courses", {
 
   validator: {
@@ -16,9 +14,11 @@ db.createCollection("courses", {
 
         teacher_id: {
 
-          bsonType: "string",
-
-          description: "must be a valid teacher email"
+          bsonType: "string",
+            
+          pattern: "[a-z]+\.[a-z]+@unibo\.it",
+
+          description: "must be a valid teacher email: <firstname>.<lastname>@unibo.it"
 
         },
 
@@ -50,48 +50,97 @@ db.createCollection("lessons", {
 
       bsonType: "object",
 
-      required: ["course_id", "room_id", "start_time", "end_time"],
+      required: ["course_name", "room", "day", "start", "end"],
 
       properties: {
 
-        course_id: {
+        course_name: {
 
-          bsonType: "string",
+          bsonType: "string",
+            
+          pattern: "^[a-zA-Z]+([ ]{1}[a-zA-Z0-9]+)*$",
 
           description: "must be a valid course name"
 
         },
 
-        room_id: {
+        room: {
 
           bsonType: "string",
 
           description: "must be a valid room id"
 
+        },
+        
+        day: {
+            
+            bsonType: "string",
+            
+            description: "must be a valid day of week name"
+
         },
 
-        start_time: {
+        start: {
 
-          bsonType: "int",
-
-          minimum: 0,
-
-          maximum: 23,
-
-          description: "must be a valid and unique start hour"
+          bsonType: "object",
+          
+          properties: {
+              
+              hours: {
+                  
+                  bsonType: "int",
+                  
+                  minimum: 0,
+
+                  maximum: 23,
+                  
+              },
+              
+              minutes: {
+                  
+                  bsonType: "int",
+                  
+                  minimum: 0,
+                  
+                  maximum: 59,
+                  
+              }
+          },
+          
+          description: "must be a valid start time"
 
         },
 
-        end_time: {
-
-          bsonType: "int",
-
-          minimum: 0,
-
-          maximum: 23,
-
-          description: "must be a valid end hour"
-
+        end: {
+
+          bsonType: "object",
+          
+          properties: {
+              
+              hours: {
+                  
+                  bsonType: "int",
+                  
+                  minimum: 0,
+
+                  maximum: 23,
+                  
+              },
+              
+              minutes: {
+                  
+                  bsonType: "int",
+                  
+                  minimum: 0,
+                  
+                  maximum: 59,
+                  
+              }
+              
+         },
+        
+        description: "must be a valid end time"
+
         },
 
     }
@@ -128,8 +177,6 @@ db.createCollection("notifications", {
 
           bsonType: "string",
 
-          pattern: "^.{1,50}$",
-
           description: "notification message"
 
         }
@@ -142,71 +189,114 @@ db.createCollection("notifications", {
 
 });
 
-
-
-db.createCollection("receptions", {
-
-  validator: {
-
-    $jsonSchema: {
-
-      bsonType: "object",
-
-      required: ["teacher_id", "room_id", "start_time", "end_time"],
-
-      properties: {
-
-        teacher_id: {
-
-          bsonType: "string",
-
-          description: "must be a valid teacher email"
-
-        },
-
-        room_id: {
-
-          bsonType: "string",
-
-          pattern: "^Aula[1-3].([1-9]){1,2}$",
-
-          description: "must be unique classroom id: it's built on floor and progressive room number"
-
-        },
-
-        start_time: {
-
-          bsonType: "int",
-
-          minimum: 0,
-
-          maximum: 23,
-
-          description: "must be a valid and unique start hour"
-
-        },
-
-        end_time: {
-
-          bsonType: "int",
-
-          minimum: 0,
-
-          maximum: 23,
-
-          description: "must be a valid end hour"
-
-        },
-
-    }
-
-  }
-
- }
-
+db.createCollection("receptions", {
+
+  validator: {
+
+    $jsonSchema: {
+
+      bsonType: "object",
+
+      required: ["teacher_email", "room", "day", "start", "end"],
+
+      properties: {
+
+        teacher_email: {
+
+          bsonType: "string",
+            
+          pattern: "[a-z]+\.[a-z]+@unibo\.it",
+
+          description: "must be a valid teacher email: <firstname>.<lastname>@unibo.it"
+
+        },
+
+        room: {
+
+          bsonType: "string",
+
+          description: "must be a valid room id"
+
+        },
+        
+        day: {
+            
+            bsonType: "string",
+            
+            description: "must be a valid day of week name"
+
+        },
+
+        start: {
+
+          bsonType: "object",
+          
+          properties: {
+              
+              hours: {
+                  
+                  bsonType: "int",
+                  
+                  minimum: 0,
+
+                  maximum: 23,
+                  
+              },
+              
+              minutes: {
+                  
+                  bsonType: "int",
+                  
+                  minimum: 0,
+                  
+                  maximum: 59,
+                  
+              }
+          },
+          
+          description: "must be a valid start time"
+
+        },
+
+        end: {
+
+          bsonType: "object",
+          
+          properties: {
+              
+              hours: {
+                  
+                  bsonType: "int",
+                  
+                  minimum: 0,
+
+                  maximum: 23,
+                  
+              },
+              
+              minutes: {
+                  
+                  bsonType: "int",
+                  
+                  minimum: 0,
+                  
+                  maximum: 59,
+                 
+              }
+              
+        },
+        
+          description: "must be a valid end time"
+
+        },
+
+    }
+
+  }
+
+ }
+
 });
-
-
 
 db.createCollection("users", {
 
@@ -226,7 +316,7 @@ db.createCollection("users", {
 
           pattern: "[a-z]+\.[a-z]+@(studio.unibo|unibo)\.it",
 
-          description: "must be a valid email: <user>@campus.it"
+          description: "must be a valid email: <firstname>.<lastname>@(<studio.unibo>|<unibo>).it"
 
         },
 
@@ -240,7 +330,7 @@ db.createCollection("users", {
 
         },
 
-        role: {
+        role: {
 
           enum: ["student", "teacher", "admin"],
 
@@ -264,7 +354,7 @@ db.createCollection("users", {
 
           pattern: "^[a-zA-Z]+([ ]{1}[a-zA-Z]+){0,2}$",
 
-          description: "must be a valid surname string: surnames of several words allowed"
+          description: "must be a valid surname string: at max three words"
 
         },
 
@@ -294,7 +384,7 @@ db.createCollection("users", {
 
           pattern: "^[a-zA-Z]+([ ]{1}[a-zA-Z]+)*$",
 
-          description: "must be a valid name"
+          description: "must be a valid university name: one or more words, only letters"
 
         },
 
@@ -355,6 +445,17 @@ db.createCollection("rooms", {
           description: "must be a positive number minor than maximum_seats_value"
 
         },
+
+        floor: {
+            
+          bsonType: "int",
+
+          minimum: 1,
+            
+          maximum: 3,
+
+          description: "must be a number between 1 and 3"
+        },
 
         name: {
 
@@ -362,14 +463,16 @@ db.createCollection("rooms", {
 
           pattern: "^(Aula|Aula Studio|Bagno|Mensa|Segreteria|Laboratorio) [1-3].([0-9]){1,2}$",
 
-          description: "must be a valid string: basically, one word with only letters. Eventually, it can contain more words with, from the second one, letters and numbers"
+          description: "must be a valid room name: <room_name> <floor>.<room_number>"
 
         },
 
         position: {
 
           bsonType: "array",
-
+
+          minItems: 2,
+            
           maxItems: 2,
 
           items: {
@@ -428,8 +531,6 @@ db.createCollection("rooms", {
 
                            maximum: 23,
 
-                           description: "must be a valid hour"
-
                        },
 
                        minutes: {
@@ -439,8 +540,6 @@ db.createCollection("rooms", {
                            minimum: 0,
 
                            maximum: 59,
-
-                           description: "must be valid minutes"
 
                        }
 
@@ -464,8 +563,6 @@ db.createCollection("rooms", {
 
                            maximum: 23,
 
-                           description: "must be a valid hour"
-
                        },
 
                        minutes: {
@@ -476,23 +573,11 @@ db.createCollection("rooms", {
 
                            maximum: 59,
 
-                           description: "must be valid minutes"
-
                        }
 
                   },
 
                   description: "room closing hour"
-
-               },
-
-               notes: {
-
-                 bsonType: "string",
-
-                 pattern: "^.{1,50}$",
-
-                 description: "notification message"
 
                }
 
@@ -611,3 +696,8 @@ db.rooms.insertMany([
         "adding_info":{"phone_number":"3325463745", "opening_hour":{"hours":NumberInt(9),"minutes":NumberInt(0)}, "closing_hour":{"hours":NumberInt(16),"minutes":NumberInt(0)}}}
 
 ])
+
+
+db.users.insertOne(
+    {"email":"admin.admin@unibo.it", "psw":"talkingCampusAdmin", "role":"admin"}
+)
