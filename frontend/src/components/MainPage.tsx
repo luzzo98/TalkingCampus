@@ -83,7 +83,7 @@ interface MapState {
 const MainPage : React.FC = () => {
 
     const [isMenuVisibleForMap, setMenuVisibleForMap] = useState(true)
-    //const [isOpeningView, setIsOpeningView] = useState(false)
+    const [isMenuCollapsed, setIsMenuCollapsed] = useState(false)
     const [isOpeningView, setIsOpeningView] = useState(() => {
         setTimeout(() => { setIsOpeningView(true) }, 100);
         return false
@@ -270,16 +270,19 @@ const MainPage : React.FC = () => {
                           visibilityFromMap={isMenuVisibleForMap}
                           mainContents={mainContents}
                           onChangeMode={changeMode}
-                          onClosure={() => setIsOpeningView(false)}/>
+                          onClosure={() => {
+                              setIsOpeningView(false);
+                              setIsMenuCollapsed(true);
+                            }
+                          }/>
                 <MapContainer center={center}
                               id={'map'}
                               maxZoom={defaultZoom} minZoom={defaultZoom} zoom={defaultZoom}
                               whenCreated={handleMapEvent}
                               zoomControl={false} scrollWheelZoom={false} doubleClickZoom={false}
-                              trackResize={false}
                               bounds={bounds}
                               keyboard={false} >
-                    <LayersControl position="bottomright" collapsed={!isOpeningView}>
+                    <LayersControl position="bottomright" collapsed={isMenuCollapsed}>
                         <LayersControl.BaseLayer name="piano 2">
                             <ImageOverlay url={floor2} bounds={bounds}/>
                         </LayersControl.BaseLayer>

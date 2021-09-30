@@ -49,19 +49,6 @@ html {
       color: variables.$white;
     }
 
-    .leaflet-map-pane {
-      animation: fadeInLoad 3s;
-    }
-
-    @keyframes fadeInLoad {
-      from {
-        opacity:0;
-      }
-      to {
-        opacity:1;
-      }
-    }
-
   }
 }
 
