@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/mongoose": "^5.11.97",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mongo": "^0.1.0",
-    "mongoose": "^6.0.8"
+    "mongo": "^0.1.0"
   },
   "devDependencies": {
     "typescript": "^4.4.3"
