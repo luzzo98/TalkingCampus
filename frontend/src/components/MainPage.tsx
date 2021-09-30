@@ -262,7 +262,7 @@ const MainPage : React.FC = () => {
             <CSSTransition
                 in={isOpeningView}
                 timeout={800}
-                classNames="slide-right"
+                classNames="slide-left-right"
                 mountOnEnter={false}
             >
             <main className={"main"}>

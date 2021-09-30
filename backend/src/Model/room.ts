@@ -1,3 +1,5 @@
+import {Schema} from "mongoose";
+
 enum Type {
     Bath,
     ClassRoom,
@@ -27,4 +29,12 @@ interface Room {
     }
 }
 
+/*const roomSchema = new Schema<Room>({
+    type: Type,
+    maximum_seats: Number,
+    occupied_seats: {Number, default: 0},
+    name: String,
+    position: [Number, Number],
+    observers:
+})*/
 
