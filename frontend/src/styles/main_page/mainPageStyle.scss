@@ -13,7 +13,6 @@ html {
   font-family: variables.$main-font;
   font-weight: 400;
   letter-spacing: 1px;
-  @include variables.setAnimation("slide-in");
 
 }
 
@@ -31,7 +30,8 @@ html {
   }
 }
 
-main {
+.main {
+  opacity: 0;
   padding-left: 0px;
 
   #map {
@@ -50,12 +50,10 @@ main {
     }
 
     .leaflet-map-pane {
-      -webkit-animation: fadeInLoad 3s;
-      -moz-animation: fadeInLoad 3s;
       animation: fadeInLoad 3s;
     }
 
-    @-webkit-keyframes fadeInLoad {
+    @keyframes fadeInLoad {
       from {
         opacity:0;
       }
@@ -86,11 +84,6 @@ main {
 
 .drawer-toggle-label {
   @include variables.transition;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   height:50px;
   width: 50px;
@@ -145,8 +138,6 @@ main {
 
     .slide-vertical-enter-active {
       height: 37%;
-      -webkit-transition: height 500ms ease-in-out;
-      -moz-transition: height 500ms ease-in-out;
       transition: height 500ms ease-in-out;
     }
 
@@ -160,8 +151,6 @@ main {
 
     .slide-vertical-exit-active {
       height: 9%;
-      -webkit-transition: height 500ms ease-in-out;
-      -moz-transition: height 500ms ease-in-out;
       transition: height 500ms ease-in-out;
     }
 
@@ -224,8 +213,6 @@ header {
 
 .drawer-slide-enter-active {
   left: 0;
-  -moz-transition: left 500ms ease-in-out;
-  -webkit-transition: left 500ms ease-in-out;
   transition: left 500ms ease-in-out;
 }
 
@@ -235,8 +222,6 @@ header {
 
 .drawer-slide-exit-active {
   left: -17%;
-  -moz-transition: left 500ms ease-in-out;
-  -webkit-transition: left 500ms ease-in-out;
   transition: left 500ms ease-in-out;
 }
 
@@ -246,8 +231,6 @@ header {
 
 .toggle-slide-enter-active {
   left: 17%;
-  -moz-transition: left 500ms ease-in-out;
-  -webkit-transition: left 500ms ease-in-out;
   transition: left 500ms ease-in-out;
 }
 
@@ -257,8 +240,6 @@ header {
 
 .toggle-slide-exit-active {
   left: 0;
-  -moz-transition: left 500ms ease-in-out;
-  -webkit-transition: left 500ms ease-in-out;
   transition: left 500ms ease-in-out;
 }
 
@@ -266,20 +247,36 @@ header {
   left: 0
 }
 
-@-webkit-keyframes map-slide-left {
-  @include variables.setSlideMenu(100%, 0)
+.slide-right-enter {
+  opacity: 1;
+  margin-left: 100%;
 }
 
-@-webkit-keyframes map-slide-right {
-  @include variables.setSlideMenu(0, 100%)
+.slide-right-enter-active {
+  opacity: 1;
+  margin-left: 0%;
+  transition: margin-left 800ms ease-in-out;
 }
 
-.slide-left {
-  @include variables.setAnimation("map-slide-left");
+.slide-right-enter-done {
+  opacity: 1;
+  margin-left: 0%;
 }
 
-.slide-right {
-  @include variables.setAnimation("map-slide-right");
+.slide-right-exit {
+  opacity: 1;
+  margin-left: 0%;
+}
+
+.slide-right-exit-active {
+  opacity: 1;
+  margin-left: 100%;
+  transition: margin-left 800ms ease-in-out;
+}
+
+.slide-right-exit-done {
+  opacity: 1;
+  margin-left: 100%;
 }
 
 .main-container {

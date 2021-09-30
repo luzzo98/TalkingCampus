@@ -79,19 +79,3 @@ $shadow_box_mobile: rgba(0, 0, 0, 0.25) 0px 1px 2px,
   color: $white !important;
   height: 2px!important;
 }
-
-@mixin setSlideMenu($start_value, $end_value) {
-  from {
-    margin-left: $start_value;
-  }
-
-  to {
-    margin-left: $end_value;
-  }
-}
-
-@mixin setAnimation($animation_name, $duration: 0.9s, $direction: alternate) {
-  animation-name: $animation_name;
-  animation-duration: $duration;
-  animation-direction: $direction;
-}

@@ -16,6 +16,7 @@ import EditPopUp from "./EditPopUp";
 import {message} from "antd";
 import {useMediaQuery} from "react-responsive";
 import MainMenu from "./MainMenu";
+import {CSSTransition} from "react-transition-group";
 
 //Devono essere richiesti da db ovviamente
 let id: number = 20
@@ -82,7 +83,11 @@ interface MapState {
 const MainPage : React.FC = () => {
 
     const [isMenuVisibleForMap, setMenuVisibleForMap] = useState(true)
-    const [isOpeningView, setIsOpeningView] = useState(true)
+    //const [isOpeningView, setIsOpeningView] = useState(false)
+    const [isOpeningView, setIsOpeningView] = useState(() => {
+        setTimeout(() => { setIsOpeningView(true) }, 100);
+        return false
+    })
 
     const center: LatLngExpression = [40.743, -74.185];
     const mobileCenter: LatLngExpression = [40.753, -74.176];
@@ -254,7 +259,13 @@ const MainPage : React.FC = () => {
 
     return (
         <div className={"main-container"}>
-            <main className={"main " + (isOpeningView ? "" : "slide-right")}>
+            <CSSTransition
+                in={isOpeningView}
+                timeout={800}
+                classNames="slide-right"
+                mountOnEnter={false}
+            >
+            <main className={"main"}>
                 <MainMenu toggleVisibility={isOpeningView}
                           visibilityFromMap={isMenuVisibleForMap}
                           mainContents={mainContents}
@@ -265,9 +276,8 @@ const MainPage : React.FC = () => {
                               maxZoom={defaultZoom} minZoom={defaultZoom} zoom={defaultZoom}
                               whenCreated={handleMapEvent}
                               zoomControl={false} scrollWheelZoom={false} doubleClickZoom={false}
-                              dragging={false}
+                              trackResize={false}
                               bounds={bounds}
-                              className={"slide-left"}
                               keyboard={false} >
                     <LayersControl position="bottomright" collapsed={!isOpeningView}>
                         <LayersControl.BaseLayer name="piano 2">
@@ -283,6 +293,7 @@ const MainPage : React.FC = () => {
                     {renderMarkers(mapState.currentPiano)}
                 </MapContainer>
             </main>
+            </CSSTransition>
         </div>
     );
 }
