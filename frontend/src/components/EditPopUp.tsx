@@ -67,7 +67,7 @@ const EditPopUp: React.FC<props> = ({onSubmit, onDelete, type, name, seats}) => 
             }, 10)
         }
         else
-            console.log("shit submit")
+            console.log("bad submit")
     }
 
     return (

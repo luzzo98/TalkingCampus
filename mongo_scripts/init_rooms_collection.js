@@ -1,4 +1,3 @@
-db = new Mongo().getDB("talkingCampus")
 db.createCollection("rooms", {
   validator: {
     $jsonSchema: {

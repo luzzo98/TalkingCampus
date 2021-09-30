@@ -1,4 +1,4 @@
-use talkingCampus
+use talkingCampus
 db.createCollection("notifications", {
   validator: {
     $jsonSchema: {
@@ -11,7 +11,7 @@ db.createCollection("notifications", {
         },
         message: {
           bsonType: "string",
-          pattern: "^.{1,50}$",
+          pattern: "^.{1,200}$",
           description: "notification message"
         }
     }

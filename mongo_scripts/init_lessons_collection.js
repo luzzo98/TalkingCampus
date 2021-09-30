@@ -1,4 +1,3 @@
-db = new Mongo().getDB("talkingCampus")
 db.createCollection("lessons", {
   validator: {
     $jsonSchema: {
@@ -14,16 +13,12 @@ db.createCollection("lessons", {
           description: "must be a valid room id"
         },
         start_time: {
-          bsonType: "int",
-          minimum: 0,
-          maximum: 23,  
-          description: "must be a valid and unique start hour"
+          bsonType: "date",
+          description: "must be a valid date"
         },
         end_time: {
-          bsonType: "int",
-          minimum: 0,
-          maximum: 23,  
-          description: "must be a valid end hour"
+          bsonType: "date",
+          description: "must be valid and based on start_time"
         },
     }
   }

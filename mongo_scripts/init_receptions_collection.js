@@ -1,4 +1,3 @@
-db = new Mongo().getDB("talkingCampus")
 db.createCollection("receptions", {
   validator: {
     $jsonSchema: {
@@ -11,20 +10,15 @@ db.createCollection("receptions", {
         },
         room_id: {
           bsonType: "string",
-          pattern: "^Aula[1-3].([1-9]){1,2}$",  
-          description: "must be unique classroom id: it's built on floor and progressive room number"
+          description: "must be a valid room id"
         },
         start_time: {
-          bsonType: "int",
-          minimum: 0,
-          maximum: 23, 
-          description: "must be a valid and unique start hour"
+          bsonType: "date", 
+          description: "must be a valid and unique date"
         },
         end_time: {
-          bsonType: "int",
-          minimum: 0,
-          maximum: 23,  
-          description: "must be a valid end hour"
+          bsonType: "date",
+          description: "must be valid and based on start_time"
         },
     }
   }
