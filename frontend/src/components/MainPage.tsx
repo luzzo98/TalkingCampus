@@ -102,7 +102,7 @@ const MainPage : React.FC = () => {
                                 }
                             }}
                          >
-                             {   (!el.isMarkerSet || mapState.mode === "modifica") ?
+                             {(!el.isMarkerSet || mapState.mode === "modifica") ?
                                                               <EditPopUp elem={el}
                                                                   onSubmit={() => {
                                                                       el.isMarkerSet = true

@@ -73,6 +73,10 @@ export function getElements(user: User):[string, string][] {
     return elements
 }
 
+export function closePopup(popupRef: React.RefObject<L.Popup>, id: number) {
+    (popupRef.current?.getElement()?.children[id] as HTMLLinkElement).click()
+}
+
 export function generateIcon(type: string, id:string) {
     const iconMarkup = renderToStaticMarkup(
         type !== "none" ?

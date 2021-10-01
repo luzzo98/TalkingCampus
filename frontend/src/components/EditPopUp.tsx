@@ -52,10 +52,8 @@ const EditPopUp: React.FC<props> = ({elem, onDelete, onSubmit}) => {
         return icons
     }
 
-    const closePopup: () => void = () => (popupRef.current?.getElement()?.children[closeButtonIndex] as HTMLLinkElement).click()
-
     function handleDelete(){
-        closePopup()
+        utils.closePopup(popupRef, closeButtonIndex)
         setTimeout(() => {
             onDelete()
         }, 10)
@@ -63,7 +61,7 @@ const EditPopUp: React.FC<props> = ({elem, onDelete, onSubmit}) => {
 
     function handleSubmit(e: FormEvent<HTMLFormElement>){
         if(formState.name !== "" && formState.type !== "" && formState.seats !== ""){
-            closePopup()
+            utils.closePopup(popupRef, closeButtonIndex)
             if (onSubmit)
                 onSubmit()
         }
