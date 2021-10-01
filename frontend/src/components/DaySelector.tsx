@@ -7,6 +7,8 @@ const { Option } = Select;
 require("../styles/initialForm/initialFormStyle.scss")
 
 interface Props {
+    professorId?: string,
+    courseId?: string,
     hours?: {
         start: string,
         end: string,
