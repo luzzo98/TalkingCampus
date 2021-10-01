@@ -7,9 +7,9 @@ export interface IMarker {
     id: string
 }
 
-export interface MarkerDictionary {
+/*export interface MarkerDictionary {
     [id: string]: IMarker[]
-}
+}*/
 
 export interface User {
     id: number;
@@ -25,10 +25,17 @@ export interface MainpageContents {
 
 export interface Room {
     type: string,
+    maximum_seats: number,
     occupied_seats: number,
-    total_seats: number,
-    lesson_name?: string,
-    start?: string,
-    end?: string
-    teacher?: string
+    name: string,
+    floor: number,
+    position: [number, number],
+    observers: string[],
+    phone_number?: string,
+    opening_hour?: [number, number],
+    closing_hour?: [number, number]
+}
+
+export interface RoomOnMap extends Room {
+    isMarkerSet: boolean
 }
