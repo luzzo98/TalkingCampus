@@ -1,40 +1,45 @@
-import {Schema} from "mongoose";
-
-enum Type {
-    Bath,
-    ClassRoom,
-    Laboratory,
-    Cafeteria,
-    Office,
-    Study_Room
-}
+import {model, Schema} from "mongoose";
 
 interface Room {
-    type: Type,
+    type: string,
     maximum_seats: number,
     occupied_seats: number,
     name: string,
+    floor: number,
     position: [number, number]
     observers?: string[],
     adding_info?: {
         phone_number?: string
         opening_hour?: {
-            hour: number,
+            hours: number,
             minutes: number
         }
         closing_hour?: {
-            hour: number,
+            hours: number,
             minutes: number
         }
     }
 }
 
-/*const roomSchema = new Schema<Room>({
-    type: Type,
+const roomSchema = new Schema<Room>({
+    type: String,
     maximum_seats: Number,
-    occupied_seats: {Number, default: 0},
+    occupied_seats: {type: Number, default: 0},
     name: String,
+    floor: Number,
     position: [Number, Number],
-    observers:
-})*/
+    observers: {type: [{String}], default: []},
+    adding_info: {
+        phone_number: {type: String, default: ""},
+        opening_hour: {
+            hours: Number,
+            minutes: Number
+        },
+        closing_hour: {
+            hours: Number,
+            minutes: Number
+        }
+    }
+});
 
+module.exports = model<Room>("Rooms", roomSchema);

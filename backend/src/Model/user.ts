@@ -6,9 +6,10 @@ interface User {
     psw: string;
     name?: string;
     surname?: string;
-    badge_number?: String,
-    phone_number?: String,
-    university_name?: String
+    badge_number?: string,
+    phone_number?: string,
+    university_name?: string
+    picture?: string
 }
 
 const studentSchema = new Schema<User>({
@@ -19,7 +20,8 @@ const studentSchema = new Schema<User>({
     surname: String,
     badge_number: String,
     phone_number: String,
-    university_name: String
+    university_name: String,
+    picture: {data: Buffer, contentType: String}
 })
 
 const teacherSchema = new Schema<User>({
@@ -27,15 +29,15 @@ const teacherSchema = new Schema<User>({
     psw: String,
     role: "teacher",
     name: String,
-    surname: String
+    surname: String,
+    picture: {data: Buffer, contentType: String}
 })
 
 const adminSchema = new Schema<User>({
     email: "admin.admin@unibo.it",
-    psw: "admin",
+    psw: "talkingCampusAdmin",
     role: "admin",
 })
 
 module.exports(model<User>('Student', studentSchema));
 module.exports(model<User>('Teacher', teacherSchema));
-module.exports(model<User>('Admin', adminSchema));
