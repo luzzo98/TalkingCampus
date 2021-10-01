@@ -2,9 +2,9 @@ import {MapContainer, ImageOverlay, LayersControl, Marker} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/leaflet.js.map';
 import React, {Reducer, useEffect, useReducer, useRef, useState} from 'react';
-import {MainpageContents, Room, RoomOnMap} from '../Model';
+import {MainpageContents, RoomOnMap} from '../Model';
 import '../styles/main_page/mainPageStyle.scss'
-import { Control, LatLngBoundsLiteral, LatLngExpression, LatLngTuple, LayersControlEvent, LeafletMouseEvent, Map} from "leaflet";
+import { Control, LatLngBoundsLiteral, LatLngExpression, LayersControlEvent, LeafletMouseEvent, Map} from "leaflet";
 import floor1 from "../assets/floor1.svg"
 import floor2 from "../assets/floor2.svg"
 import groundFloor from "../assets/groundFloor.svg"
@@ -124,7 +124,8 @@ const MainPage : React.FC = () => {
     }
 
     const baseLayerChange = (floorChanged: LayersControlEvent) => {
-        setMapState({ currentPiano: floorChanged.name });
+        const floor = Number(floorChanged.name.replace("piano ", ""))
+        setMapState({ currentPiano: floor });
     }
 
     const addingMarker = (e: LeafletMouseEvent) => {
