@@ -102,20 +102,15 @@ const MainPage : React.FC = () => {
                                 }
                             }}
                          >
-                             {   !el.isMarkerSet ? <EditPopUp onSubmit={(type) => {
-                                                                            el.type = type
-                                                                            el.isMarkerSet = true
-                                                                      }
-                                                             } onDelete={deleteIncompleteMarker}/>
-                                 : mapState.mode === "modifica" ? <EditPopUp onSubmit={(type) => {
-                                                                            el.type = type
-                                                                        }
+                             {   (!el.isMarkerSet || mapState.mode === "modifica") ?
+                                                              <EditPopUp elem={el}
+                                                                  onSubmit={() => {
+                                                                      el.isMarkerSet = true
+                                                                      //getRooms()
                                                                     }
-                                                                    onDelete={deleteIncompleteMarker}
-                                                                    name={"Aula"}
-                                                                    type={el.type}
-                                                                    seats={"100"}/>
-                                     : mapState.mode === "elimina" ? <DeletePopUp room_id={el.type}/>
+                                                                  }
+                                                              onDelete={deleteIncompleteMarker}/>
+                                         : mapState.mode === "elimina" ? <DeletePopUp room_id={el.type}/>
                                          : mapState.mode === "aggiungi" ? null : <DefaultPopUp room={el}/>
                              }
                          </Marker>
@@ -130,14 +125,18 @@ const MainPage : React.FC = () => {
 
     const addingMarker = (e: LeafletMouseEvent) => {
         if (mapStateRef.current?.mode === "aggiungi") {
-            const piano: number = mapState.currentPiano
+            const piano: number = mapStateRef.current?.currentPiano
             const tempMarkers = mapStateRef.current?.markers
-            /*tempMarkers[piano].push({
-                id: "piano-" + (piano.split(" ")[1]) + "-" + id++,
-                type: "none",
-                position: [e.latlng.lat, e.latlng.lng] as LatLngTuple,
-                isMarkerSet: false
-            })*/
+            tempMarkers.push({
+                floor: piano,
+                type: "",
+                position: [e.latlng.lat, e.latlng.lng],
+                occupied_seats: 0,
+                maximum_seats: 0,
+                isMarkerSet: false,
+                name: "",
+                observers: [],
+            })
             setMapState({ markers: tempMarkers })
         }
     }
