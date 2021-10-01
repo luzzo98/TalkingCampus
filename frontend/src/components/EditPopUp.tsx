@@ -2,28 +2,27 @@ import React, {createRef, FormEvent, Ref, useReducer, useRef, useState} from "re
 import {Popup} from "react-leaflet";
 import {Button, Form, Input, Select} from "antd";
 import * as utils from "../utils/utils"
+import {Room} from "../Model";
 require("../styles/pop_up/editPopUpStyle.scss")
 
 interface props  {
-    name?: string
-    seats?: string
-    type?: string
-    onSubmit: (type: string, name: string, seats: string) => void
+    elem: Room
+    onSubmit?: () => void
     onDelete: () => void
 }
 
 interface PopFormState {
     type: string
-    seats: string
+    seats: number
     name: string
 }
 
-const EditPopUp: React.FC<props> = ({onSubmit, onDelete, type, name, seats}) => {
+const EditPopUp: React.FC<props> = ({elem, onDelete, onSubmit}) => {
 
     const initState: PopFormState = {
-        type: type ? type : "",
-        seats: seats ? seats : "",
-        name: name ? name : ""
+        type: elem.type,
+        seats: elem.maximum_seats,
+        name: elem.name
     }
     const [formState, setFormState] = useReducer(utils.reducer, initState)
     const popupRef = createRef<L.Popup>()
@@ -32,12 +31,15 @@ const EditPopUp: React.FC<props> = ({onSubmit, onDelete, type, name, seats}) => 
     function handleChangeSelect(value: any, param: string) {
         switch (param) {
             case "room":
+                elem.type = value
                 setFormState({type: value})
                 break;
             case "seats":
+                elem.maximum_seats = value
                 setFormState({seats: value})
                 break;
             case "name":
+                elem.name = value
                 setFormState({name: value})
         }
     }
@@ -62,9 +64,8 @@ const EditPopUp: React.FC<props> = ({onSubmit, onDelete, type, name, seats}) => 
     function handleSubmit(e: FormEvent<HTMLFormElement>){
         if(formState.name !== "" && formState.type !== "" && formState.seats !== ""){
             closePopup()
-            setTimeout(() => {
-                onSubmit(formState.type, formState.name, formState.seats)
-            }, 10)
+            if (onSubmit)
+                onSubmit()
         }
         else
             console.log("bad submit")
