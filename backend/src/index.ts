@@ -1,7 +1,9 @@
-//const mongoose = require("mongoose");
+const mongoose = require("mongoose");
+
 const cors = require("cors");
 const express = require("express");
-const mongoose = require("@types/mongoose");
+
+const setRoomRoutes = require("./Routes/roomRoutes.ts")
 
 const app = express();
 const PORT = 80;
@@ -11,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 //vanno aggiunte le routes
-
+setRoomRoutes(app);
 
 //connessione a mongo db
 mongoose.connect('mongodb://mongo:27017/talkingCampus');
