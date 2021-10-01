@@ -16,7 +16,7 @@ app.use(express.json());
 setRoomRoutes(app);
 
 //connessione a mongo db
-mongoose.connect('mongodb://mongo:27017/talkingCampus');
+mongoose.connect('mongodb://localhost:27017/talkingCampus');
 
 //il server è on
 app.listen(PORT, function () {

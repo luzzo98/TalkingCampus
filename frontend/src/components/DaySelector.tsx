@@ -17,7 +17,7 @@ interface Props {
     }[]
 }
 
-const DaySelector: React.FC<Props> = ({hours}) => {
+const DaySelector: React.FC<Props> = ({professorId, courseId, hours}) => {
 
     const rooms = ['Aula 3.3', 'Aula 3.4', 'Lab. Vela']
     
