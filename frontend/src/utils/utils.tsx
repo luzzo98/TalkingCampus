@@ -13,14 +13,14 @@ import {IconDefinition} from "@fortawesome/fontawesome-common-types";
 import {divIcon, LatLngTuple} from "leaflet";
 import * as React from "react";
 
-export const locals: {[id: string]: IconDefinition} = {
-    "Aula_Studio" : faBook,
-    "Laboratorio" : faFlask,
-    "Bagno"       : faBath,
-    "Segreteria"  : faFax,
-    "Mensa"       : faCoffee,
-    "Aula"        : faChalkboardTeacher,
-}
+export const locals: Map<string,IconDefinition> = new Map<string, IconDefinition>([
+    ["Aula_Studio", faBook],
+    ["Laboratorio", faFlask],
+    ["Bagno", faBath],
+    ["Segreteria", faFax],
+    ["Mensa", faCoffee],
+    ["Aula", faChalkboardTeacher]
+])
 
 export const reducer = (prevState: any, updatedProperty:any) => ({
     ...prevState,
@@ -51,7 +51,6 @@ export function mapToRoom(jsonElement: any): RoomOnMap{
     };
 }
 
-//TODO: da fare sicuramente meglio
 export function getElements(user: User):[string, string][] {
     let elements: [string, string][] = [];
     switch (user.role){
@@ -73,10 +72,14 @@ export function getElements(user: User):[string, string][] {
     return elements
 }
 
+export function closePopup(popupRef: React.RefObject<L.Popup>, id: number) {
+    (popupRef.current?.getElement()?.children[id] as HTMLLinkElement).click()
+}
+
 export function generateIcon(type: string, id:string) {
     const iconMarkup = renderToStaticMarkup(
         type !== "none" ?
-            <div className='marker-pin' id={id}><FontAwesomeIcon icon={locals[type]}/></div> :
+            <div className='marker-pin' id={id}><FontAwesomeIcon icon={locals.get(type) as IconDefinition}/></div> :
     <div className='marker-pin' id={id}/>
 );
     return divIcon({

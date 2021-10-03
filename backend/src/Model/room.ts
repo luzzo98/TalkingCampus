@@ -25,12 +25,13 @@ const roomSchema = new Schema<Room>({
     type: String,
     maximum_seats: Number,
     occupied_seats: {type: Number, default: 0},
-    name: String,
+    name: {type: String, unique: true},
     floor: Number,
     position: [Number, Number],
     observers: {type: [{String}], default: []},
     adding_info: {
-        phone_number: {type: String, default: ""},
+        required: false,
+        phone_number: {type: String},
         opening_hour: {
             hours: Number,
             minutes: Number
@@ -42,4 +43,4 @@ const roomSchema = new Schema<Room>({
     }
 });
 
-module.exports = model<Room>("Rooms", roomSchema);
+module.exports = model<Room>("Room", roomSchema);

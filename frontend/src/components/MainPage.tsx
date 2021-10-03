@@ -4,7 +4,14 @@ import 'leaflet/dist/leaflet.js.map';
 import React, {Reducer, useEffect, useReducer, useRef, useState} from 'react';
 import {MainpageContents, RoomOnMap} from '../Model';
 import '../styles/main_page/mainPageStyle.scss'
-import { Control, LatLngBoundsLiteral, LatLngExpression, LayersControlEvent, LeafletMouseEvent, Map} from "leaflet";
+import {
+    Control,
+    LatLngBoundsLiteral,
+    LatLngExpression,
+    LayersControlEvent,
+    LeafletMouseEvent,
+    Map
+} from "leaflet";
 import floor1 from "../assets/floor1.svg"
 import floor2 from "../assets/floor2.svg"
 import groundFloor from "../assets/groundFloor.svg"
@@ -86,7 +93,6 @@ const MainPage : React.FC = () => {
     }, [mapState.mode])
 
     function renderMarkers(floor: number) {
-        console.log(mapState.markers)
         return mapState.markers.filter(r => r.floor === floor).map(
             el => {
                 return <Marker position={el.position} draggable={!el.isMarkerSet} icon={utils.generateIcon(el.type, el.name)}
@@ -102,15 +108,18 @@ const MainPage : React.FC = () => {
                                 }
                             }}
                          >
-                             {   (!el.isMarkerSet || mapState.mode === "modifica") ?
-                                                              <EditPopUp elem={el}
-                                                                  onSubmit={() => {
-                                                                      el.isMarkerSet = true
-                                                                      //getRooms()
-                                                                    }
-                                                                  }
+                             {(!el.isMarkerSet || mapState.mode === "modifica") ?
+                                                              <EditPopUp
+                                                                  buttonText={mapState.mode}
+                                                                  elem={el}
+                                                                  onSubmit={() => el.isMarkerSet = true}
                                                               onDelete={deleteIncompleteMarker}/>
-                                         : mapState.mode === "elimina" ? <DeletePopUp room_id={el.type}/>
+                                         : mapState.mode === "elimina" ? <DeletePopUp
+                                                                            onDelete={() => {
+                                                                                el.isMarkerSet = false
+                                                                                deleteIncompleteMarker();
+                                                                            }}
+                                                                            room_id={el.name}/>
                                          : mapState.mode === "aggiungi" ? null : <DefaultPopUp room={el}/>
                              }
                          </Marker>
@@ -130,11 +139,11 @@ const MainPage : React.FC = () => {
             tempMarkers.push({
                 floor: piano,
                 type: "",
-                position: [e.latlng.lat, e.latlng.lng],
                 occupied_seats: 0,
                 maximum_seats: 0,
                 isMarkerSet: false,
-                name: "",
+                name: piano + "." + (mapStateRef.current?.markers.filter(r => r.floor === piano).length + 1),
+                position: [e.latlng.lat, e.latlng.lng],
                 observers: [],
             })
             setMapState({ markers: tempMarkers })
@@ -172,6 +181,7 @@ const MainPage : React.FC = () => {
     function setPreviousMapState() {
         setMapState({ mode: mapStateRef.current?.mode})
     }
+
     const handleMapEvent = (m: Map) => {
         sizingMap(m)
         m.on("baselayerchange", (event: LayersControlEvent) => baseLayerChange(event))

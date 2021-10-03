@@ -16,7 +16,7 @@ const DefaultPopUp: React.FC<Props> = ({room}) => {
 
     return (
         <Popup offset={util.getOffset()}>
-            <ModalTitle> {room.type} </ModalTitle>
+            <ModalTitle> {room.name} </ModalTitle>
             <hr/>
             <p>- Posti occupati: {room.occupied_seats}/{room.maximum_seats}</p>
             {room.type === "Aula" ?
