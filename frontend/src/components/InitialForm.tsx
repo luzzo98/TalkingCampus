@@ -39,7 +39,7 @@ const InitialForm:React.FC = () => {
         },
     };
 
-    const addCoursLayoutWithOutLabel = {
+    const addCourseLayoutWithOutLabel = {
         wrapperCol: {
             xs: { span: 24, offset: 0 },
             sm: { span: 15, offset: 9 },
@@ -303,7 +303,7 @@ const InitialForm:React.FC = () => {
                                         <>
                                             {fields.map((field, index) => (
                                                 <Form.Item
-                                                    {...(index === 0 ? formItemLayout : addCoursLayoutWithOutLabel)}
+                                                    {...(index === 0 ? formItemLayout : addCourseLayoutWithOutLabel)}
                                                     label={index === 0 ? 'Corsi insegnati' : ''}
                                                     required={true}
                                                     key={field.key}
