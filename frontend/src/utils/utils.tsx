@@ -29,6 +29,7 @@ export const reducer = (prevState: any, updatedProperty:any) => ({
 
 export function mapToRoom(jsonElement: any): RoomOnMap{
     return {
+        id: jsonElement._id,
         type: jsonElement.type,
         maximum_seats: jsonElement.maximum_seats,
         occupied_seats: jsonElement.occupied_seats,
@@ -36,17 +37,11 @@ export function mapToRoom(jsonElement: any): RoomOnMap{
         floor: jsonElement.floor,
         position: jsonElement.position,
         observers: jsonElement.observers,
-        phone_number: !jsonElement.adding_info ? "" :
-            !jsonElement.adding_info.phone_number ? "" :
-                jsonElement.adding_info.phone_number,
-        opening_hour: !jsonElement.adding_info ? [-1, -1] :
-            !jsonElement.adding_info.opening_hour ? [-1, -1] :
-                [jsonElement.adding_info.opening_hour.hours,
-                    jsonElement.adding_info.opening_hour.minutes],
-        closing_hour: !jsonElement.adding_info ? [-1, -1] :
-            !jsonElement.adding_info.closing_hour ? [-1, -1] :
-                [jsonElement.adding_info.closing_hour.hours,
-                    jsonElement.adding_info.closing_hour.minutes],
+        adding_info: !jsonElement.adding_info ? {}
+                   : { phone_number: !jsonElement.adding_info.phone_number ? "" : jsonElement.adding_info.phone_number,
+                       opening_hour: !jsonElement.adding_info.opening_hour ? [null, null] : jsonElement.adding_info.opening_hour,
+                       closing_hour: !jsonElement.adding_info.closing_hour ? [null, null] : jsonElement.adding_info.closing_hour,
+        },
         isMarkerSet: true,
     };
 }
@@ -89,5 +84,3 @@ export function generateIcon(type: string, id:string) {
         iconAnchor: [15, 42]
     });
 }
-
-export const getOffset:() => LatLngTuple = () => [2, -2];

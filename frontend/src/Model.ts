@@ -20,6 +20,7 @@ export interface MainpageContents {
 }
 
 export interface Room {
+    id?: string,
     type: string,
     maximum_seats: number,
     occupied_seats: number,

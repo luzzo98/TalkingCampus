@@ -4,14 +4,7 @@ import 'leaflet/dist/leaflet.js.map';
 import React, {Reducer, useEffect, useReducer, useRef, useState} from 'react';
 import {MainpageContents, RoomOnMap} from '../Model';
 import '../styles/main_page/mainPageStyle.scss'
-import {
-    Control,
-    LatLngBoundsLiteral,
-    LatLngExpression,
-    LayersControlEvent,
-    LeafletMouseEvent,
-    Map
-} from "leaflet";
+import { Control, LatLngBoundsLiteral, LatLngExpression, LayersControlEvent, LeafletMouseEvent, Map } from "leaflet";
 import floor1 from "../assets/floor1.svg"
 import floor2 from "../assets/floor2.svg"
 import groundFloor from "../assets/groundFloor.svg"
@@ -24,9 +17,6 @@ import {message} from "antd";
 import {useMediaQuery} from "react-responsive";
 import MainMenu from "./MainMenu";
 import {CSSTransition} from "react-transition-group";
-
-//Devono essere richiesti da db ovviamente
-let id: number = 20
 
 interface MapState {
     mode: string,
@@ -110,17 +100,21 @@ const MainPage : React.FC = () => {
                          >
                              {(!el.isMarkerSet || mapState.mode === "modifica") ?
                                                               <EditPopUp
+                                                                  offset={[2, -2]}
                                                                   buttonText={mapState.mode}
+                                                                  yetExistent={el.isMarkerSet}
                                                                   elem={el}
                                                                   onSubmit={() => el.isMarkerSet = true}
                                                               onDelete={deleteIncompleteMarker}/>
                                          : mapState.mode === "elimina" ? <DeletePopUp
+                                                                            offset={[2, -2]}
                                                                             onDelete={() => {
                                                                                 el.isMarkerSet = false
                                                                                 deleteIncompleteMarker();
                                                                             }}
-                                                                            room_id={el.name}/>
-                                         : mapState.mode === "aggiungi" ? null : <DefaultPopUp room={el}/>
+                                                                            room_name={el.name}
+                                                                            room_id={el.id as string}/>
+                                         : mapState.mode === "aggiungi" ? null : <DefaultPopUp offset={[2, -2]} room={el}/>
                              }
                          </Marker>
             }
@@ -217,7 +211,6 @@ const MainPage : React.FC = () => {
     function deleteIncompleteMarker() {
         let dicto = mapState.markers
         dicto = dicto.filter(e => e.isMarkerSet)
-        //dicto[mapState.currentPiano] = dicto[mapState.currentPiano].filter(e => e.isMarkerSet)
         setMapState({markers: dicto})
     }
 

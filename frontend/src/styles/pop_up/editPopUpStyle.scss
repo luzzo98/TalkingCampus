@@ -5,6 +5,16 @@
   width: 120%;
   margin: 20px 18px;
 
+  .extra-group {
+    h3 {
+      margin-top: 2%;
+      text-align: center;
+    }
+    div.notRuledField {
+      margin-top: 0;
+    }
+  }
+
   .ant-row{
     flex-flow: row;
     margin-bottom: 5px;

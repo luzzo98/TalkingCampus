@@ -8,6 +8,8 @@ require("../styles/pop_up/deletePopupStyle.scss")
 
 interface Props {
     room_id: string,
+    room_name: string,
+    offset: [number, number],
     onDelete: () => void
 }
 
@@ -19,21 +21,21 @@ async function handleClose(id: string){
         .then(response => response.ok ? utils.closePopup(popupRef, closeButtonIndex) : null)
 }
 
-const DeletePopUp: React.FC<Props> = ({room_id, onDelete}) => {
+const DeletePopUp: React.FC<Props> = (props: Props) => {
 
     async function handleDelete(id: string){
         await handleClose(id)
-        onDelete();
+        props.onDelete();
     }
 
     return (
         <Popup
             ref={popupRef}
-            offset={utils.getOffset()}>
-            <p>Vuoi eliminare {room_id}?</p>
+            offset={props.offset}>
+            <p>Vuoi eliminare {props.room_name}?</p>
             <div className={"pop-up-buttons"}>
                 <Button className={"choice-button"} onClick={() => utils.closePopup(popupRef, closeButtonIndex)}>No</Button>
-                <Button className={"choice-button"} onClick={() => handleDelete(room_id)}>Si</Button></div>
+                <Button className={"choice-button"} onClick={() => handleDelete(props.room_id)}>Si</Button></div>
         </Popup>
     )
 }
