@@ -1,3 +1,6 @@
+import { ObjectId } from "mongodb";
+import {Schema} from "mongoose";
+
 const Room = require("../Model/room.ts");
 
 exports.listAllRooms = function (req, res){
@@ -19,7 +22,7 @@ exports.addRoom = function (req, res){
 };
 
 exports.deleteRoom = function (req, res){
-    Room.deleteOne({"name" : req.params.id}, function (err, room){
+    Room.deleteOne({"_id" : new ObjectId(req.params.id)}, function (err, room){
         if(err)
             res.send(err)
 

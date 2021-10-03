@@ -1,4 +1,4 @@
-import {DivIcon, LatLngTuple} from "leaflet";
+import {LatLngTuple} from "leaflet";
 
 export interface IMarker {
     position: LatLngTuple;
@@ -6,10 +6,6 @@ export interface IMarker {
     isMarkerSet: boolean;
     id: string
 }
-
-/*export interface MarkerDictionary {
-    [id: string]: IMarker[]
-}*/
 
 export interface User {
     id: number;
@@ -29,11 +25,19 @@ export interface Room {
     occupied_seats: number,
     name: string,
     floor: number,
-    position: [number, number],
-    observers: string[],
-    phone_number?: string,
-    opening_hour?: [number, number],
-    closing_hour?: [number, number]
+    position: [number, number]
+    observers?: string[],
+    adding_info?: {
+        phone_number?: string
+        opening_hour?: {
+            hours: number,
+            minutes: number
+        }
+        closing_hour?: {
+            hours: number,
+            minutes: number
+        }
+    }
 }
 
 export interface RoomOnMap extends Room {
