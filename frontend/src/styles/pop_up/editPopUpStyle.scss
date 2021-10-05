@@ -5,6 +5,18 @@
   width: 120%;
   margin: 20px 18px;
 
+  p:last-of-type {
+    margin-bottom: 4%;
+  }
+
+  .classroom-infos {
+    p {
+      margin-left: 4%;
+      margin-top: 0;
+      margin-bottom: 2%;
+    }
+  }
+
   .extra-group {
     h3 {
       margin-top: 2%;

@@ -44,3 +44,30 @@ export interface Room {
 export interface RoomOnMap extends Room {
     isMarkerSet: boolean
 }
+
+export interface Lesson {
+    course_name: string,
+    room: string,
+    day: string,
+    start: {
+        hours: number,
+        minutes: number
+    },
+    end: {
+        hours: number,
+        minutes: number
+    }
+}
+
+export interface Teacher {
+    email: string
+    psw: string
+    name: string,
+    surname: string,
+    //picture: {data: Buffer, contentType: String}
+}
+
+export interface Course {
+    course_id: string,
+    teacher_id: string
+}

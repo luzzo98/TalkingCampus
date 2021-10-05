@@ -1,4 +1,4 @@
-import React, {createRef, FormEvent, useReducer, useRef, useState} from "react";
+import React, {createRef, FormEvent, useEffect, useReducer, useRef, useState} from "react";
 import {Popup} from "react-leaflet";
 import {Button, Form, Input, Select} from "antd";
 import * as utils from "../utils/utils"
@@ -21,7 +21,7 @@ interface PopFormState {
 }
 
 interface AddingInfo {
-    phone?: string
+    phone_number?: string
     opening_hour?: {
         hours: number,
         minutes: number
@@ -39,30 +39,48 @@ async function addRoom(newRoom: Room){
             'Content-Type':'application/json'
         },
         body: JSON.stringify(newRoom)
-    }).then(response =>  response.ok)
+    }).then(response => response.ok)
 }
 
-async function editRoom(){
-    console.log("devi modificareeee");
-    return false
+async function editRoom(update: any, id: string){
+    return fetch(`http://localhost:80/api/edit-room/${id}`, {
+        method: "POST",
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(update)
+    }).then(response => response.ok)
 }
 
 const EditPopUp: React.FC<props> = (props: props) => {
 
-    const initState: PopFormState = {
+    function defUpdate(init: any, last: any){
+        return Object.entries(last).filter(e => (init as any)[e[0]] !== e[1])
+    }
+
+    function combineUpdate(){
+        const update:{[id: string] : any} = {}
+        defUpdate(initState, formState)
+            .concat(defUpdate(addingInfoInit, addingInfo)).forEach(e => update[e[0]] = e[1])
+        return update;
+    }
+
+    const [initState] = useState<PopFormState>({
         type: props.elem.type,
         seats: props.elem.maximum_seats,
         name: props.elem.name
-    }
-
-    const addingInfoInit: AddingInfo = props.elem.adding_info ? props.elem.adding_info : {}
-
+    })
+    const [addingInfoInit] = useState<AddingInfo>(props.elem.adding_info ? props.elem.adding_info : {})
     const [formState, setFormState] = useReducer(utils.reducer, initState)
     const [addingInfo, setAddingInfo] = useReducer(utils.reducer, addingInfoInit)
     const composed_name = props.elem.name.split(" ")
     const [initialName] = useState(composed_name[composed_name.length-1])
     const popupRef = createRef<L.Popup>()
     const closeButtonIndex: number = 2
+
+    useEffect(() => {
+        props.elem.adding_info = addingInfo
+    }, [addingInfo])
 
     function handleChangeSelect(value: any, param: string) {
         switch (param) {
@@ -87,7 +105,7 @@ const EditPopUp: React.FC<props> = (props: props) => {
         const info = (param === "opening" || param === "closing") ? (value as string).split(":") : value
         switch (param){
             case "phone":
-                setAddingInfo({phone: info})
+                setAddingInfo({phone_number: value})
                 break;
             case "opening":
                 setAddingInfo({opening_hour: {
@@ -102,7 +120,6 @@ const EditPopUp: React.FC<props> = (props: props) => {
                     }})
                 break;
         }
-        props.elem.adding_info = addingInfo
     }
 
     function generateOptions(): JSX.Element[]{
@@ -119,7 +136,7 @@ const EditPopUp: React.FC<props> = (props: props) => {
     async function handleSubmit(e: FormEvent<HTMLFormElement>){
         if(formState.name !== "" && formState.type !== "" && formState.seats !== ""){
             utils.closePopup(popupRef, closeButtonIndex)
-            const submitIsOk = props.yetExistent ? await editRoom() : await addRoom(props.elem)
+            const submitIsOk = props.yetExistent ? await editRoom(combineUpdate(), props.elem.id as string) : await addRoom(props.elem)
             if (submitIsOk) {
                 props.onSubmit()
             }

@@ -11,6 +11,7 @@ import groundFloor from "../assets/groundFloor.svg"
 import DefaultPopUp from "./DefaultPopUp";
 import {useLocation} from "react-router-dom";
 import * as utils from "../utils/utils";
+import * as roomDeserializer from "../utils/RoomDeserializer";
 import DeletePopUp from "./DeletePopUp";
 import EditPopUp from "./EditPopUp";
 import {message} from "antd";
@@ -37,7 +38,7 @@ const MainPage : React.FC = () => {
     function getRooms() {
         fetch("http://localhost:80/api/rooms")
             .then((res: Response) => res.json())
-            .then((json:JSON[]) => json.map(value => utils.mapToRoom(value)))
+            .then((json:JSON[]) => json.map(value => roomDeserializer.mapToRoom(value)))
             .then((markers) => {
                 setMapState({markers: markers})
                 setDataFetched(true)
