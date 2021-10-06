@@ -2,7 +2,7 @@ import {Application} from "express";
 
 module.exports = function setRoomRoutes(app: Application) {
 
-    const roomsController = require("../Controllers/roomsController.ts");
+    const roomsController = require("../Controllers/RoomsController.ts");
 
     app.route("/api/rooms")
        .get(roomsController.listAllRooms)
@@ -12,4 +12,7 @@ module.exports = function setRoomRoutes(app: Application) {
 
     app.route("/api/remove-room/:id")
         .get(roomsController.deleteRoom)
+
+    app.route("/api/edit-room/:id")
+        .post(roomsController.updateRoom)
 };

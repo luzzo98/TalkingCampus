@@ -284,14 +284,14 @@ header {
   border-radius: 10px;
   span {
     font-family: variables.$main-font;
-    font-size: xx-large;
+    font-size: x-large;
     transition: all 0.3s;
   }
 }
 
 .logout-button {
   color: white;
-  margin-top: 25%;
+  margin-top: 20%;
   background-color: variables.$logout_button;
 }
 

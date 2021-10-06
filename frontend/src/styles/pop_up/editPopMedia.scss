@@ -3,15 +3,26 @@
   .leaflet-popup {
     .leaflet-popup-content-wrapper {
       form {
+        .extra-group {
+          div.notRuledField {
+            margin-top: 0;
+          }
+        }
+        .notRuledField{
+          padding-left: 8%;
+          .ant-form-item-label{
+            margin-right: 1px;
+          }
+        }
+
         .ant-form-item {
-          line-height: 0.7;
 
           .ant-form-item-label {
             flex: 0 0 30%;
           }
 
           .ant-form-item-control {
-            flex: 0 0 60%;
+            flex: 1 0 60%;
           }
         }
 

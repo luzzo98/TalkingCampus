@@ -461,7 +461,7 @@ db.createCollection("rooms", {
 
           bsonType: "string",
 
-          pattern: "^(Aula|Aula Studio|Bagno|Mensa|Segreteria|Laboratorio) [1-3].([0-9]){1,2}$",
+          pattern: "^(Aula|Aula_Studio|Bagno|Mensa|Segreteria|Laboratorio) [1-3].([0-9]){1,2}$",
 
           description: "must be a valid room name: <room_name> <floor>.<room_number>"
 
@@ -603,31 +603,31 @@ db.rooms.insertMany([
 
     {"name":"Aula 1.1", "floor": NumberInt(1), "maximum_seats":NumberInt(100), "type":"Aula", "position":[40.757059, -74.198484]},
 
-    {"name":"Aula Studio 1.1", "floor": NumberInt(1), "maximum_seats":NumberInt(50), "type":"Aula_Studio", "position":[40.750755, -74.195824]},
+    {"name":"Aula_Studio 1.2", "floor": NumberInt(1), "maximum_seats":NumberInt(50), "type":"Aula_Studio", "position":[40.750755, -74.195824]},
 
-    {"name":"Aula Studio 1.2", "floor": NumberInt(1), "maximum_seats":NumberInt(50), "type":"Aula_Studio", "position":[40.750755, -74.201059]},
+    {"name":"Aula_Studio 1.3", "floor": NumberInt(1), "maximum_seats":NumberInt(50), "type":"Aula_Studio", "position":[40.750755, -74.201059]},
 
-    {"name":"Bagno 1.1", "floor": NumberInt(1), "maximum_seats":NumberInt(4), "type":"Bagno", "position":[40.736194, -74.184837]},
+    {"name":"Bagno 1.4", "floor": NumberInt(1), "maximum_seats":NumberInt(4), "type":"Bagno", "position":[40.736194, -74.184837]},
 
-    {"name":"Aula 1.2", "floor": NumberInt(1), "maximum_seats":NumberInt(150), "type":"Aula", "position":[40.735226, -74.20045]},
+    {"name":"Aula 1.5", "floor": NumberInt(1), "maximum_seats":NumberInt(150), "type":"Aula", "position":[40.735226, -74.20045]},
 
-    {"name":"Aula 1.3", "floor": NumberInt(1), "maximum_seats":NumberInt(150), "type":"Aula", "position":[40.735226, -74.19450]},
+    {"name":"Aula 1.6", "floor": NumberInt(1), "maximum_seats":NumberInt(150), "type":"Aula", "position":[40.735226, -74.19450]},
 
-    {"name":"Bagno 1.2", "floor": NumberInt(1), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.733275, -74.190587]},
+    {"name":"Bagno 1.7", "floor": NumberInt(1), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.733275, -74.190587]},
 
-    {"name":"Bagno 1.3", "floor": NumberInt(1), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.753694, -74.163894]},
+    {"name":"Bagno 1.8", "floor": NumberInt(1), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.753694, -74.163894]},
 
-    {"name":"Aula Studio 1.3", "floor": NumberInt(1), "maximum_seats":NumberInt(70), "type":"Aula_Studio", "position":[40.72755, -74.202175]},
+    {"name":"Aula_Studio 1.9", "floor": NumberInt(1), "maximum_seats":NumberInt(70), "type":"Aula_Studio", "position":[40.72755, -74.202175]},
 
-    {"name":"Aula Studio 1.4", "floor": NumberInt(1), "maximum_seats":NumberInt(70), "type":"Aula_Studio", "position":[40.72755, -74.198398]},
+    {"name":"Aula_Studio 1.10", "floor": NumberInt(1), "maximum_seats":NumberInt(70), "type":"Aula_Studio", "position":[40.72755, -74.198398]},
 
-    {"name":"Mensa 1.1", "floor": NumberInt(1), "maximum_seats":NumberInt(200), "type":"Mensa", "position":[40.745891, -74.158401]},
+    {"name":"Mensa 1.11", "floor": NumberInt(1), "maximum_seats":NumberInt(200), "type":"Mensa", "position":[40.745891, -74.158401]},
 
-    {"name":"Laboratorio 1.1", "floor": NumberInt(1), "maximum_seats":NumberInt(150), "type":"Laboratorio", "position":[40.728201, -74.178485]},
+    {"name":"Laboratorio 1.12", "floor": NumberInt(1), "maximum_seats":NumberInt(150), "type":"Laboratorio", "position":[40.728201, -74.178485]},
 
-    {"name":"Laboratorio 1.2", "floor": NumberInt(1), "maximum_seats":NumberInt(150), "type":"Laboratorio", "position":[40.728201, -74.172306]},
+    {"name":"Laboratorio 1.13", "floor": NumberInt(1), "maximum_seats":NumberInt(150), "type":"Laboratorio", "position":[40.728201, -74.172306]},
 
-    {"name":"Segreteria 1.1", "floor": NumberInt(1), "maximum_seats":NumberInt(0), "type":"Segreteria", "position":[40.740168, -74.156770],
+    {"name":"Segreteria 1.14", "floor": NumberInt(1), "maximum_seats":NumberInt(0), "type":"Segreteria", "position":[40.740168, -74.156770],
 
         "adding_info":{"phone_number":"3325463745", "opening_hour":{"hours":NumberInt(9),"minutes":NumberInt(0)}, "closing_hour":{"hours":NumberInt(16),"minutes":NumberInt(0)}}},
 
@@ -641,61 +641,61 @@ db.rooms.insertMany([
 
     {"name":"Aula 2.4", "floor": NumberInt(2), "maximum_seats":NumberInt(180), "type":"Aula", "position":[40.756710, -74.181919]},
 
-    {"name":"Mensa 2.1", "floor": NumberInt(2), "maximum_seats":NumberInt(200), "type":"Mensa", "position":[40.74745, -74.16200]},
+    {"name":"Mensa 2.5", "floor": NumberInt(2), "maximum_seats":NumberInt(200), "type":"Mensa", "position":[40.74745, -74.16200]},
 
-    {"name":"Bagno 2.1", "floor": NumberInt(2), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.75070, -74.19127]},
+    {"name":"Bagno 2.6", "floor": NumberInt(2), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.75070, -74.19127]},
 
-    {"name":"Aula 2.5", "floor": NumberInt(2), "maximum_seats":NumberInt(70), "type":"Aula", "position":[40.72787, -74.16200]},
+    {"name":"Aula 2.7", "floor": NumberInt(2), "maximum_seats":NumberInt(70), "type":"Aula", "position":[40.72787, -74.16200]},
 
-    {"name":"Bagno 2.2", "floor": NumberInt(2), "maximum_seats":NumberInt(5), "type":"Bagno", "position":[40.75330, -74.16337]},
+    {"name":"Bagno 2.8", "floor": NumberInt(2), "maximum_seats":NumberInt(5), "type":"Bagno", "position":[40.75330, -74.16337]},
 
-    {"name":"Bagno 2.3", "floor": NumberInt(2), "maximum_seats":NumberInt(5), "type":"Bagno", "position":[40.73711, -74.185009]},
+    {"name":"Bagno 2.9", "floor": NumberInt(2), "maximum_seats":NumberInt(5), "type":"Bagno", "position":[40.73711, -74.185009]},
 
-    {"name":"Aula Studio 2.1", "floor": NumberInt(2), "maximum_seats":NumberInt(40), "type":"Aula_Studio", "position":[40.750768, -74.2019]},
+    {"name":"Aula_Studio 2.10", "floor": NumberInt(2), "maximum_seats":NumberInt(40), "type":"Aula_Studio", "position":[40.750768, -74.2019]},
 
-    {"name":"Aula Studio 2.2", "floor": NumberInt(2), "maximum_seats":NumberInt(40), "type":"Aula_Studio", "position":[40.73451, -74.19522]},
+    {"name":"Aula_Studio 2.11", "floor": NumberInt(2), "maximum_seats":NumberInt(40), "type":"Aula_Studio", "position":[40.73451, -74.19522]},
 
-    {"name":"Laboratorio 2.1", "floor": NumberInt(2), "maximum_seats":NumberInt(125), "type":"Laboratorio", "position": [40.75245, -74.18363]},
+    {"name":"Laboratorio 2.12", "floor": NumberInt(2), "maximum_seats":NumberInt(125), "type":"Laboratorio", "position": [40.75245, -74.18363]},
 
-    {"name":"Laboratorio 2.2", "floor": NumberInt(2), "maximum_seats":NumberInt(125), "type":"Laboratorio", "position": [40.75245, -74.18037]},
+    {"name":"Laboratorio 2.13", "floor": NumberInt(2), "maximum_seats":NumberInt(125), "type":"Laboratorio", "position": [40.75245, -74.18037]},
 
-    {"name":"Bagno 2.4", "floor": NumberInt(2), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.73327, -74.16844]},
+    {"name":"Bagno 2.14", "floor": NumberInt(2), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.73327, -74.16844]},
 
-    {"name":"Segreteria 2.1", "floor": NumberInt(2), "maximum_seats":NumberInt(0), "type":"Segreteria", "position":[40.74556, -74.15917],
+    {"name":"Segreteria 2.15", "floor": NumberInt(2), "maximum_seats":NumberInt(0), "type":"Segreteria", "position":[40.74556, -74.15917],
 
         "adding_info":{"phone_number":"3352788715", "opening_hour":{"hours":NumberInt(9),"minutes":NumberInt(0)}, "closing_hour":{"hours":NumberInt(16),"minutes":NumberInt(0)}}},
 
 
 
-    {"name":"Aula Studio 3.1", "floor": NumberInt(3), "maximum_seats":NumberInt(50), "type":"Aula_Studio", "position":[40.75759, -74.19651]},
+    {"name":"Aula_Studio 3.1", "floor": NumberInt(3), "maximum_seats":NumberInt(50), "type":"Aula_Studio", "position":[40.75759, -74.19651]},
 
-    {"name":"Aula Studio 3.2", "floor": NumberInt(3), "maximum_seats":NumberInt(50), "type":"Aula_Studio", "position":[40.75050, -74.19470]},
+    {"name":"Aula_Studio 3.2", "floor": NumberInt(3), "maximum_seats":NumberInt(50), "type":"Aula_Studio", "position":[40.75050, -74.19470]},
 
-    {"name":"Bagno 3.1", "floor": NumberInt(3), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.75362, -74.16320]},
+    {"name":"Bagno 3.3", "floor": NumberInt(3), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.75362, -74.16320]},
 
-    {"name":"Laboratorio 3.1", "floor": NumberInt(3), "maximum_seats":NumberInt(4), "type":"Laboratorio", "position":[40.74036, -74.15780]},
+    {"name":"Laboratorio 3.4", "floor": NumberInt(3), "maximum_seats":NumberInt(4), "type":"Laboratorio", "position":[40.74036, -74.15780]},
 
-    {"name":"Laboratorio 3.2", "floor": NumberInt(3), "maximum_seats":NumberInt(150), "type":"Laboratorio", "position":[40.74335, -74.15780]},
+    {"name":"Laboratorio 3.5", "floor": NumberInt(3), "maximum_seats":NumberInt(150), "type":"Laboratorio", "position":[40.74335, -74.15780]},
 
-    {"name":"Laboratorio 3.3", "floor": NumberInt(3), "maximum_seats":NumberInt(150), "type":"Laboratorio", "position":[40.74335, -74.15780]},
+    {"name":"Laboratorio 3.6", "floor": NumberInt(3), "maximum_seats":NumberInt(150), "type":"Laboratorio", "position":[40.74335, -74.15780]},
 
-    {"name":"Bagno 3.2", "floor": NumberInt(3), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.73301, -74.16870]},
+    {"name":"Bagno 3.7", "floor": NumberInt(3), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.73301, -74.16870]},
 
-    {"name":"Bagno 3.3", "floor": NumberInt(3), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.73301, -74.19007]},
+    {"name":"Bagno 3.8", "floor": NumberInt(3), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.73301, -74.19007]},
 
-    {"name":"Bagno 3.4", "floor": NumberInt(3), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.7319, -74.1696]},
+    {"name":"Bagno 3.9", "floor": NumberInt(3), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.7319, -74.1696]},
 
-    {"name":"Bagno 3.5", "floor": NumberInt(3), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.75050, -74.1914]},
+    {"name":"Bagno 3.10", "floor": NumberInt(3), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.75050, -74.1914]},
 
-    {"name":"Bagno 3.6", "floor": NumberInt(3), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.75206, -74.1914]},
+    {"name":"Bagno 3.11", "floor": NumberInt(3), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.75206, -74.1914]},
 
-    {"name":"Laboratorio 3.4", "floor": NumberInt(3), "maximum_seats":NumberInt(125), "type":"Laboratorio", "position":[40.73203, -74.18397]},
+    {"name":"Laboratorio 3.12", "floor": NumberInt(3), "maximum_seats":NumberInt(125), "type":"Laboratorio", "position":[40.73203, -74.18397]},
 
-    {"name":"Laboratorio 3.5", "floor": NumberInt(3), "maximum_seats":NumberInt(125), "type":"Laboratorio", "position":[40.73203, -74.18037]},
+    {"name":"Laboratorio 3.13", "floor": NumberInt(3), "maximum_seats":NumberInt(125), "type":"Laboratorio", "position":[40.73203, -74.18037]},
 
-    {"name":"Laboratorio 3.6", "floor": NumberInt(3), "maximum_seats":NumberInt(125), "type":"Laboratorio", "position":[40.73203, -74.17676]},
+    {"name":"Laboratorio 3.14", "floor": NumberInt(3), "maximum_seats":NumberInt(125), "type":"Laboratorio", "position":[40.73203, -74.17676]},
 
-    {"name":"Segreteria 3.1", "floor": NumberInt(3), "maximum_seats":NumberInt(0), "type":"Segreteria", "position":[40.75265, -74.15651],
+    {"name":"Segreteria 3.15", "floor": NumberInt(3), "maximum_seats":NumberInt(0), "type":"Segreteria", "position":[40.75265, -74.15651],
 
         "adding_info":{"phone_number":"3325463745", "opening_hour":{"hours":NumberInt(9),"minutes":NumberInt(0)}, "closing_hour":{"hours":NumberInt(16),"minutes":NumberInt(0)}}}
 
