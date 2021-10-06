@@ -1,0 +1,37 @@
+.hour {
+  width: 100%;
+}
+.hour-line {
+  width: 92% !important;
+}
+@media (min-width: 575px) {
+  .hour {
+    width: auto;
+  }
+  .hour-line {
+    width: 100% !important;
+  }
+}
+.hour-line {
+  display: flex;
+  width: 90% !important;
+}
+
+.hour-line > div {
+  width: 50%;
+}
+
+.hour-line > div > div {
+  margin-bottom: 0;
+}
+
+.add-day {
+  > div {
+    margin-top: 25pt;
+  }
+  text-align: center !important;
+}
+
+.dynamic-delete-button {
+  margin-left: 5pt;
+}

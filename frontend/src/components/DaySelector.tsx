@@ -42,7 +42,7 @@ const DaySelector: React.FC<Props> = ({professorId, courseId, hours}) => {
                     <div className="day-selector">
                         <Form
                             form={form}
-                            name="basic"
+                            name="daySelector"
                             style={{margin: '5% 0', scrollMargin: 'initial'}}
                             onFinish={onFinish}
                             onFinishFailed={onFinishFailed}

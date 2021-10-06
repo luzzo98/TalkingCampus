@@ -9,6 +9,8 @@ import * as utils from "../utils/utils";
 import {User} from "../Model";
 import img from "../assets/volto_uomo.jpg"
 import AppBarTitle from "./AppBarTitle";
+import DaySelectorModalForm from "./DaySelectorPopupModalForm"
+
 require("../styles/initialForm/initialFormStyle.scss")
 
 const { TabPane } = Tabs;
@@ -23,6 +25,8 @@ const mockUser: User = {
 
 const InitialForm:React.FC = () => {
 
+    const [visible, setVisible] = useState(false);
+    const [visibleClassSchedule, setVisibleClassSchedule] = useState(Array<boolean>());
     const [username, setUserName] = useState("")
     const [passw, setPassw] = useState("")
     const history = useHistory();
@@ -38,7 +42,6 @@ const InitialForm:React.FC = () => {
             sm: { span: 20 },
         },
     };
-
     const addCourseLayoutWithOutLabel = {
         wrapperCol: {
             xs: { span: 24, offset: 0 },
@@ -49,21 +52,20 @@ const InitialForm:React.FC = () => {
     const onFinish = (values: any) => {
         console.log('Success:', values);
     };
-
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
 
     const normFile = (e: any) => {
-        //todo elimina il log
-        console.log('Upload event:', e);
         if (Array.isArray(e)) {
             return e;
         }
         return e && e.fileList;
     }
 
-    return(
+    let temp;
+
+    return (
         <div className={'initialForm'}>
             <div className="card-container">
                 <div>
@@ -73,8 +75,8 @@ const InitialForm:React.FC = () => {
                             <Form
                                 form={form}
                                 name="basic"
-                                labelCol={{ span: 6 }}
-                                wrapperCol={{ span: 18 }}
+                                labelCol={{span: 6}}
+                                wrapperCol={{span: 18}}
                                 onFinish={onFinish}
                                 onFinishFailed={onFinishFailed}
                             >
@@ -85,7 +87,7 @@ const InitialForm:React.FC = () => {
                                     rules={[{
                                         type: 'email',
                                         message: 'Inserisci una mail valida',
-                                    },{
+                                    }, {
                                         required: true,
                                         message: 'Inserisci la tua email istituzionale'
                                     }]}
@@ -96,14 +98,14 @@ const InitialForm:React.FC = () => {
                                 <Form.Item
                                     name="password"
                                     label="Password"
-                                    rules={[{ required: true, message: 'Inserisci la tua password' }]}
+                                    rules={[{required: true, message: 'Inserisci la tua password'}]}
                                 >
                                     <Input.Password onChange={(e) => setPassw(e.target.value)}/>
                                 </Form.Item>
 
                                 <Form.Item
                                     className={'form-button'}
-                                    wrapperCol={{ offset: 0, span: 24 }}
+                                    wrapperCol={{offset: 0, span: 24}}
                                 >
                                     <Button type="primary" htmlType="submit">
                                         <Link to={{
@@ -118,8 +120,8 @@ const InitialForm:React.FC = () => {
                             <Form
                                 form={form}
                                 name="basic"
-                                labelCol={{ span: 9 }}
-                                wrapperCol={{ span: 15 }}
+                                labelCol={{span: 9}}
+                                wrapperCol={{span: 15}}
                                 onFinish={onFinish}
                                 onFinishFailed={onFinishFailed}
                             >
@@ -127,7 +129,7 @@ const InitialForm:React.FC = () => {
                                     className="first-elem"
                                     label="Nome"
                                     name="nome"
-                                    rules={[{ required: true, message: 'Inserisci il tuo nome' }]}
+                                    rules={[{required: true, message: 'Inserisci il tuo nome'}]}
                                 >
                                     <Input/>
                                 </Form.Item>
@@ -135,7 +137,7 @@ const InitialForm:React.FC = () => {
                                 <Form.Item
                                     label="Cognome"
                                     name="cognome"
-                                    rules={[{ required: true, message: 'Inserisci il tuo cognome' }]}
+                                    rules={[{required: true, message: 'Inserisci il tuo cognome'}]}
                                 >
                                     <Input/>
                                 </Form.Item>
@@ -143,7 +145,7 @@ const InitialForm:React.FC = () => {
                                 <Form.Item
                                     label="Telefono"
                                     name="telefono"
-                                    rules={[{ required: true, message: 'Inserisci il tuo numero di telefono' }]}
+                                    rules={[{required: true, message: 'Inserisci il tuo numero di telefono'}]}
                                 >
                                     <Input type={"number"}/>
                                 </Form.Item>
@@ -151,7 +153,7 @@ const InitialForm:React.FC = () => {
                                 <Form.Item
                                     name="universita"
                                     label="Università"
-                                    rules={[{ required: true, message: 'Seleziona il tuo corso universitario' }]}
+                                    rules={[{required: true, message: 'Seleziona il tuo corso universitario'}]}
                                 >
                                     <Select placeholder="Seleziona il tuo corso universitario">
                                         <Option value="economia">Economia e management</Option>
@@ -168,7 +170,7 @@ const InitialForm:React.FC = () => {
                                 <Form.Item
                                     label="Matricola"
                                     name="matricola"
-                                    rules={[{ required: true, message: 'Inserisci la tua matricola' }]}
+                                    rules={[{required: true, message: 'Inserisci la tua matricola'}]}
                                 >
                                     <Input min={0} type={"number"}/>
                                 </Form.Item>
@@ -179,7 +181,7 @@ const InitialForm:React.FC = () => {
                                     rules={[{
                                         type: 'email',
                                         message: 'Inserisci una mail valida',
-                                    },{
+                                    }, {
                                         required: true,
                                         message: 'Inserisci la tua email istituzionale'
                                     }]}
@@ -190,7 +192,7 @@ const InitialForm:React.FC = () => {
                                 <Form.Item
                                     label="Password"
                                     name="password"
-                                    rules={[{ required: true, message: 'Inserisci la tua password' }]}
+                                    rules={[{required: true, message: 'Inserisci la tua password'}]}
                                     hasFeedback
                                 >
                                     <Input.Password/>
@@ -201,10 +203,11 @@ const InitialForm:React.FC = () => {
                                     name="conferma-password"
                                     dependencies={['password']}
                                     hasFeedback
-                                    rules={[{ required: true,
+                                    rules={[{
+                                        required: true,
                                         message: 'Inserisci nuovamente la tua password'
                                     },
-                                        ({ getFieldValue }) => ({
+                                        ({getFieldValue}) => ({
                                             validator(_, value) {
                                                 if (!value || getFieldValue('password') === value) {
                                                     return Promise.resolve();
@@ -223,17 +226,18 @@ const InitialForm:React.FC = () => {
                                     name="upload"
                                     valuePropName="fileList"
                                     getValueFromEvent={normFile}
-                                    wrapperCol={{ span: 24 }}
+                                    wrapperCol={{span: 24}}
                                     // extra="test extra"
                                 >
                                     <Upload name="immagine" action="/upload.do" listType="picture" accept=".png,.jpg">
-                                        <Button className="upload-btn" icon={<UploadOutlined />}>Inserisci l'immagine del profilo</Button>
+                                        <Button className="upload-btn" icon={<UploadOutlined/>}>Inserisci l'immagine del
+                                            profilo</Button>
                                     </Upload>
                                 </Form.Item>
 
                                 <Form.Item
                                     className={'form-button'}
-                                    wrapperCol={{ offset: 0, span: 24 }}
+                                    wrapperCol={{offset: 0, span: 24}}
                                 >
                                     <Button type="primary" htmlType="submit">
                                         Registrati
@@ -242,131 +246,168 @@ const InitialForm:React.FC = () => {
                             </Form>
                         </TabPane>
                         <TabPane tab="Registrazione professore" key="3" className="tabpane-container">
-                            <Form
-                                form={form}
-                                name="basic"
-                                labelCol={{ span: 9 }}
-                                wrapperCol={{ span: 15}}
-                                onFinish={onFinish}
-                                onFinishFailed={onFinishFailed}
+                            <Form.Provider
+                                onFormFinish={(name) => {
+                                    //todo if (name === 'daySelector')
+                                    setVisible(false);
+                                }}
                             >
-                                <Form.Item className="first-elem" label="Nome" name="nome"
-                                           rules={[{ required: true, message: 'Inserisci il tuo nome' }]}>
-                                    <Input/>
-                                </Form.Item>
-
-                                <Form.Item label="Cognome" name="cognome"
-                                           rules={[{ required: true, message: 'Inserisci il tuo cognome' }]}>
-                                    <Input/>
-                                </Form.Item>
-
-                                <Form.Item label="Telefono" name="telefono"
-                                           rules={[{ required: true, message: 'Inserisci il tuo numero di telefono' }]}>
-                                    <Input type={"number"}/>
-                                </Form.Item>
-
-                                <Form.Item label="Email" name="email"
-                                           rules={[{type: 'email', message: 'Inserisci una mail valida',},
-                                               {required: true, message: 'Inserisci la tua email istituzionale'}]}>
-                                    <Input/>
-                                </Form.Item>
-
-                                <Form.Item label="Password" name="password" hasFeedback
-                                           rules={[{ required: true, message: 'Inserisci la tua password' }]}>
-                                    <Input.Password/>
-                                </Form.Item>
-
-                                <Form.Item label="Conferma password" name="conferma-password" dependencies={['password']} hasFeedback
-                                           rules={[{ required: true, message: 'Inserisci nuovamente la tua password'},
-                                               ({ getFieldValue }) => ({
-                                                   validator(_, value) {
-                                                       if (!value || getFieldValue('password') === value) {
-                                                           return Promise.resolve();
-                                                       }
-                                                       return Promise.reject(new Error('Le due password non sono uguali'));
-                                                   },
-                                               }),
-                                           ]}
+                                <Form
+                                    form={form}
+                                    name="basic"
+                                    labelCol={{span: 9}}
+                                    wrapperCol={{span: 15}}
+                                    onFinish={onFinish}
+                                    onFinishFailed={onFinishFailed}
                                 >
-                                    <Input.Password/>
-                                </Form.Item>
+                                    <Form.Item className="first-elem" label="Nome" name="nome"
+                                               rules={[{required: true, message: 'Inserisci il tuo nome'}]}>
+                                        <Input/>
+                                    </Form.Item>
 
-                                <Form.Item className="upload-btn" name="upload" valuePropName="fileList"
-                                           getValueFromEvent={normFile} wrapperCol={{ span: 24 }} /* extra="test extra" */>
-                                    <Upload name="immagine" action="/upload.do" listType="picture" accept=".png,.jpg">
-                                        <Button className="upload-btn" icon={<UploadOutlined />}>Inserisci l'immagine del profilo</Button>
-                                    </Upload>
-                                </Form.Item>
+                                    <Form.Item label="Cognome" name="cognome"
+                                               rules={[{required: true, message: 'Inserisci il tuo cognome'}]}>
+                                        <Input/>
+                                    </Form.Item>
 
-                                <Form.List name="corso">
-                                    {(fields, { add, remove }, { errors }) => (
-                                        <>
-                                            {fields.map((field, index) => (
-                                                <Form.Item
-                                                    {...(index === 0 ? formItemLayout : addCourseLayoutWithOutLabel)}
-                                                    label={index === 0 ? 'Corsi insegnati' : ''}
-                                                    required={true}
-                                                    key={field.key}
-                                                >
+                                    <Form.Item label="Telefono" name="telefono"
+                                               rules={[{
+                                                   required: true,
+                                                   message: 'Inserisci il tuo numero di telefono'
+                                               }]}>
+                                        <Input type={"number"}/>
+                                    </Form.Item>
+
+                                    <Form.Item label="Email" name="email"
+                                               rules={[{type: 'email', message: 'Inserisci una mail valida',},
+                                                   {required: true, message: 'Inserisci la tua email istituzionale'}]}>
+                                        <Input/>
+                                    </Form.Item>
+
+                                    <Form.Item label="Password" name="password" hasFeedback
+                                               rules={[{required: true, message: 'Inserisci la tua password'}]}>
+                                        <Input.Password/>
+                                    </Form.Item>
+
+                                    <Form.Item label="Conferma password" name="conferma-password"
+                                               dependencies={['password']} hasFeedback
+                                               rules={[{
+                                                   required: true,
+                                                   message: 'Inserisci nuovamente la tua password'
+                                               },
+                                                   ({getFieldValue}) => ({
+                                                       validator(_, value) {
+                                                           if (!value || getFieldValue('password') === value) {
+                                                               return Promise.resolve();
+                                                           }
+                                                           return Promise.reject(new Error('Le due password non sono uguali'));
+                                                       },
+                                                   }),
+                                               ]}
+                                    >
+                                        <Input.Password/>
+                                    </Form.Item>
+
+                                    <Form.Item className="upload-btn" name="upload" valuePropName="fileList"
+                                               getValueFromEvent={normFile}
+                                               wrapperCol={{span: 24}} /* extra="test extra" */>
+                                        <Upload name="immagine" action="/upload.do" listType="picture"
+                                                accept=".png,.jpg">
+                                            <Button className="upload-btn" icon={<UploadOutlined/>}>Inserisci l'immagine
+                                                del profilo</Button>
+                                        </Upload>
+                                    </Form.Item>
+
+                                    <Form.List name="corso">
+                                        {(fields, {add, remove}, {errors}) => (
+                                            <>
+                                                {fields.map((field, index) => (
                                                     <Form.Item
-                                                        {...field}
-                                                        validateTrigger={['onChange', 'onBlur']}
-                                                        rules={[
-                                                            {
-                                                                required: true,
-                                                                whitespace: true,
-                                                                message: "Inserisci un corso insegnato o elimina il campo",
-                                                            },
-                                                        ]}
+                                                        {...(index === 0 ? formItemLayout : addCourseLayoutWithOutLabel)}
+                                                        label={index === 0 ? 'Corsi insegnati' : ''}
+                                                        required={true}
+                                                        key={field.key}
                                                     >
-                                                        <Input/>
+                                                        <Form.Item
+                                                            {...field}
+                                                            validateTrigger={['onChange', 'onBlur']}
+                                                            rules={[
+                                                                {
+                                                                    required: true,
+                                                                    whitespace: true,
+                                                                    message: "Inserisci un corso insegnato o elimina il campo",
+                                                                },
+                                                            ]}
+                                                        >
+                                                            <Input onChange={ () => {
+                                                                if (visibleClassSchedule.length <= index) {
+                                                                    let copy = visibleClassSchedule
+                                                                    copy.push(false)
+                                                                    setVisibleClassSchedule(copy)
+                                                                }
+                                                            }}/>
+                                                        </Form.Item>
+                                                        <Button
+                                                            className="lesson-timetable-button"
+                                                            type="default"
+                                                            htmlType="button"
+                                                            onClick={() => {
+                                                                let copy = visibleClassSchedule
+                                                                let i = index
+                                                                setVisibleClassSchedule(copy.map((v, index) => index === i ? true : v))
+                                                            }}>
+                                                            Definisci l'orario delle lezioni
+                                                        </Button>
+                                                        <MinusCircleOutlined
+                                                            className="dynamic-delete-button"
+                                                            onClick={() => remove(field.name)}
+                                                        />
+                                                        <Divider style={{marginBottom: '6pt'}}/>
+                                                        <DaySelectorModalForm formName={index.toString()}
+                                                                              visible={visibleClassSchedule[index]}
+                                                                              // onOk
+                                                                              onCancel={() => {
+                                                                                  let copy = visibleClassSchedule
+                                                                                  let i = index
+                                                                                  setVisibleClassSchedule(copy.map((v, index) => index === i ? false : v))
+                                                                              }}/>
                                                     </Form.Item>
+                                                ))}
+                                                <Form.Item wrapperCol={{offset: 0, span: 24}}>
                                                     <Button
-                                                        className="lesson-timetable-button"
-                                                        type="default"
-                                                        htmlType="button"
-                                                        onClick={() => history.push('/DaySelector')}>
-                                                        Definisci l'orario delle lezioni
+                                                        type="dashed"
+                                                        onClick={() => add()}
+                                                        icon={<PlusOutlined/>}
+                                                    >
+                                                        Aggiungi un corso insegnato
                                                     </Button>
-                                                    <MinusCircleOutlined
-                                                        className="dynamic-delete-button"
-                                                        onClick={() => remove(field.name)}
-                                                    />
-                                                    <Divider style={{marginBottom: '6pt'}}/>
+                                                    <Form.ErrorList errors={errors}/>
                                                 </Form.Item>
-                                            ))}
-                                            <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
-                                                <Button
-                                                    type="dashed"
-                                                    onClick={() => add()}
-                                                    icon={<PlusOutlined />}
-                                                >
-                                                    Aggiungi un corso insegnato
-                                                </Button>
-                                                <Form.ErrorList errors={errors} />
-                                            </Form.Item>
-                                        </>
-                                    )}
-                                </Form.List>
+                                            </>
+                                        )}
+                                    </Form.List>
 
-                                <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
-                                    <Button
-                                        type="default"
-                                        htmlType="button"
-                                        onClick={() => history.push('/DaySelector')}>
-                                        Definisci l'orario di ricevimento
-                                    </Button>
-                                </Form.Item>
+                                    <Form.Item wrapperCol={{offset: 0, span: 24}}>
+                                        <Button
+                                            type="default"
+                                            htmlType="button"
+                                            onClick={() => setVisible(true)}>
+                                            Definisci l'orario di ricevimento
+                                        </Button>
+                                    </Form.Item>
 
-                                <Form.Item
-                                    className={'form-button'}
-                                    wrapperCol={{ offset: 0, span: 24 }}
-                                >
-                                    <Button type="primary" htmlType="submit">
-                                        Registrati
-                                    </Button>
-                                </Form.Item>
-                            </Form>
+                                    <Form.Item
+                                        className={'form-button'}
+                                        wrapperCol={{offset: 0, span: 24}}
+                                    >
+                                        <Button type="primary" htmlType="submit">
+                                            Registrati
+                                        </Button>
+                                    </Form.Item>
+                                </Form>
+                                <DaySelectorModalForm formName="reception" visible={visible}
+                                                      onCancel={() => setVisible(false)}/>
+                            </Form.Provider>
                         </TabPane>
                     </Tabs>
                 </div>
