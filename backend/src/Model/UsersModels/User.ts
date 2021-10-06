@@ -20,6 +20,7 @@ const baseOptions = {
 const baseSchema = new Schema<User>({
     email: { type: String, unique: true },
     psw: String,
+    phone_number: String,
     name: {type: String, required: false},
     surname: {type: String, required: false},
     picture: {data: Buffer, contentType: String, required: false}

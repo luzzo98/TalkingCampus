@@ -52,6 +52,30 @@ export function closePopup(popupRef: React.RefObject<L.Popup>, id: number) {
     (popupRef.current?.getElement()?.children[id] as HTMLLinkElement).click()
 }
 
+export function convertDay(index: number):string | null {
+    let day = ""
+    switch (index){
+        case 1 : day = "Lunedì"; break
+        case 2 : day = "Martedì"; break
+        case 3 : day = "Mercoledì"; break
+        case 4 : day = "Giovedì"; break
+        case 5 : day = "Venerdì"; break
+    }
+    return day;
+}
+
+export function reverseDay(day: string):number{
+    let index = 0;
+    switch (day){
+        case "Lunedì" : index = 1; break
+        case "Martedì" : index = 2; break
+        case "Mercoledì" : index = 3; break;
+        case "Giovedì" : index = 4; break;
+        case "Venerdì" : index = 5; break;
+    }
+    return index;
+}
+
 export function generateIcon(type: string, id:string) {
     const iconMarkup = renderToStaticMarkup(
         type !== "none" ?

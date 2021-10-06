@@ -2,7 +2,8 @@ import React, {useEffect, useState} from "react";
 import {ModalTitle} from "react-bootstrap";
 import {Course, Lesson, Room, Teacher} from "../Model";
 import {Popup} from "react-leaflet";
-import {Button} from "antd";
+import {Button, Calendar, List, Modal, Table} from "antd";
+import * as utils from "../utils/utils"
 import * as lessonDeserializer from "../utils/LessonDeserializer";
 import * as courseDeserializer from "../utils/CourseDeserializer";
 import * as teacherDeserializer from "../utils/TeacherDeserializer";
@@ -47,6 +48,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
     const [lessons, setLessons] = useState<Lesson[]>([])
     const [courses, setCourses] = useState<Course[]>([])
     const [teachers, setTeachers] = useState<Teacher[]>([])
+    const [modalVisible, setModalVisible] = useState<boolean>(false)
 
     useEffect(() => {
         getLessons(props.room.name);
@@ -86,31 +88,91 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
 
     function getRealTimeLesson(){
         const currentHour = new Date().getHours();
-        const lesson: Lesson = lessons.filter(l => l.start.hours <= currentHour && l.end.hours > currentHour)[0]
+        const day = utils.convertDay(new Date().getDay())
+
+        const lesson: Lesson = lessons
+            .filter(l => (l.start.hours <= currentHour && l.end.hours > currentHour) && l.day === day)[0]
         return lesson
     }
 
     function getLessonSection(){
         const lesson = getRealTimeLesson();
+        const teacher = teachers.find(t => t.email === courses.find(c => lesson?.course_name === c.course_id)?.teacher_id);
         return lesson ? <div className={"classroom-infos " + (isTeacherHidden ? "" : "margin-bottom")}>
             <h3>Lezione in Corso:</h3>
             <p>{lesson.course_name} {getCorrectFormat(lesson.start)}/{getCorrectFormat(lesson.end)}</p>
-            <p><a onClick={() => setIsTeacherHidden(prevState => !prevState)}>Docente: xxx</a></p>
+            <p><a onClick={() =>
+                setIsTeacherHidden(prevState => !prevState)}>
+                Docente: {teacher?.name} {teacher?.surname}</a></p>
             <div className={isTeacherHidden ? "sub-info-hidden" : "sub-info-visible"}>
-                <p>vittorio.ghini@email.com<br/>tel:3328934523</p>
-                <p>Ricevimento:<br/>Lun 10:00/11:00<br/>Gio 14:30/16:00</p>
+                <p>email: {teacher?.email}<br/>telefono: {teacher?.phone_number}</p>
+                {/*<p>Ricevimento:<br/>Lun 10:00/11:00<br/>Gio 14:30/16:00</p>*/}
             </div>
         </div>:null
     }
 
+    function lessonsToMap(){
+        const map: Map<string, Lesson[]> = new Map()
+        lessons.sort((l1, l2) => utils.reverseDay(l1.day) - utils.reverseDay(l2.day))
+               .forEach(l => map.has(l.day) ? map.get(l.day)?.push(l) : map.set(l.day, [l]))
+        return Array.from(map, ([k, v]) => ({
+            day: k,
+            less: v
+        }));
+    }
+
+    function findTeacher(course_name: string): Teacher|undefined{
+        return teachers.find(t => t.email === courses.find(c => c.course_id === course_name)?.teacher_id)
+    }
+
     let openingToString:string[] = timeToString(opening)
     let closingToString:string[] = timeToString(closing)
+
+    console.log(lessonsToMap())
 
     return (
         <Popup offset={props.offset}>
             <ModalTitle> {props.room.name} </ModalTitle>
             <hr/>
             {props.room.type === "Aula" ? getLessonSection() : null}
+            <Modal
+                title="Calendario"
+                style={{ top: 20 }}
+                visible={modalVisible}
+                onOk={() => setModalVisible(false)}
+                onCancel={() => setModalVisible(false)}
+            >
+                <List className={"first-list"}
+                    header={<h2>Lezioni in programma</h2>}
+                    bordered
+                    dataSource={lessonsToMap()}
+                    renderItem={item => (
+                        <List
+                            header={<h3>{item.day}</h3>}
+                            bordered
+                            dataSource={item.less.sort(
+                                (l1, l2) => l1.start.hours - l2.start.hours
+                            )}
+                            renderItem={less =>(
+                                <List.Item>
+                                    Corso: {less.course_name}<br/>
+                                    {less.room}<br/>
+                                    Orario: {getCorrectFormat(less.start)+"/"+getCorrectFormat(less.end)}<br/>
+                                    Professore: {findTeacher(less.course_name)?.name + " " + findTeacher(less.course_name)?.surname}
+                                </List.Item>
+                            )}
+                            pagination= {{
+                                onChange: page => {
+                                    console.log(page);
+                                },
+                                pageSize: 1,
+                                simple: true
+                            }}
+                        >
+                        </List>
+                    )}
+                />
+            </Modal>
             <p>Posti occupati: {props.room.occupied_seats}/{props.room.maximum_seats}</p>
             {props.room.adding_info ?
                 <div>
@@ -122,7 +184,10 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
                 </div> : null
             }
             {props.room.type === "Aula" ?
-                <Button className={"prenote-class"} onClick={handleClick}>Prenota Aula</Button> : null}
+                <div className={"class-buttons"}>
+                    <Button className={"prenote-class"} onClick={() => setModalVisible(true)}>Lezioni in programma</Button>
+                    <Button className={"prenote-class"} onClick={handleClick}>Prenota Aula</Button>
+                </div> : null}
         </Popup>
     );
 }

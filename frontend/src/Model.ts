@@ -60,8 +60,9 @@ export interface Lesson {
 }
 
 export interface Teacher {
-    email: string
-    psw: string
+    email: string,
+    phone_number: string,
+    psw: string,
     name: string,
     surname: string,
     //picture: {data: Buffer, contentType: String}
