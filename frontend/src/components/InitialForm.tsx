@@ -1,21 +1,23 @@
 import React, {useState} from "react";
-import {Form, Input, Button, Tabs, Upload, Select, Divider} from 'antd';
+import {Form, Input, Button, Tabs, Upload, Select, Divider, Modal} from 'antd';
 import { UploadOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {useHistory} from "react-router-dom";
 import 'antd/dist/antd.css';
-import {Link, Route} from "react-router-dom";
+import {Route} from "react-router-dom";
 import MainPage from "./MainPage";
 import * as utils from "../utils/utils";
 import {User} from "../Model";
 import img from "../assets/volto_uomo.jpg"
 import AppBarTitle from "./AppBarTitle";
 import DaySelectorModalForm from "./DaySelectorPopupModalForm"
+import AuthService from "../services/AuthService";
 
 require("../styles/initialForm/initialFormStyle.scss")
 
 const { TabPane } = Tabs;
 const { Option } = Select;
 
+// const user: User = AuthService.getCurrentUser()
 const mockUser: User = {
     id: 0,
     name: "Giovanni",
@@ -27,10 +29,12 @@ const InitialForm:React.FC = () => {
 
     const [visible, setVisible] = useState(false);
     const [visibleClassSchedule, setVisibleClassSchedule] = useState(Array<boolean>());
-    const [username, setUserName] = useState("")
-    const [passw, setPassw] = useState("")
+    const [reception, setReception] = useState({})
+    const [courseMap, setCourseMap] = useState(new Map())
     const history = useHistory();
-    const [form] = Form.useForm();
+    const [loginForm] = Form.useForm();
+    const [studentForm] = Form.useForm();
+    const [professorForm] = Form.useForm();
 
     const formItemLayout = {
         labelCol: {
@@ -49,9 +53,63 @@ const InitialForm:React.FC = () => {
         },
     };
 
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
-    };
+    const getCourses: any = (values: any) => {
+        let i = courseMap.entries()
+        let courses: { name: string; timetable: any; }[] = []
+        values.forEach((v: any) => courses.push({
+            name: v,
+            timetable: i.next().value[1]
+        }))
+        console.log("ho creato",courses)
+        return courses
+    }
+
+    const onLoginFinish = (values: any) => {
+        AuthService.login(loginForm.getFieldValue("email"), loginForm.getFieldValue("password")).then(
+            () => {
+                console.log('Login riuscito:', values);
+                history.push("/main-page", {user: mockUser, hooks: utils.getElements(mockUser)});
+                // window.location.reload(); //TODO serve?
+            },
+            error => {
+                Modal.error({
+                    title: 'I dati inseriti non sono corretti',
+                    content: 'Inserisci nuovamente la tua email e password',
+                });
+            }
+        );
+    }
+    const onStudentFinish = (values: any) => {
+        AuthService.registerStudent(values.nome, values.cognome, values.telefono, values.universita, values.matricola, values.email, values.password)
+            .then(
+            response => {
+                //todo richiedere il token ed usarlo eseguire l'accesso con history.push o ricaricare il login
+            },
+            error => {
+                Modal.error({
+                    title: 'Errore in fase di registrazione',
+                    content: "L'email inserita è già stata utilizzata"
+                });
+            }
+        );
+    }
+    const onProfessorFinish = (values: any) => {
+        console.log("Professor:", values) //todo elimina i log
+        console.log(reception)
+        console.log(courseMap)
+        AuthService.registerProfessor(values.nome, values.cognome, values.telefono, values.email, values.password, reception, getCourses(values.corso))
+            .then(
+                response => {
+                    //todo richiedere il token ed usarlo eseguire l'accesso con history.push o ricaricare il login
+                },
+                error => {
+                    Modal.error({
+                        title: 'Errore in fase di registrazione',
+                        content: "L'email inserita è già stata utilizzata"
+                    });
+                }
+            );
+    }
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
@@ -63,8 +121,6 @@ const InitialForm:React.FC = () => {
         return e && e.fileList;
     }
 
-    let temp;
-
     return (
         <div className={'initialForm'}>
             <div className="card-container">
@@ -73,11 +129,11 @@ const InitialForm:React.FC = () => {
                     <Tabs type="card">
                         <TabPane tab="Login" key="1" className="tabpane-container">
                             <Form
-                                form={form}
+                                form={loginForm}
                                 name="basic"
                                 labelCol={{span: 6}}
                                 wrapperCol={{span: 18}}
-                                onFinish={onFinish}
+                                onFinish={onLoginFinish}
                                 onFinishFailed={onFinishFailed}
                             >
                                 <Form.Item
@@ -92,7 +148,7 @@ const InitialForm:React.FC = () => {
                                         message: 'Inserisci la tua email istituzionale'
                                     }]}
                                 >
-                                    <Input onChange={(e) => setUserName(e.target.value)}/>
+                                    <Input/>
                                 </Form.Item>
 
                                 <Form.Item
@@ -100,29 +156,24 @@ const InitialForm:React.FC = () => {
                                     label="Password"
                                     rules={[{required: true, message: 'Inserisci la tua password'}]}
                                 >
-                                    <Input.Password onChange={(e) => setPassw(e.target.value)}/>
+                                    <Input.Password/>
                                 </Form.Item>
 
                                 <Form.Item
                                     className={'form-button'}
                                     wrapperCol={{offset: 0, span: 24}}
                                 >
-                                    <Button type="primary" htmlType="submit">
-                                        <Link to={{
-                                            pathname: "/main-page",
-                                            state: {user: mockUser, hooks: utils.getElements(mockUser)}
-                                        }}>Accedi</Link>
-                                    </Button>
+                                    <Button type="primary" htmlType="submit">Accedi</Button>
                                 </Form.Item>
                             </Form>
                         </TabPane>
                         <TabPane tab="Registrazione studente" key="2" className="tabpane-container">
                             <Form
-                                form={form}
+                                form={studentForm}
                                 name="basic"
                                 labelCol={{span: 9}}
                                 wrapperCol={{span: 15}}
-                                onFinish={onFinish}
+                                onFinish={onStudentFinish}
                                 onFinishFailed={onFinishFailed}
                             >
                                 <Form.Item
@@ -247,17 +298,16 @@ const InitialForm:React.FC = () => {
                         </TabPane>
                         <TabPane tab="Registrazione professore" key="3" className="tabpane-container">
                             <Form.Provider
-                                onFormFinish={(name) => {
-                                    //todo if (name === 'daySelector')
+                                onFormFinish={() => {
                                     setVisible(false);
                                 }}
                             >
                                 <Form
-                                    form={form}
+                                    form={professorForm}
                                     name="basic"
                                     labelCol={{span: 9}}
                                     wrapperCol={{span: 15}}
-                                    onFinish={onFinish}
+                                    onFinish={onProfessorFinish}
                                     onFinishFailed={onFinishFailed}
                                 >
                                     <Form.Item className="first-elem" label="Nome" name="nome"
@@ -360,17 +410,31 @@ const InitialForm:React.FC = () => {
                                                         </Button>
                                                         <MinusCircleOutlined
                                                             className="dynamic-delete-button"
-                                                            onClick={() => remove(field.name)}
+                                                            onClick={() => {
+                                                                let m = courseMap
+                                                                m.delete(index.toString())
+                                                                setCourseMap(new Map(m));
+                                                                remove(field.name)}
+                                                            }
                                                         />
                                                         <Divider style={{marginBottom: '6pt'}}/>
-                                                        <DaySelectorModalForm formName={index.toString()}
-                                                                              visible={visibleClassSchedule[index]}
-                                                                              // onOk
-                                                                              onCancel={() => {
-                                                                                  let copy = visibleClassSchedule
-                                                                                  let i = index
-                                                                                  setVisibleClassSchedule(copy.map((v, index) => index === i ? false : v))
-                                                                              }}/>
+                                                        <Form.Provider
+                                                            onFormFinish={() => {
+                                                                let copy = visibleClassSchedule
+                                                                let i = index
+                                                                setVisibleClassSchedule(copy.map((v, index) => index === i ? false : v))
+                                                            }}
+                                                        >
+                                                            <DaySelectorModalForm value={courseMap}
+                                                                                  setValue={setCourseMap}
+                                                                                  formName={index.toString()}
+                                                                                  visible={visibleClassSchedule[index]}
+                                                                                  onCancel={() => {
+                                                                                      let copy = visibleClassSchedule
+                                                                                      let i = index
+                                                                                      setVisibleClassSchedule(copy.map((v, index) => index === i ? false : v))
+                                                                                  }}/>
+                                                        </Form.Provider>
                                                     </Form.Item>
                                                 ))}
                                                 <Form.Item wrapperCol={{offset: 0, span: 24}}>
@@ -405,7 +469,10 @@ const InitialForm:React.FC = () => {
                                         </Button>
                                     </Form.Item>
                                 </Form>
-                                <DaySelectorModalForm formName="reception" visible={visible}
+                                <DaySelectorModalForm value={reception}
+                                                      setValue={setReception}
+                                                      formName="reception"
+                                                      visible={visible}
                                                       onCancel={() => setVisible(false)}/>
                             </Form.Provider>
                         </TabPane>

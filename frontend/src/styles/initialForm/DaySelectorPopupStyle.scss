@@ -1,9 +1,6 @@
 .hour {
   width: 100%;
 }
-.hour-line {
-  width: 92% !important;
-}
 @media (min-width: 575px) {
   .hour {
     width: auto;
@@ -14,7 +11,7 @@
 }
 .hour-line {
   display: flex;
-  width: 90% !important;
+  width: 100%;
 }
 
 .hour-line > div {

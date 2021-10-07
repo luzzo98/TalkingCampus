@@ -6,8 +6,8 @@ interface ModalFormProps {
     formName: string
     visible: boolean
     onCancel: () => void
-    // onOk?: () => void
-
+    value: any
+    setValue: any
 }
 
 const useResetFormOnCloseModal = ({visible}: { form: FormInstance; visible: boolean }) => {
@@ -17,13 +17,11 @@ const useResetFormOnCloseModal = ({visible}: { form: FormInstance; visible: bool
     }, [visible]);
 };
 
-const DaySelectorModalForm: React.FC<ModalFormProps> = ({formName, visible, onCancel}) => {
+const DaySelectorModalForm: React.FC<ModalFormProps> = ({formName, visible, onCancel, value, setValue}) => {
     const [popupForm] = Form.useForm();
 
     const onOk = () => {
-        console.log(popupForm.getFieldsValue())
         popupForm.submit();
-        if (formName !== "reception") onCancel()
     }
 
     useResetFormOnCloseModal({
@@ -33,7 +31,10 @@ const DaySelectorModalForm: React.FC<ModalFormProps> = ({formName, visible, onCa
 
     return (
         <Modal visible={visible} onOk={onOk} onCancel={onCancel}>
-            <DaySelectorPopup formName={formName} form={popupForm}/>
+            <DaySelectorPopup value={value}
+                              setValue={setValue}
+                              formName={formName}
+                              form={popupForm}/>
         </Modal>
     );
 }
