@@ -76,3 +76,16 @@ export interface Teacher {
     surname: string,
     //picture: {data: Buffer, contentType: String}
 }
+
+export interface Reception {
+    teacher_email: string,
+    day: string,
+    start: {
+        hours: number,
+        minutes: number
+    },
+    end: {
+        hours: number,
+        minutes: number
+    }
+}
