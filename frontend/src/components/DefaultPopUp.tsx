@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {ModalTitle} from "react-bootstrap";
-import {Course, Lesson, Room, Teacher} from "../Model";
+import {Course, Lesson, Reception, Room, Teacher} from "../Model";
 import {Popup} from "react-leaflet";
 import {Button, Calendar, List, Modal, Table} from "antd";
 import * as utils from "../utils/utils"
@@ -8,6 +8,7 @@ import * as lessonDeserializer from "../utils/LessonDeserializer";
 import * as courseDeserializer from "../utils/CourseDeserializer";
 import * as teacherDeserializer from "../utils/TeacherDeserializer";
 import * as receptionDeserializer from "../utils/ReceptionDeserializer";
+import {getCorrectFormat} from "../utils/utils";
 require("../styles/pop_up/popUpStyle.scss")
 
 interface Props {
@@ -48,15 +49,17 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
             })
     }
 
-    function getReception(teacherEmail:string){
+    function getReceptions(teacherEmail:string){
         return fetch(`http://localhost:80/api/receptions/${teacherEmail}`)
             .then((res: Response) => res.json())
-            /*.then((json: JSON[]) => json.map(value => /*receptionDeserializer.mapToReception(value)))*/
+            .then((json: JSON[]) => json.map(value => receptionDeserializer.mapToReception(value)))
+            .then(receptions => setReceptions(receptions))
     }
 
     const [lessons, setLessons] = useState<Lesson[]>([])
     const [courses, setCourses] = useState<Course[]>([])
     const [teachers, setTeachers] = useState<Teacher[]>([])
+    const [receptions, setReceptions] = useState<Reception[]>([])
     const [modalVisible, setModalVisible] = useState<boolean>(false)
 
     useEffect(() => {
@@ -69,6 +72,10 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
     useEffect(() => {
         courses.forEach(c => getTeacher(c.teacher_id))
     },[courses])
+
+    useEffect(() => {
+        teachers.forEach(t => getReceptions(t.email))
+    },[teachers])
 
     const phone = props.room.adding_info
                                        && props.room.adding_info.phone_number ? props.room.adding_info.phone_number : ""
@@ -100,7 +107,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
 
     function getLessonSection(){
         const lesson = getRealTimeLesson();
-        const teacher = teachers.find(t => t.email === courses.find(c => lesson?.course_name === c.course_id)?.teacher_id);
+        const teacher = teachers.find(t => t.email === courses.find(c => lesson?.course_name === c.course_id)?.teacher_id)
         return lesson ? <div className={"classroom-infos " + (isTeacherHidden ? "" : "margin-bottom")}>
             <h3>Lezione in Corso:</h3>
             <p>{lesson.course_name} {utils.getCorrectFormat(lesson.start)}/{utils.getCorrectFormat(lesson.end)}</p>
@@ -109,7 +116,11 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
                 Docente: {teacher?.name} {teacher?.surname}</a></p>
             <div className={isTeacherHidden ? "sub-info-hidden" : "sub-info-visible"}>
                 <p>email: {teacher?.email}<br/>telefono: {teacher?.phone_number}</p>
-                {/*<p>Ricevimento:<br/>Lun 10:00/11:00<br/>Gio 14:30/16:00</p>*/}
+                <div className={"receptions"}>
+                    <p>Ricevimento:</p>
+                    {receptions.filter(r => r.teacher_email === teacher?.email)
+                        .map(e => <p>{e.day} {getCorrectFormat(e.start)}/{getCorrectFormat(e.end)}</p>)}
+                </div>
             </div>
         </div>:null
     }
@@ -130,6 +141,12 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
 
     let openingToString:string[] = timeToString(opening)
     let closingToString:string[] = timeToString(closing)
+
+    function renderReceptions(receptions: Reception[]): JSX.Element[]{
+        return receptions.map(
+            e => <p>Ricevimento: {e.day} {getCorrectFormat(e.start)}/{getCorrectFormat(e.end)}</p>
+        );
+    }
 
     return (
         <Popup offset={props.offset}>

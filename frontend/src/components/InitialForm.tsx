@@ -65,10 +65,9 @@ const InitialForm:React.FC = () => {
     }
 
     const onLoginFinish = (values: any) => {
-        AuthService.login(loginForm.getFieldValue("email"), loginForm.getFieldValue("password")).then(
+        /*AuthService.login(loginForm.getFieldValue("email"), loginForm.getFieldValue("password")).then(
             () => {
                 console.log('Login riuscito:', values);
-                history.push("/main-page", {user: mockUser, hooks: utils.getElements(mockUser)});
                 // window.location.reload(); //TODO serve?
             },
             error => {
@@ -77,7 +76,8 @@ const InitialForm:React.FC = () => {
                     content: 'Inserisci nuovamente la tua email e password',
                 });
             }
-        );
+        );*/
+        history.push("/main-page", {user: mockUser, hooks: utils.getElements(mockUser)});
     }
     const onStudentFinish = (values: any) => {
         AuthService.registerStudent(values.nome, values.cognome, values.telefono, values.universita, values.matricola, values.email, values.password)
