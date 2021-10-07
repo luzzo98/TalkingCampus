@@ -18,6 +18,10 @@ interface Room {
             hours: number,
             minutes: number
         }
+        notes?: {
+            title: string,
+            content: string
+        }
     }
 }
 
@@ -39,6 +43,10 @@ const roomSchema = new Schema<Room>({
         closing_hour: {
             hours: Number,
             minutes: Number
+        },
+        notes: {
+            title: String,
+            content: String
         }
     }
 });

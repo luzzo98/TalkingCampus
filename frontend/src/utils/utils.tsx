@@ -14,7 +14,7 @@ import {divIcon, LatLngTuple} from "leaflet";
 import * as React from "react";
 
 export const locals: Map<string,IconDefinition> = new Map<string, IconDefinition>([
-    ["Aula_Studio", faBook],
+    ["Aula Studio", faBook],
     ["Laboratorio", faFlask],
     ["Bagno", faBath],
     ["Segreteria", faFax],
@@ -50,6 +50,38 @@ export function getElements(user: User):[string, string][] {
 
 export function closePopup(popupRef: React.RefObject<L.Popup>, id: number) {
     (popupRef.current?.getElement()?.children[id] as HTMLLinkElement).click()
+}
+
+export function convertDay(index: number):string | null {
+    let day = ""
+    switch (index){
+        case 1 : day = "Lunedì"; break
+        case 2 : day = "Martedì"; break
+        case 3 : day = "Mercoledì"; break
+        case 4 : day = "Giovedì"; break
+        case 5 : day = "Venerdì"; break
+    }
+    return day;
+}
+
+export function reverseDay(day: string):number{
+    let index = 0;
+    switch (day){
+        case "Lunedì" : index = 1; break
+        case "Martedì" : index = 2; break
+        case "Mercoledì" : index = 3; break;
+        case "Giovedì" : index = 4; break;
+        case "Venerdì" : index = 5; break;
+    }
+    return index;
+}
+
+export function getSingleFormat(value: number){
+    return value < 10 ? "0" + value : "" + value
+}
+
+export function getCorrectFormat(value: {hours: number, minutes: number}): string {
+    return getSingleFormat(value.hours) + ":" + getSingleFormat(value.minutes)
 }
 
 export function generateIcon(type: string, id:string) {

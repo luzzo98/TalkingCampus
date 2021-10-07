@@ -38,7 +38,15 @@ export interface Room {
             hours: number,
             minutes: number
         }
+        notes?:{
+            title: string,
+            content: string
+        }
     }
+}
+
+export interface Reception {
+
 }
 
 export interface RoomOnMap extends Room {
@@ -60,8 +68,9 @@ export interface Lesson {
 }
 
 export interface Teacher {
-    email: string
-    psw: string
+    email: string,
+    phone_number: string,
+    psw: string,
     name: string,
     surname: string,
     //picture: {data: Buffer, contentType: String}

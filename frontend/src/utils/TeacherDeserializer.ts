@@ -5,6 +5,7 @@ export function mapToTeacher(jsonElement: any): Teacher{
         email: jsonElement.email,
         name: jsonElement.name,
         psw: jsonElement.psw,
-        surname: jsonElement.surname
+        surname: jsonElement.surname,
+        phone_number: jsonElement.phone_number
     };
 }

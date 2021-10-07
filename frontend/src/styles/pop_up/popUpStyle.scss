@@ -1,9 +1,5 @@
 @import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300';
 
-.modal-title{
-  text-align: center;
-}
-
 .leaflet-popup-content {
 
   font-family: 'Open Sans Condensed';
@@ -18,34 +14,61 @@
     box-shadow: none;
   }
 
-}
-
-.classroom-infos {
-  a {
-    color: #333;
+  .classroom-infos {
+    a {
+      color: #333;
+    }
   }
-}
 
-.margin-bottom {
+  .margin-bottom {
 
-  p:last-of-type {
-    margin-bottom: 3%;
+    p:last-of-type {
+      margin-bottom: 3%;
+    }
   }
+
+  .sub-info-hidden {
+    visibility: hidden;
+    display: none;
+    height: 0%;
+  }
+
+  .sub-info-visible {
+    visibility: visible;
+    margin-left: 3%;
+    margin-bottom: 7%;
+
+    p {
+      margin: 1% 0;
+      font-size: small;
+    }
+  }
+
+  div.class-buttons{
+    button {
+      margin-top: 2%;
+    }
+  }
+
+  .notes {
+    h3 {
+      text-align: center;
+    }
+    p {
+      font-size: smaller;
+      white-space: pre-line;
+    }
+  }
+
 }
 
-.sub-info-hidden {
-  visibility: hidden;
-  display: none;
-  height: 0%;
+.modal-title{
+  text-align: center;
 }
 
-.sub-info-visible {
-  visibility: visible;
-  margin-left: 3%;
-  margin-bottom: 7%;
-
-  p {
-    margin: 1% 0;
-    font-size: small;
+.ant-modal-body{
+  .first-list{
+    overflow-y: scroll;
+    height: 60vh;
   }
 }
