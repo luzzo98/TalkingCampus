@@ -113,8 +113,7 @@ const MainPage : React.FC = () => {
                                                                                 el.isMarkerSet = false
                                                                                 deleteIncompleteMarker();
                                                                             }}
-                                                                            room_name={el.name}
-                                                                            room_id={el.id as string}/>
+                                                                            room_id={el.name}/>
                                          : mapState.mode === "aggiungi" ? null : <DefaultPopUp offset={[2, -2]} room={el}/>
                              }
                          </Marker>

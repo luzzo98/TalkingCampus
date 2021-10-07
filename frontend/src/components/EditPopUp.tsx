@@ -16,8 +16,14 @@ interface props  {
 
 interface PopFormState {
     type: string
-    seats: number
+    maximum_seats: number
     name: string
+    adding_info?: AddingInfo
+}
+
+interface Notes {
+    title: string,
+    content: string
 }
 
 interface AddingInfo {
@@ -30,6 +36,7 @@ interface AddingInfo {
         hours: number,
         minutes: number
     }
+    notes?: Notes
 }
 
 async function addRoom(newRoom: Room){
@@ -43,13 +50,15 @@ async function addRoom(newRoom: Room){
 }
 
 async function editRoom(update: any, id: string){
+    console.log(JSON.stringify(update))
     return fetch(`http://localhost:80/api/edit-room/${id}`, {
         method: "POST",
         headers: {
             'Content-Type':'application/json'
         },
         body: JSON.stringify(update)
-    }).then(response => response.ok)
+    }).then(response => {console.log(response); return response})
+        .then(response => response.ok)
 }
 
 const EditPopUp: React.FC<props> = (props: props) => {
@@ -60,23 +69,31 @@ const EditPopUp: React.FC<props> = (props: props) => {
 
     function combineUpdate(){
         const update:{[id: string] : any} = {}
-        defUpdate(initState, formState)
-            .concat(defUpdate(addingInfoInit, addingInfo)).forEach(e => update[e[0]] = e[1])
+        update['adding_info'] = {}
+        defUpdate(initState, formState).forEach(e => update[e[0]] = e[1])
+        defUpdate(addingInfoInit, addingInfo).forEach(e => update['adding_info'][e[0]] = e[1])
+        console.log(update)
         return update;
     }
 
     const [initState] = useState<PopFormState>({
         type: props.elem.type,
-        seats: props.elem.maximum_seats,
+        maximum_seats: props.elem.maximum_seats,
         name: props.elem.name
     })
     const [addingInfoInit] = useState<AddingInfo>(props.elem.adding_info ? props.elem.adding_info : {})
     const [formState, setFormState] = useReducer(utils.reducer, initState)
     const [addingInfo, setAddingInfo] = useReducer(utils.reducer, addingInfoInit)
+    const [notes, setNotes] = useReducer(utils.reducer, addingInfoInit.notes? addingInfoInit.notes : {})
     const composed_name = props.elem.name.split(" ")
     const [initialName] = useState(composed_name[composed_name.length-1])
     const popupRef = createRef<L.Popup>()
     const closeButtonIndex: number = 2
+
+    useEffect(() => {
+        if(notes.title && notes.content)
+            setAddingInfo({notes:notes})
+    }, [notes])
 
     useEffect(() => {
         props.elem.adding_info = addingInfo
@@ -96,7 +113,7 @@ const EditPopUp: React.FC<props> = (props: props) => {
                 break;
             case "seats":
                 props.elem.maximum_seats = value
-                setFormState({seats: value})
+                setFormState({maximum_seats: value})
                 break;
         }
     }
@@ -119,6 +136,12 @@ const EditPopUp: React.FC<props> = (props: props) => {
                         minutes: Number(info[1])
                     }})
                 break;
+            case "title":
+                setNotes({title: value})
+                break;
+            case "content":
+                setNotes({content: value})
+                break;
         }
     }
 
@@ -134,7 +157,7 @@ const EditPopUp: React.FC<props> = (props: props) => {
     }
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>){
-        if(formState.name !== "" && formState.type !== "" && formState.seats !== ""){
+        if(formState.name !== "" && formState.type !== "" && formState.maximum_seats !== ""){
             utils.closePopup(popupRef, closeButtonIndex)
             const submitIsOk = props.yetExistent ? await editRoom(combineUpdate(), props.elem.id as string) : await addRoom(props.elem)
             if (submitIsOk) {
@@ -162,23 +185,56 @@ const EditPopUp: React.FC<props> = (props: props) => {
                         value={formState.name}/>
                 </Form.Item>
                 <Form.Item label="Posti" name="posti" rules={[{ required: true, message:"parametro richiesto!!!"}]}>
-                    <Input defaultValue={formState.seats} onChange={(value) => handleChangeSelect(value.target.value, 'seats')}/>
+                    <Input defaultValue={formState.maximum_seats} onChange={(value) => handleChangeSelect(value.target.value, 'seats')}/>
                 </Form.Item>
+                {(!props.yetExistent || Object.keys(props.elem.adding_info as {}).length > 0) ?
                 <Input.Group className={"extra-group"} size={"small"}>
                     <h3>"Extra info."</h3>
+                    { (!props.yetExistent || props.elem.adding_info?.phone_number) ?
                     <Form.Item className={"notRuledField"} name="Cel" label="Cel." >
                         <Input onChange={(value) =>
-                            handleAddingInfoChanges(value.target.value, 'phone')} type={"tel"} placeholder={"+39"}/>
-                    </Form.Item>
+                            handleAddingInfoChanges(value.target.value, 'phone')} type={"tel"}
+                               defaultValue={!props.yetExistent ? "" : props.elem.adding_info?.phone_number}
+                               placeholder={"+39"}/>
+                    </Form.Item>:null}
+                    { (!props.yetExistent || props.elem.adding_info?.opening_hour) ?
                     <Form.Item className={"notRuledField"} name="Open" label="Apre:">
                         <Input onChange={(value) =>
-                            handleAddingInfoChanges(value.target.value, 'opening')} placeholder={"format \"00:00\""}/>
-                    </Form.Item>
+                            handleAddingInfoChanges(value.target.value, 'opening')}
+                               defaultValue={!props.yetExistent ? "" : utils.getCorrectFormat(
+                                   props.elem.adding_info?.opening_hour as {hours: number, minutes: number})}
+                               placeholder={"format \"00:00\""}/>
+                    </Form.Item>:null}
+                    { (!props.yetExistent || props.elem.adding_info?.closing_hour) ?
                     <Form.Item className={"notRuledField"} name="Close" label="Chiude:" >
                         <Input onChange={(value) =>
-                            handleAddingInfoChanges(value.target.value, 'closing')} placeholder={"format \"00:00\""}/>
+                            handleAddingInfoChanges(value.target.value, 'closing')}
+                               placeholder={"format \"00:00\""}
+                               defaultValue={!props.yetExistent ? "" :
+                                   utils.getCorrectFormat(props.elem.adding_info?.closing_hour as {hours: number, minutes: number})}
+                        />
+                    </Form.Item>:null}
+                </Input.Group> : null}
+                { (!props.yetExistent || props.elem.adding_info?.notes) ?
+                <Input.Group className={"extra-group"} size={"small"}>
+                    <h3>"Notes"</h3>
+                    <Form.Item className={"notRuledField"} name="Title">
+                        <Input
+                            onChange={(value) =>
+                                handleAddingInfoChanges(value.target.value, 'title')}
+                            placeholder={"Title.."}
+                            defaultValue={!props.yetExistent ? "" : props.elem.adding_info?.notes?.title}
+                        />
                     </Form.Item>
-                </Input.Group>
+                    <Form.Item className={"notRuledField"} name="Content">
+                        <Input.TextArea
+                            onChange={(value) =>
+                                handleAddingInfoChanges(value.target.value, 'content')}
+                            placeholder={"Content.."}
+                            defaultValue={!props.yetExistent ? "" : props.elem.adding_info?.notes?.content}
+                        />
+                    </Form.Item>
+                </Input.Group> : null }
                 <hr/>
                 <div className={"ant-row div-buttons-popup"}>
                     <Button className={"popup-buttons"} onClick={handleDelete}>Annulla</Button>
@@ -189,6 +245,6 @@ const EditPopUp: React.FC<props> = (props: props) => {
             </Form>
         </Popup>
     )
-}
+};
 
 export default EditPopUp;

@@ -41,8 +41,10 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
         return fetch(`http://localhost:80/api/teachers/${email}`)
             .then((res: Response) => res.json())
             .then((json: JSON[]) => json.map(value => teacherDeserializer.mapToTeacher(value))[0])
-            .then(t => setTeachers(prevState =>
-                prevState.find(t => t.email === t.email) ? prevState : prevState.concat(t)))
+            .then(t => {
+                setTeachers(prevState =>
+                    prevState.find(teacher => t.email === teacher.email) ? prevState : prevState.concat(t))
+            })
     }
 
     const [lessons, setLessons] = useState<Lesson[]>([])
@@ -67,6 +69,8 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
                                        && props.room.adding_info.opening_hour ? props.room.adding_info.opening_hour : null
     const closing = props.room.adding_info
                                        && props.room.adding_info.closing_hour ? props.room.adding_info.closing_hour : null
+    const notes = props.room.adding_info
+                                       && props.room.adding_info.notes ? props.room.adding_info.notes : null
 
     function timeToString(time: any): string[] {
         let timeString: string[] = [];
@@ -76,14 +80,6 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
             timeString = [hour, minutes]
         }
         return timeString;
-    }
-
-    function getSingleFormat(value: number){
-        return value < 10 ? "0" + value : "" + value
-    }
-
-    function getCorrectFormat(value: {hours: number, minutes: number}): string {
-        return getSingleFormat(value.hours) + ":" + getSingleFormat(value.minutes)
     }
 
     function getRealTimeLesson(){
@@ -100,7 +96,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
         const teacher = teachers.find(t => t.email === courses.find(c => lesson?.course_name === c.course_id)?.teacher_id);
         return lesson ? <div className={"classroom-infos " + (isTeacherHidden ? "" : "margin-bottom")}>
             <h3>Lezione in Corso:</h3>
-            <p>{lesson.course_name} {getCorrectFormat(lesson.start)}/{getCorrectFormat(lesson.end)}</p>
+            <p>{lesson.course_name} {utils.getCorrectFormat(lesson.start)}/{utils.getCorrectFormat(lesson.end)}</p>
             <p><a onClick={() =>
                 setIsTeacherHidden(prevState => !prevState)}>
                 Docente: {teacher?.name} {teacher?.surname}</a></p>
@@ -127,8 +123,6 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
 
     let openingToString:string[] = timeToString(opening)
     let closingToString:string[] = timeToString(closing)
-
-    console.log(lessonsToMap())
 
     return (
         <Popup offset={props.offset}>
@@ -157,14 +151,11 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
                                 <List.Item>
                                     Corso: {less.course_name}<br/>
                                     {less.room}<br/>
-                                    Orario: {getCorrectFormat(less.start)+"/"+getCorrectFormat(less.end)}<br/>
+                                    Orario: {utils.getCorrectFormat(less.start)+"/"+utils.getCorrectFormat(less.end)}<br/>
                                     Professore: {findTeacher(less.course_name)?.name + " " + findTeacher(less.course_name)?.surname}
                                 </List.Item>
                             )}
                             pagination= {{
-                                onChange: page => {
-                                    console.log(page);
-                                },
                                 pageSize: 1,
                                 simple: true
                             }}
@@ -173,16 +164,23 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
                     )}
                 />
             </Modal>
-            <p>Posti occupati: {props.room.occupied_seats}/{props.room.maximum_seats}</p>
             {props.room.adding_info ?
                 <div>
                     {phone !== "" ? <p>Telefono: {phone}</p>:null}
                     {openingToString.length !== 0 ?
-                        <p>- Apertura ore: {openingToString[0]}:{openingToString[1]}</p>:null}
+                        <p>Apertura ore: {openingToString[0]}:{openingToString[1]}</p>:null}
                     {closingToString.length !== 0 ?
-                        <p>- Chiusura ore: {closingToString[0]}:{closingToString[1]}</p>:null}
+                        <p>Chiusura ore: {closingToString[0]}:{closingToString[1]}</p>:null}
+                    {notes ?
+                        <div className={"notes"}>
+                            <h3>{notes.title}</h3>
+                            <p>{notes.content}</p>
+                        </div>
+                        :null}
                 </div> : null
             }
+            {props.room.maximum_seats > 0 ?
+                <p>Posti occupati: {props.room.occupied_seats}/{props.room.maximum_seats}</p> : null}
             {props.room.type === "Aula" ?
                 <div className={"class-buttons"}>
                     <Button className={"prenote-class"} onClick={() => setModalVisible(true)}>Lezioni in programma</Button>

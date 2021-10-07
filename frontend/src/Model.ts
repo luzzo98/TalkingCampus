@@ -38,6 +38,10 @@ export interface Room {
             hours: number,
             minutes: number
         }
+        notes?:{
+            title: string,
+            content: string
+        }
     }
 }
 
