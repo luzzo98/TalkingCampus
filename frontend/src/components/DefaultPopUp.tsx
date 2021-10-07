@@ -181,11 +181,12 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
             }
             {props.room.maximum_seats > 0 ?
                 <p>Posti occupati: {props.room.occupied_seats}/{props.room.maximum_seats}</p> : null}
-            {props.room.type === "Aula" ?
                 <div className={"class-buttons"}>
-                    <Button className={"prenote-class"} onClick={() => setModalVisible(true)}>Lezioni in programma</Button>
-                    <Button className={"prenote-class"} onClick={handleClick}>Prenota Aula</Button>
-                </div> : null}
+                    {props.room.type === "Aula" ?
+                        <Button className={"prenote-class"}
+                                onClick={() => setModalVisible(true)}>Lezioni in programma</Button> : null}
+                    <Button className={"prenote-class"} onClick={handleClick}>Osserva Locale</Button>
+                </div>
         </Popup>
     );
 }
