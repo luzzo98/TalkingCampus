@@ -7,6 +7,7 @@ import * as utils from "../utils/utils"
 import * as lessonDeserializer from "../utils/LessonDeserializer";
 import * as courseDeserializer from "../utils/CourseDeserializer";
 import * as teacherDeserializer from "../utils/TeacherDeserializer";
+import * as receptionDeserializer from "../utils/ReceptionDeserializer";
 require("../styles/pop_up/popUpStyle.scss")
 
 interface Props {
@@ -50,7 +51,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
     function getReception(teacherEmail:string){
         return fetch(`http://localhost:80/api/receptions/${teacherEmail}`)
             .then((res: Response) => res.json())
-            .then((json: JSON[]) => json.map(value => receptionDeserializer.mapToReception(value)))
+            /*.then((json: JSON[]) => json.map(value => /*receptionDeserializer.mapToReception(value)))*/
     }
 
     const [lessons, setLessons] = useState<Lesson[]>([])

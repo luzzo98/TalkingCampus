@@ -33,20 +33,16 @@ export interface Room {
         opening_hour?: {
             hours: number,
             minutes: number
-        }
+        },
         closing_hour?: {
             hours: number,
             minutes: number
-        }
+        },
         notes?:{
             title: string,
             content: string
         }
     }
-}
-
-export interface Reception {
-
 }
 
 export interface RoomOnMap extends Room {
@@ -67,6 +63,11 @@ export interface Lesson {
     }
 }
 
+export interface Course {
+    course_id: string,
+    teacher_id: string
+}
+
 export interface Teacher {
     email: string,
     phone_number: string,
@@ -74,9 +75,4 @@ export interface Teacher {
     name: string,
     surname: string,
     //picture: {data: Buffer, contentType: String}
-}
-
-export interface Course {
-    course_id: string,
-    teacher_id: string
 }
