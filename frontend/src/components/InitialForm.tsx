@@ -54,14 +54,17 @@ const InitialForm:React.FC = () => {
     };
 
     const getCourses: any = (values: any) => {
-        let i = courseMap.entries()
-        let courses: { name: string; timetable: any; }[] = []
-        values.forEach((v: any) => courses.push({
-            name: v,
-            timetable: i.next().value[1]
-        }))
-        console.log("ho creato",courses)
-        return courses
+        if (values) {
+            let i = courseMap.entries()
+            let courses: { name: string; timetable: any; }[] = []
+            values.forEach((v: any) => courses.push({
+                name: v,
+                timetable: i.next().value[1]
+            }))
+            console.log("ho creato",courses)
+            return courses
+        }
+        return
     }
 
     const onLoginFinish = (values: any) => {
