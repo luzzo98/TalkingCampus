@@ -25,17 +25,18 @@ class AuthService {
 
     registerStudent(nome: string, cognome: string, telefono: string, universita: string, matricola: string, email: string, password: string) {
         return axios
-            .post(API_URL + "signup", {
-                nome, cognome, telefono, universita, matricola, email, password
+            .post(API_URL + "signupStudent", {
+                name: nome, surname: cognome, phone_number: telefono, university_name: universita, badge_number: matricola, email: email, psw: password
             })
             .then(response => {
-                //TODO cosa restituisce se è già registrato lo studente?
+                console.log(response.statusText)
+                console.log(response.data)
             });
     }
 
     registerProfessor(nome: string, cognome: string, telefono: string, email: string, password: string, corsi: any, ricevimento: any) {
         return axios
-            .post(API_URL + "signup", {
+            .post(API_URL + "signupProfessor", {
                 nome, cognome, telefono, email, password, corsi, ricevimento
             })
             .then(response => {
