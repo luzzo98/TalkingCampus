@@ -87,36 +87,36 @@ const MainPage : React.FC = () => {
         return mapState.markers.filter(r => r.floor === floor).map(
             el => {
                 return <Marker position={el.position} draggable={!el.isMarkerSet} icon={utils.generateIcon(el.type, el.name)}
-                            eventHandlers={{
-                                add: (e) => {
-                                    if(!el.isMarkerSet) {
-                                        (e.target as L.Marker).openPopup()
-                                    }
-                                },
-                                dragend: (e) => {
-                                    const newPos = (e.target as L.Marker).getLatLng()
-                                    el.position = [newPos.lat, newPos.lng]
-                                }
-                            }}
-                         >
-                             {(!el.isMarkerSet || mapState.mode === "modifica") ?
-                                                              <EditPopUp
-                                                                  offset={[2, -2]}
-                                                                  buttonText={mapState.mode}
-                                                                  yetExistent={el.isMarkerSet}
-                                                                  elem={el}
-                                                                  onSubmit={() => el.isMarkerSet = true}
-                                                              onDelete={deleteIncompleteMarker}/>
-                                         : mapState.mode === "elimina" ? <DeletePopUp
-                                                                            offset={[2, -2]}
-                                                                            onDelete={() => {
-                                                                                el.isMarkerSet = false
-                                                                                deleteIncompleteMarker();
-                                                                            }}
-                                                                            room_id={el.name}/>
-                                         : mapState.mode === "aggiungi" ? null : <DefaultPopUp offset={[2, -2]} room={el}/>
-                             }
-                         </Marker>
+                               eventHandlers={{
+                                   add: (e) => {
+                                       if(!el.isMarkerSet) {
+                                           (e.target as L.Marker).openPopup()
+                                       }
+                                   },
+                                   dragend: (e) => {
+                                       const newPos = (e.target as L.Marker).getLatLng()
+                                       el.position = [newPos.lat, newPos.lng]
+                                   }
+                               }}
+                >
+                    {(!el.isMarkerSet || mapState.mode === "modifica") ?
+                        <EditPopUp
+                            offset={[2, -2]}
+                            buttonText={mapState.mode}
+                            yetExistent={el.isMarkerSet}
+                            elem={el}
+                            onSubmit={() => el.isMarkerSet = true}
+                            onDelete={deleteIncompleteMarker}/>
+                        : mapState.mode === "elimina" ? <DeletePopUp
+                                offset={[2, -2]}
+                                onDelete={() => {
+                                    el.isMarkerSet = false
+                                    deleteIncompleteMarker();
+                                }}
+                                room_id={el.name}/>
+                            : mapState.mode === "aggiungi" ? null : <DefaultPopUp offset={[2, -2]} room={el}/>
+                    }
+                </Marker>
             }
         );
     }
@@ -221,37 +221,37 @@ const MainPage : React.FC = () => {
                 timeout={800}
                 classNames="slide-left-right"
             >
-            <main className={"main"}>
-                <MainMenu toggleVisibility={isOpeningView}
-                          visibilityFromMap={isMenuVisibleForMap}
-                          mainContents={mainContents}
-                          onChangeMode={changeMode}
-                          onClosure={() => {
-                              setIsOpeningView(false);
-                              setIsMenuCollapsed(true);
-                            }
-                          }/>
-                <MapContainer center={center}
-                              id={'map'}
-                              maxZoom={defaultZoom} minZoom={defaultZoom} zoom={defaultZoom}
-                              whenCreated={handleMapEvent}
-                              zoomControl={false} scrollWheelZoom={false} doubleClickZoom={false}
-                              bounds={bounds}
-                              keyboard={false} >
-                    <LayersControl position="bottomright" collapsed={isMenuCollapsed}>
-                        <LayersControl.BaseLayer name="piano 3">
-                            <ImageOverlay url={floor2} bounds={bounds}/>
-                        </LayersControl.BaseLayer>
-                        <LayersControl.BaseLayer name="piano 2">
-                            <ImageOverlay url={floor1} bounds={bounds}/>
-                        </LayersControl.BaseLayer>
-                        <LayersControl.BaseLayer checked name="piano 1">
-                            <ImageOverlay url={groundFloor} bounds={bounds}/>
-                        </LayersControl.BaseLayer>
-                    </LayersControl>
-                    {dataFetched ? renderMarkers(mapState.currentPiano) : ""}
-                </MapContainer>
-            </main>
+                <main className={"main"}>
+                    <MainMenu toggleVisibility={isOpeningView}
+                              visibilityFromMap={isMenuVisibleForMap}
+                              mainContents={mainContents}
+                              onChangeMode={changeMode}
+                              onClosure={() => {
+                                  setIsOpeningView(false);
+                                  setIsMenuCollapsed(true);
+                              }
+                              }/>
+                    <MapContainer center={center}
+                                  id={'map'}
+                                  maxZoom={defaultZoom} minZoom={defaultZoom} zoom={defaultZoom}
+                                  whenCreated={handleMapEvent}
+                                  zoomControl={false} scrollWheelZoom={false} doubleClickZoom={false}
+                                  bounds={bounds}
+                                  keyboard={false} >
+                        <LayersControl position="bottomright" collapsed={isMenuCollapsed}>
+                            <LayersControl.BaseLayer name="piano 3">
+                                <ImageOverlay url={floor2} bounds={bounds}/>
+                            </LayersControl.BaseLayer>
+                            <LayersControl.BaseLayer name="piano 2">
+                                <ImageOverlay url={floor1} bounds={bounds}/>
+                            </LayersControl.BaseLayer>
+                            <LayersControl.BaseLayer checked name="piano 1">
+                                <ImageOverlay url={groundFloor} bounds={bounds}/>
+                            </LayersControl.BaseLayer>
+                        </LayersControl>
+                        {dataFetched ? renderMarkers(mapState.currentPiano) : ""}
+                    </MapContainer>
+                </main>
             </CSSTransition>
         </div>
     );

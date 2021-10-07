@@ -1,7 +1,7 @@
 import axios from "axios";
 import {User} from "../Model";
 
-const API_URL = "http://localhost:80/api/auth/"; //todo add /auth/signin in backend
+const API_URL = "http://localhost:80/api/auth/";
 
 class AuthService {
     login(email: string, password: string) {
@@ -25,7 +25,7 @@ class AuthService {
 
     registerStudent(nome: string, cognome: string, telefono: string, universita: string, matricola: string, email: string, password: string) {
         return axios
-            .post(API_URL + "signupStudent", {
+            .post(API_URL + "signUpStudent", {
                 name: nome, surname: cognome, phone_number: telefono, university_name: universita, badge_number: matricola, email: email, psw: password
             })
             .then(response => {
