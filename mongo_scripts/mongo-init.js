@@ -110,7 +110,7 @@ db.createCollection("receptions", {
             description: "must be a valid day of week name"
         },
         start: {
-          bsonType: "object",
+          bsonType: "object",
           required: ["hours","minutes"],
           properties: {
               hours: {
@@ -123,10 +123,10 @@ db.createCollection("receptions", {
                   minimum: 0,
                   maximum: 59,
               }
-          },
-        },
+          },
+        },
           end: {
-          bsonType: "object",
+          bsonType: "object",
           required: ["hours","minutes"],
           properties: {
               hours: {
@@ -154,7 +154,7 @@ db.createCollection("users", {
       properties: {
         email: {
           bsonType: "string",
-          pattern: "[a-z]+\.[a-z]+@(unibo|studio.unibo)\.it",
+          pattern: "^[a-z]+[.][a-z]+@(unibo|studio.unibo)\.it$",
           description: "must be a valid email: <user>@campus.it"
         },
         psw: {
