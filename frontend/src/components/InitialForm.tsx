@@ -6,8 +6,6 @@ import 'antd/dist/antd.css';
 import {Route} from "react-router-dom";
 import MainPage from "./MainPage";
 import * as utils from "../utils/utils";
-import {User} from "../Model";
-import img from "../assets/volto_uomo.jpg"
 import AppBarTitle from "./AppBarTitle";
 import DaySelectorModalForm from "./DaySelectorPopupModalForm"
 import AuthService from "../services/AuthService";
@@ -18,12 +16,6 @@ const { TabPane } = Tabs;
 const { Option } = Select;
 
 // const user: User = AuthService.getCurrentUser()
-const mockUser: User = {
-    id: 0,
-    name: "Giovanni",
-    img: img,
-    role: "admin"
-}
 
 const InitialForm:React.FC = () => {
 
@@ -69,15 +61,20 @@ const InitialForm:React.FC = () => {
 
     const onLoginFinish = (values: any) => {
         AuthService.login(loginForm.getFieldValue("email"), loginForm.getFieldValue("password")).then(
-            () => {
-                console.log('Login riuscito:', values);
-                history.push("/main-page", {user: mockUser, hooks: utils.getElements(mockUser)});
+            (res) => {
+                if (res[0])
+                    history.push("/main-page", {user: res[0], hooks: utils.getElements(res[0])});
+                else
+                    Modal.error({
+                        title: 'I dati inseriti non sono corretti',
+                        content: 'Inserisci nuovamente la tua email e password',
+                    });
                 // window.location.reload(); //TODO serve?
             },
             error => {
                 Modal.error({
-                    title: 'I dati inseriti non sono corretti',
-                    content: 'Inserisci nuovamente la tua email e password',
+                    title: 'Errore di rete',
+                    content: 'La connessione al server è fallita, controllare la connessione e riprovare',
                 });
             }
         );

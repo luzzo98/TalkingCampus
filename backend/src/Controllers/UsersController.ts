@@ -1,7 +1,10 @@
 const {student, teacher} = require("../Model/User.ts");
 
 exports.signin = function (req, res){
-    //TODO finisci
+    teacher.find(req.body, function (err, user){
+        if(err) res.send(err)
+        res.send(user);
+    })
 };
 
 exports.getTeacher = function (req, res){
