@@ -45,6 +45,10 @@ export interface Room {
     }
 }
 
+export interface Reception {
+
+}
+
 export interface RoomOnMap extends Room {
     isMarkerSet: boolean
 }

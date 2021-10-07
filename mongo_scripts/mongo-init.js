@@ -7,7 +7,7 @@ db.createCollection("courses", {
       required: ["course_id", "teacher_id"],
       properties: {
         teacher_id: {
-          bsonType: "string",
+          bsonType: "string",
           pattern: "[a-z]+\.[a-z]+@unibo\.it",
           description: "must be a valid teacher email"
         },
@@ -34,42 +34,42 @@ db.createCollection("lessons", {
         room: {
           bsonType: "string",
           description: "must be a valid room id"
-        },
-        day: {
-            bsonType: "string",
-            description: "must be a valid day of week name"
         },
-        start: {
-          bsonType: "object",
-          properties: {
-              hours: {
-                  bsonType: "int",
-                  minimum: 0,
-                  maximum: 23,
-              },
-              minutes: {
-                  bsonType: "int",
-                  minimum: 0,
-                  maximum: 59,
-              }
-          },
-          description: "must be a valid start time"
-        },
-        end: {
-          bsonType: "object",
-          properties: {
-              hours: {
-                  bsonType: "int",
-                  minimum: 0,
-                  maximum: 23,
-              },
-              minutes: {  
-                  bsonType: "int",
-                  minimum: 0,
-                  maximum: 59,
-              }
-         },
-        description: "must be a valid end time"
+        day: {
+            bsonType: "string",
+            description: "must be a valid day of week name"
+        },
+        start: {
+          bsonType: "object",
+          properties: {
+              hours: {
+                  bsonType: "int",
+                  minimum: 0,
+                  maximum: 23,
+              },
+              minutes: {
+                  bsonType: "int",
+                  minimum: 0,
+                  maximum: 59,
+              }
+          },
+          description: "must be a valid start time"
+        },
+        end: {
+          bsonType: "object",
+          properties: {
+              hours: {
+                  bsonType: "int",
+                  minimum: 0,
+                  maximum: 23,
+              },
+              minutes: {  
+                  bsonType: "int",
+                  minimum: 0,
+                  maximum: 59,
+              }
+         },
+        description: "must be a valid end time"
         }
     }
   }
@@ -99,50 +99,52 @@ db.createCollection("receptions", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["teacher_email", "start_time", "end_time"],
+      required: ["teacher_email", "day", "start", "end"],
       properties: {
         teacher_email: {
           bsonType: "string",
           description: "must be a valid teacher email"
-        },
-        day: {
-            bsonType: "string",
-            description: "must be a valid day of week name"
         },
-        start: {
+        day: {
+            bsonType: "string",
+            description: "must be a valid day of week name"
+        },
+        start: {
           bsonType: "object",
-          properties: {
-              hours: {
-                  bsonType: "int",
-                  minimum: 0,
-                  maximum: 23,
-              },
-              minutes: {  
-                  bsonType: "int",
-                  minimum: 0,
-                  maximum: 59,
-              }
+          required: ["hours","minutes"],
+          properties: {
+              hours: {
+                  bsonType: "int",
+                  minimum: 0,
+                  maximum: 23,
+              },
+              minutes: {  
+                  bsonType: "int",
+                  minimum: 0,
+                  maximum: 59,
+              }
           },
-          end: {
+        },
+          end: {
           bsonType: "object",
-          properties: {
-              hours: {
-                  bsonType: "int",
-                  minimum: 0,
-                  maximum: 23,
-              },
-              minutes: {  
-                  bsonType: "int",
-                  minimum: 0,
-                  maximum: 59,
-              }
-          }
+          required: ["hours","minutes"],
+          properties: {
+              hours: {
+                  bsonType: "int",
+                  minimum: 0,
+                  maximum: 23,
+              },
+              minutes: {  
+                  bsonType: "int",
+                  minimum: 0,
+                  maximum: 59,
+              }
+          }
         }
       }
     }
-  }
- }
-});
+  }
+ });
 
 db.createCollection("users", {
   validator: {
@@ -215,7 +217,7 @@ db.createCollection("rooms", {
         },
         floor: {
           bsonType: "int",
-          minimum: 1,
+          minimum: 1,
           maximum: 3,
           description: "must be a positive number"  
         },
@@ -230,7 +232,7 @@ db.createCollection("rooms", {
           description: "must be a valid string: basically, one word with only letters. Eventually, it can contain more words with, from the second one, letters and numbers"  
         },
         position: {
-          bsonType: "array",
+          bsonType: "array",
           minItems: 2,
           maxItems: 2,
           items: {
@@ -289,20 +291,20 @@ db.createCollection("rooms", {
                            description: "must be valid minutes"  
                        }
                   }
-               },
-               notes: {
-                   bsonType: "object",
-                   required: ["title", "content"],
-                   properties: {
-                       title: {
-                           bsonType: "string",
-                           //pattern: "^.{0,50}$"
-                       },
-                       content: {
-                           bsonType: "string",
-                           //pattern: "^.{0,2000}$"
-                       }
-                  }
+               },
+               notes: {
+                   bsonType: "object",
+                   required: ["title", "content"],
+                   properties: {
+                       title: {
+                           bsonType: "string",
+                           //pattern: "^.{0,50}$"
+                       },
+                       content: {
+                           bsonType: "string",
+                           //pattern: "^.{0,2000}$"
+                       }
+                  }
                }
            }
         }
@@ -335,13 +337,13 @@ db.rooms.insertMany([
     {"name":"Aula 2.2", "floor":NumberInt(2), "maximum_seats":NumberInt(170), "type":"Aula", "position":[40.757059, -74.194536]},
     {"name":"Aula 2.3", "floor":NumberInt(2), "maximum_seats":NumberInt(170), "type":"Aula", "position":[40.756710, -74.18887]},
     {"name":"Aula 2.4", "floor":NumberInt(2), "maximum_seats":NumberInt(180), "type":"Aula", "position":[40.756710, -74.181919]},
-    {"name":"Mensa 2.5", "floor":NumberInt(2), "maximum_seats":NumberInt(200), "type":"Mensa", "position":[40.74745, -74.16200],
-        "adding_info":{
-            "notes":{
-                "title":"Menù del giorno",
-                "content":"Primo: Passatelli in brodo \nSecondo: Pollo arrosto con patate \nDolce: Crostata di mele"
-            }
-        }
+    {"name":"Mensa 2.5", "floor":NumberInt(2), "maximum_seats":NumberInt(200), "type":"Mensa", "position":[40.74745, -74.16200],
+        "adding_info":{
+            "notes":{
+                "title":"Menù del giorno",
+                "content":"Primo: Passatelli in brodo \nSecondo: Pollo arrosto con patate \nDolce: Crostata di mele"
+            }
+        }
     },
     {"name":"Bagno 2.6", "floor":NumberInt(2), "maximum_seats":NumberInt(3), "type":"Bagno", "position":[40.75070, -74.19127]},
     {"name":"Aula 2.7", "floor":NumberInt(2), "maximum_seats":NumberInt(70), "type":"Aula", "position":[40.72787, -74.16200]},
@@ -371,32 +373,32 @@ db.rooms.insertMany([
     {"name":"Laboratorio 3.15", "floor":NumberInt(3), "maximum_seats":NumberInt(125), "type":"Laboratorio", "position":[40.73203, -74.17676]},
     {"name":"Segreteria 3.16", "floor":NumberInt(3), "maximum_seats":NumberInt(0), "type":"Segreteria", "position":[40.75265, -74.15651],
         "adding_info":{"phone_number":"3325463745", "opening_hour":{"hours":NumberInt(9),"minutes":NumberInt(0)}, "closing_hour":{"hours":NumberInt(16),"minutes":NumberInt(0)}}}
-])
-
-db.users.insertMany([
-    {"email":"admin.admin@unibo.it", "psw":"talkingadmin", "role":"admin" }, 
-    {"email":"franco.franchi@unibo.it", "psw":"professore", "role":"teacher", "phone_number":"3312100521", "name":"Franco", "surname":"Franchi"},
-    {"email":"mario.rossi@unibo.it", "psw":"professore", "role":"teacher", "phone_number":"3311234567", "name":"Mario", "surname":"Rossi"}
-])
-
-db.courses.insertMany([
-    {"teacher_id":"franco.franchi@unibo.it", "course_id":"Algebra"}, 
-    {"teacher_id":"franco.franchi@unibo.it", "course_id":"Calcolo Numerico"}, 
-    {"teacher_id":"mario.rossi@unibo.it", "course_id":"Programmazione 1"},
-    {"teacher_id":"mario.rossi@unibo.it", "course_id":"Programmazione 2"}
-])
-
-db.lessons.insertMany([
-    {"course_name":"Algebra", "room":"Aula 1.1", "day":"Lunedì", 
-        "start":{ "hours":NumberInt(9), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(13), "minutes":NumberInt(0)}
-    },
-    {"course_name":"Algebra", "room":"Aula 1.1", "day":"Mercoledì", 
-        "start":{ "hours":NumberInt(15), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(18), "minutes":NumberInt(0)}
-    },
-    {"course_name":"Calcolo Numerico", "room":"Aula 1.1", "day":"Martedì",
-        "start":{ "hours":NumberInt(14), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(16), "minutes":NumberInt(0)}
-    },
-    {"course_name":"Programmazione 1", "room":"Aula 1.1", "day":"Venerdì",
-        "start":{ "hours":NumberInt(8), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(13), "minutes":NumberInt(0)}
-    }
+])
+
+db.users.insertMany([
+    {"email":"admin.admin@unibo.it", "psw":"talkingadmin", "role":"admin" }, 
+    {"email":"franco.franchi@unibo.it", "psw":"professore", "role":"teacher", "phone_number":"3312100521", "name":"Franco", "surname":"Franchi"},
+    {"email":"mario.rossi@unibo.it", "psw":"professore", "role":"teacher", "phone_number":"3311234567", "name":"Mario", "surname":"Rossi"}
+])
+
+db.courses.insertMany([
+    {"teacher_id":"franco.franchi@unibo.it", "course_id":"Algebra"}, 
+    {"teacher_id":"franco.franchi@unibo.it", "course_id":"Calcolo Numerico"}, 
+    {"teacher_id":"mario.rossi@unibo.it", "course_id":"Programmazione 1"},
+    {"teacher_id":"mario.rossi@unibo.it", "course_id":"Programmazione 2"}
+])
+
+db.lessons.insertMany([
+    {"course_name":"Algebra", "room":"Aula 1.1", "day":"Lunedì", 
+        "start":{ "hours":NumberInt(9), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(13), "minutes":NumberInt(0)}
+    },
+    {"course_name":"Algebra", "room":"Aula 1.1", "day":"Mercoledì", 
+        "start":{ "hours":NumberInt(15), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(18), "minutes":NumberInt(0)}
+    },
+    {"course_name":"Calcolo Numerico", "room":"Aula 1.1", "day":"Martedì",
+        "start":{ "hours":NumberInt(14), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(16), "minutes":NumberInt(0)}
+    },
+    {"course_name":"Programmazione 1", "room":"Aula 1.1", "day":"Venerdì",
+        "start":{ "hours":NumberInt(8), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(13), "minutes":NumberInt(0)}
+    }
 ])

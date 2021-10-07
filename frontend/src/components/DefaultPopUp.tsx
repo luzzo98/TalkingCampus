@@ -47,6 +47,12 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
             })
     }
 
+    function getReception(teacherEmail:string){
+        return fetch(`http://localhost:80/api/receptions/${teacherEmail}`)
+            .then((res: Response) => res.json())
+            .then((json: JSON[]) => json.map(value => receptionDeserializer.mapToReception(value)))
+    }
+
     const [lessons, setLessons] = useState<Lesson[]>([])
     const [courses, setCourses] = useState<Course[]>([])
     const [teachers, setTeachers] = useState<Teacher[]>([])
