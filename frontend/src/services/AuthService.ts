@@ -29,19 +29,23 @@ class AuthService {
                 name: nome, surname: cognome, phone_number: telefono, university_name: universita, badge_number: matricola, email: email, psw: password
             })
             .then(response => {
-                console.log(response.statusText)
+                if (response.data.code) {
+                    //TODO errore
+                }
                 console.log(response.data)
             });
     }
 
     registerProfessor(nome: string, cognome: string, telefono: string, email: string, password: string, corsi: any, ricevimento: any) {
-        return axios
-            .post(API_URL + "signupProfessor", {
-                nome, cognome, telefono, email, password, corsi, ricevimento
+        let profRes = axios
+            .post(API_URL + "signUpProfessor", {
+                name: nome, surname: cognome, phone_number: telefono, email: email, psw: password
             })
             .then(response => {
                 //TODO cosa restituisce se è già registrato il prof?
+                console.log(response.data)
             });
+        return profRes
     }
 
     getCurrentUser(): User {
