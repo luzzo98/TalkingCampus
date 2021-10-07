@@ -1,5 +1,4 @@
-const teacher = require("../Model/UsersModels/User.ts");
-const student = require("../Model/UsersModels/Student.ts")
+const {student, teacher} = require("../Model/User.ts");
 
 exports.getTeacher = function (req, res){
     teacher.find({email: req.params.id}, function (err, teacher){

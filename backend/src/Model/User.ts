@@ -26,6 +26,14 @@ const baseSchema = new Schema<User>({
     picture: {data: Buffer, contentType: String, required: false}
 }, baseOptions)
 
+const studentSchema = new Schema<User>({
+    badge_number: String,
+    university_name: String
+})
+
 export const baseModel = model('base', baseSchema)
 
-module.exports = baseModel.discriminator("teacher", baseSchema)
+exports.teacher = baseModel.discriminator("teacher", baseSchema)
+
+exports.student = baseModel.discriminator('student', studentSchema)
+
