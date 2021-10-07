@@ -115,7 +115,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
                 setIsTeacherHidden(prevState => !prevState)}>
                 Docente: {teacher?.name} {teacher?.surname}</a></p>
             <div className={isTeacherHidden ? "sub-info-hidden" : "sub-info-visible"}>
-                <p>email: {teacher?.email}<br/>telefono: {teacher?.phone_number}</p>
+                <p>Email: {teacher?.email}<br/>Telefono: {teacher?.phone_number}</p>
                 <div className={"receptions"}>
                     <p>Ricevimento:</p>
                     {receptions.filter(r => r.teacher_email === teacher?.email)
