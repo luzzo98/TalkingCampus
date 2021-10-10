@@ -39,3 +39,34 @@ exports.updateRoom = function(req, res){
             res.json(room)
     })
 }
+
+exports.addObserver = function (req, res){
+   Room.findOneAndUpdate(
+        {name: req.params.room},
+        {$push: {observers: String(req.params.observer)}},
+        function (err, room){
+            if(err)
+                res.send(err)
+            else
+                res.json(room)
+        }
+    )
+}
+
+function changeSeats(room: string, increment:number, res){
+    Room.findOneAndUpdate(
+        {name: room},
+        {$inc: {occupied_seats: increment}},
+        function (err, room){
+            if(err)
+                res.send(err)
+            else
+                res.json(room)
+        }
+    )
+}
+
+exports.incrementSeats = (req, res) => changeSeats(req.body.room_name, 1, res)
+
+exports.decrementSeats = (req, res) => changeSeats(req.body.room_name, -1, res)
+

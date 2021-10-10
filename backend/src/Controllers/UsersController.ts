@@ -1,7 +1,7 @@
-const {student, teacher} = require("../Model/User.ts");
+const {user, student, teacher} = require("../Model/User.ts");
 
 exports.signin = function (req, res){
-    teacher.find(req.body, function (err, user){
+    user.find(req.body, function (err, user){
         if(err) res.send(err)
         res.send(user);
     })
@@ -35,5 +35,17 @@ exports.insertProfessor = function (req, res) {
         } else {
             res.status(200).json(prof)
         }
+    })
+}
+
+exports.findStudent = (req, res, next) => {
+    student.find({"email": req.body.email}, function(err, student){
+        if(err)
+            res.send(err)
+        else
+            if(student !== null)
+                next()
+            else
+                res.status(404).send("Student not found")
     })
 }

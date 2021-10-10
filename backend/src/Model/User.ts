@@ -31,7 +31,9 @@ const studentSchema = new Schema<User>({
     university_name: String
 })
 
-export const baseModel = model('base', baseSchema)
+const baseModel = model('base', baseSchema)
+
+exports.user = baseModel
 
 exports.teacher = baseModel.discriminator("teacher", baseSchema)
 
