@@ -16,8 +16,10 @@ interface Props {
     offset: [number, number]
 }
 
-function handleClick(){
-    console.log("aggiungere la mail dell'utente che accede qua alla lista degl'osservatori")
+function handleAddingObs(room_name: string, email: string){
+    fetch(`http://localhost:80/api/rooms/addObservers/${room_name}/${email}`)
+        .then(res => console.log(res.json()));
+    //console.log("aggiungere la mail dell'utente che accede qua alla lista degl'osservatori")
 }
 
 const DefaultPopUp: React.FC<Props> = (props:Props) => {
@@ -199,8 +201,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
                         <div className={"notes"}>
                             <h3>{notes.title}</h3>
                             <p>{notes.content}</p>
-                        </div>
-                        :null}
+                        </div> : null}
                 </div> : null
             }
             {props.room.maximum_seats > 0 ?
@@ -209,7 +210,8 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
                     {props.room.type === "Aula" ?
                         <Button className={"prenote-class"}
                                 onClick={() => setModalVisible(true)}>Lezioni in programma</Button> : null}
-                    <Button className={"prenote-class"} onClick={handleClick}>Osserva Locale</Button>
+                    <Button className={"prenote-class"} onClick={() =>
+                        handleAddingObs(props.room.name, "chrisi.derri@unibo.it")}>Osserva Locale</Button>
                 </div>
         </Popup>
     );
