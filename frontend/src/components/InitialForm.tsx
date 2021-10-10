@@ -62,7 +62,6 @@ const InitialForm:React.FC = () => {
     const onLoginFinish = (values: any) => {
         AuthService.login(loginForm.getFieldValue("email"), loginForm.getFieldValue("password")).then(
             (res) => {
-                console.log(res)
                 if (res[0])
                     history.push("/main-page", {user: res[0], hooks: utils.getElements(res[0])});
                 else

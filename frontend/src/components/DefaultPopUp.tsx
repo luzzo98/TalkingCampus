@@ -17,7 +17,7 @@ interface Props {
 }
 
 function handleAddingObs(room_name: string, email: string){
-    fetch(`http://localhost:80/api/rooms/addObservers/${room_name}/${email}`)
+    fetch(`http://localhost:80/api/rooms/add-observers/${room_name}/${email}`)
         .then(res => console.log(res.json()));
     //console.log("aggiungere la mail dell'utente che accede qua alla lista degl'osservatori")
 }
