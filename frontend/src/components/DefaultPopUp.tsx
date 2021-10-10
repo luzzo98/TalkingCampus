@@ -211,7 +211,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
                         <Button className={"prenote-class"}
                                 onClick={() => setModalVisible(true)}>Lezioni in programma</Button> : null}
                     <Button className={"prenote-class"} onClick={() =>
-                        handleAddingObs(props.room.name, "chrisi.derri@unibo.it")}>Osserva Locale</Button>
+                        handleAddingObs(props.room.name, "christian.derrico@unibo.it")}>Osserva Locale</Button>
                 </div>
         </Popup>
     );

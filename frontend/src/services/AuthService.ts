@@ -25,10 +25,10 @@ class AuthService {
         localStorage.removeItem("user");
     }
 
-    registerStudent(nome: string, surname: string, phone_number: string, university_name: string, badge_number: string, email: string, psw: string) {
+    registerStudent(name: string, surname: string, phone_number: string, university_name: string, badge_number: string, email: string, psw: string) {
         return axios
             .post(API_URL + "auth/signUpStudent", {
-                nome, surname, phone_number, university_name, badge_number, email, psw
+                name, surname, phone_number, university_name, badge_number, email, psw
             })
             .then(response => {
                 if (response.data.code) {

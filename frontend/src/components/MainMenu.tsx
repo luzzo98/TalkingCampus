@@ -3,7 +3,7 @@ import {CSSTransition} from "react-transition-group";
 import {useHistory, useLocation} from "react-router-dom";
 import {Tooltip} from "antd";
 import {useMediaQuery} from "react-responsive";
-import {MainpageContents} from "../Model";
+import {MainpageContents, User} from "../Model";
 import '../styles/main_page/mainPageStyle.scss'
 
 interface menuProps {
