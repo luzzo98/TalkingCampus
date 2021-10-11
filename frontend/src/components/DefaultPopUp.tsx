@@ -68,8 +68,8 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
 
     useEffect(() => {
         getLessons(props.room.name);
-        socket.on("update-seats", (response: any) => {
-            if(props.room.name === response.name) setOccupiedSeats(response.seats)
+        socket.on("update-seats: " + props.room.name, (seats: number) => {
+            setOccupiedSeats(seats)
         })
     },[]);
 

@@ -6,7 +6,6 @@ const io = require('socket.io')({
         origin: ['http://localhost:3000']
     }
 });
-
 io.listen(8080)
 
 exports.listAllRooms = function (req, res){
@@ -90,7 +89,7 @@ function changeSeats(room: string, increment:number, res){
                 res.send(err)
             else {
                 res.send(room)
-                io.emit("update-seats", {seats: room.occupied_seats, name: room.name})
+                io.emit("update-seats: " + room.name, room.occupied_seats)
             }
         }
     )
