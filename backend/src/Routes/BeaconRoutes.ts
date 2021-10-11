@@ -6,9 +6,9 @@ module.exports = function setBeaconRoutes(app: Application) {
     const roomController = require("../Controllers/RoomsController.ts");
 
     app.route("/api/entry-beacon")
-       .post(studentController.findStudent, roomController.incrementSeats);
+       .post(studentController.findStudent, roomController.checkMaximumSeats, roomController.incrementSeats);
 
     app.route("/api/exit-beacon")
-        .post(studentController.findStudent, roomController.decrementSeats);
+       .post(studentController.findStudent, roomController.checkMinimumSeats, roomController.decrementSeats);
 
 };

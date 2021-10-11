@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {ModalTitle} from "react-bootstrap";
 import {Course, Lesson, Reception, Room, Teacher} from "../Model";
 import {Popup} from "react-leaflet";
-import {Button, Calendar, List, Modal, Table} from "antd";
+import {Button, List, Modal} from "antd";
 import * as utils from "../utils/utils"
 import * as lessonDeserializer from "../utils/LessonDeserializer";
 import * as courseDeserializer from "../utils/CourseDeserializer";
@@ -16,15 +16,15 @@ interface Props {
     offset: [number, number]
 }
 
+const io = require("socket.io-client");
+const socket = io("http://localhost:8080/");
+
 function handleAddingObs(room_name: string, email: string){
     fetch(`http://localhost:80/api/rooms/add-observers/${room_name}/${email}`)
         .then(res => console.log(res.json()));
-    //console.log("aggiungere la mail dell'utente che accede qua alla lista degl'osservatori")
 }
 
 const DefaultPopUp: React.FC<Props> = (props:Props) => {
-
-    const [isTeacherHidden, setIsTeacherHidden] = useState(true);
 
     function getLessons(room_id:string){
         fetch(`http://localhost:80/api/lessons/${room_id}`)
@@ -58,14 +58,19 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
             .then(receptions => setReceptions(receptions))
     }
 
+    const [occupiedSeats, setOccupiedSeats] = useState(props.room.occupied_seats)
     const [lessons, setLessons] = useState<Lesson[]>([])
     const [courses, setCourses] = useState<Course[]>([])
     const [teachers, setTeachers] = useState<Teacher[]>([])
     const [receptions, setReceptions] = useState<Reception[]>([])
     const [modalVisible, setModalVisible] = useState<boolean>(false)
+    const [isTeacherHidden, setIsTeacherHidden] = useState(true);
 
     useEffect(() => {
         getLessons(props.room.name);
+        socket.on("update-seats", (response: any) => {
+            if(props.room.name === response.name) setOccupiedSeats(response.seats)
+        })
     },[]);
 
     useEffect(() =>
@@ -205,7 +210,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
                 </div> : null
             }
             {props.room.maximum_seats > 0 ?
-                <p>Posti occupati: {props.room.occupied_seats}/{props.room.maximum_seats}</p> : null}
+                <p>Posti occupati: {occupiedSeats}/{props.room.maximum_seats}</p> : null}
                 <div className={"class-buttons"}>
                     {props.room.type === "Aula" ?
                         <Button className={"prenote-class"}

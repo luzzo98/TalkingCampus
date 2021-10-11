@@ -4,7 +4,7 @@ module.exports = function setRoomRoutes(app: Application) {
 
     const roomsController = require("../Controllers/RoomsController.ts");
 
-    app.route("/api/rooms")
+    app.route("/api/rooms/:floor")
        .get(roomsController.listAllRooms)
 
     app.route("/api/add-room")

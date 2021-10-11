@@ -28,7 +28,13 @@ interface Room {
 const roomSchema = new Schema<Room>({
     type: String,
     maximum_seats: Number,
-    occupied_seats: {type: Number, default: 0},
+    occupied_seats: {
+        type: Number,
+        default: 0,
+        validate: [function (val){
+            return val <= this.maximum_seats
+        }, 'Maximum seats available reached']
+    },
     name: {type: String, unique: true},
     floor: Number,
     position: [Number, Number],

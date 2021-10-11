@@ -35,8 +35,8 @@ const MainPage : React.FC = () => {
     })
     const [dataFetched, setDataFetched] = useState(false);
 
-    function getRooms() {
-        fetch("http://localhost:80/api/rooms")
+    function getRooms(floor: number) {
+        fetch(`http://localhost:80/api/rooms/${floor}`)
             .then((res: Response) => res.json())
             .then((json:JSON[]) => json.map(value => roomDeserializer.mapToRoom(value)))
             .then((markers) => {
@@ -44,10 +44,6 @@ const MainPage : React.FC = () => {
                 setDataFetched(true)
             });
     }
-
-    useEffect(() => {
-        getRooms()
-    },[])
 
     const center: LatLngExpression = [40.743, -74.185];
     const mobileCenter: LatLngExpression = [40.753, -74.176];
@@ -82,6 +78,11 @@ const MainPage : React.FC = () => {
         if (mainContents.user.role === "admin")
             message.info("Talking campus mode: " + mapState.mode,0.7)
     }, [mapState.mode])
+
+    useEffect(() => {
+        getRooms(mapState.currentPiano)
+        console.log("puoi aspettarmi dove mi hai lasciatoo")
+    },[mapState.currentPiano])
 
     function renderMarkers(floor: number) {
         return mapState.markers.filter(r => r.floor === floor).map(

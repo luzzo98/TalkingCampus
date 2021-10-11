@@ -4,8 +4,8 @@ export function mapToRoom(jsonElement: any): RoomOnMap{
     return {
         id: jsonElement._id,
         type: jsonElement.type,
-        maximum_seats: jsonElement.maximum_seats,
         occupied_seats: jsonElement.occupied_seats,
+        maximum_seats: jsonElement.maximum_seats,
         name: jsonElement.name,
         floor: jsonElement.floor,
         position: jsonElement.position,
