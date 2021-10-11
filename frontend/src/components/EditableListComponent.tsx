@@ -20,12 +20,13 @@ interface ListItem {
 const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
     function getNotifications(){
-        fetch(`http://localhost:80/api/get-notifications/christian.derrico@studio.unibo.it`)
+        let id = 0;
+        fetch(`http://localhost:80/api/get-notifications/christian.derrico@unibo.it`)
             .then((res: Response) => res.json())
             .then(js => {console.log(js); return js})
             .then((json:JSON[]) => json.map( value => {
                 return {
-                    id: json.indexOf(value),
+                    id: id++,
                     content: "" + value
                     } as ListItem;
                 }
@@ -34,7 +35,7 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
     useEffect(() => {
         if(sub_title === "Notifiche")
-            socket.on("notification: christian.derrico@studio.unibo.it", getNotifications())
+            socket.on("notification: christian.derrico@studio.unibo.it", console.log("ciaooooo"))
     }, [])
 
     const[data, setData] = useState<ListItem[]>([])

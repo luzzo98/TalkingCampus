@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "mongo": "^0.1.0",
     "mongoose": "^6.0.8",
+    "socket.io": "^4.2.0",
     "ts-node": "^10.2.1"
   },
   "devDependencies": {
