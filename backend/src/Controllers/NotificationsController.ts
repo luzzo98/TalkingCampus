@@ -5,7 +5,16 @@ exports.getNotification = function (req, res){
         if(err)
             res.send(err)
         else
-            res.status(200).json(notifications.map(n => n.message))
+            res.status(200).json(notifications)
+    })
+}
+
+exports.delNotification = function (req, res){
+    notification.deleteOne({_id: req.params.id}, function (err, notification){
+        if(err)
+            res.send(err)
+        else
+            res.status(200).json(notification)
     })
 }
 

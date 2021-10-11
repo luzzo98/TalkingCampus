@@ -97,7 +97,6 @@ function changeSeats(room: string, increment:number, req, res, next){
                 const message = body ? body + room.name : null
                 if(message)
                     room.observers.forEach(o => {
-                        console.log(o)
                         io.emit("notification: " + o, null)
                         req.body.notification = {
                             user_id: o,

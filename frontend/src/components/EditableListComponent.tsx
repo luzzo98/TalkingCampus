@@ -13,7 +13,8 @@ const io = require("socket.io-client");
 const socket = io("http://localhost:8080/");
 
 interface ListItem {
-    id: number
+    _id: string
+    key: number
     content: string
 }
 
@@ -23,19 +24,25 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
         let id = 0;
         fetch(`http://localhost:80/api/get-notifications/christian.derrico@unibo.it`)
             .then((res: Response) => res.json())
-            .then(js => {console.log(js); return js})
-            .then((json:JSON[]) => json.map( value => {
+            .then((json:JSON[]) => json.map( (value: any) => {
                 return {
-                    id: id++,
-                    content: "" + value
+                    _id: value._id,
+                    key: id++,
+                    content: "" + value.message
                     } as ListItem;
                 }
-            )).then(items => setData(items))
+            ))
+            .then(i => {console.log(i); return i})
+            .then(items => setData(items))
+    }
+
+    function deleteNotification(id: string){
+        fetch(`http://localhost:80/api/del-notification/${id}`)
     }
 
     useEffect(() => {
         if(sub_title === "Notifiche")
-            socket.on("notification: christian.derrico@studio.unibo.it", console.log("ciaooooo"))
+            socket.on("notification: christian.derrico@unibo.it", () => getNotifications())
     }, [])
 
     const[data, setData] = useState<ListItem[]>([])
@@ -45,13 +52,13 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
     })
 
     useEffect(() => {
-        console.log("hello")
         getNotifications()
     }, [isEntrance])
 
     function handleElimination(id: number){
         const elemId = `${id}`
-        setData(data.filter(el => el.id != id))
+        setData(data.filter(el => el.key != id))
+        deleteNotification(data.find(e => e.key === id)?._id as string)
     }
 
     return (
@@ -76,11 +83,11 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
                         renderItem={(item) => (
                             <List.Item
                                 className={"motion-in"}
-                                key={`${item.id}`}
-                                id={`${item.id}`}
+                                key={`${item.key}`}
+                                id={`${item.key}`}
                                 extra={[
                                     <Button size = "small"
-                                            onClick={(e) => handleElimination(item.id)}
+                                            onClick={(e) => handleElimination(item.key)}
                                             className={"btn-notification"}
                                             icon={<CloseCircleOutlined className={"btn-icon"}/>}/>
                                 ]}>

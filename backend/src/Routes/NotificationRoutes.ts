@@ -7,4 +7,7 @@ module.exports = function setNotificationRoutes(app: Application) {
     app.route("/api/get-notifications/:email")
        .get(notificationsController.getNotification);
 
+    app.route("/api/del-notification/:id")
+        .get(notificationsController.delNotification);
+
 };
