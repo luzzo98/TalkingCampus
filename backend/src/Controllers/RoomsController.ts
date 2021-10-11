@@ -64,13 +64,15 @@ function checkSeats(room: string, increment:number, res, next){
         function (err, room){
             if(err)
                 res.send(err)
-             else
+             else if(room !== null)
                 if(increment > 0 && room.occupied_seats + increment > room.maximum_seats)
                     res.send("Maximum reached")
                 else if(room.occupied_seats + increment < 0)
                     res.send("Room yet empty")
                 else
                     next()
+            else
+                res.status(404).send("Room not found")
         }
     )
 }
@@ -79,7 +81,7 @@ exports.checkMaximumSeats = (req, res, next) => checkSeats(req.body.room_name, 1
 
 exports.checkMinimumSeats = (req, res, next) => checkSeats(req.body.room_name, -1, res, next)
 
-function changeSeats(room: string, increment:number, res){
+function changeSeats(room: string, increment:number, req, res, next){
     Room.findOneAndUpdate(
         {name: room},
         {$inc: {occupied_seats: increment}},
@@ -88,14 +90,28 @@ function changeSeats(room: string, increment:number, res){
             if(err)
                 res.send(err)
             else {
-                res.send(room)
                 io.emit("update-seats: " + room.name, room.occupied_seats)
+                const body = increment > 0 && room.maximum_seats === room.occupied_seats ? "Posti esauriti in "
+                              : increment < 0 && room.occupied_seats === room.maximum_seats - 1 ? "Si è liberato un posto in "
+                              : "";
+                const message = body ? body + room.name : null
+                if(message)
+                    room.observers.forEach(o => {
+                        io.emit("notification: " + o)
+                        req.body.notification = {
+                            user_id: o,
+                            message: message
+                        }
+                        next()
+                    })
+                else
+                    res.send(room)
             }
         }
     )
 }
 
-exports.incrementSeats = (req, res) => changeSeats(req.body.room_name, 1, res)
+exports.incrementSeats = (req, res, next) => changeSeats(req.body.room_name, 1, req, res, next)
 
-exports.decrementSeats = (req, res) => changeSeats(req.body.room_name, -1, res)
+exports.decrementSeats = (req, res, next) => changeSeats(req.body.room_name, -1, req, res, next)
 

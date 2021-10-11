@@ -9,6 +9,7 @@ const setCoursesRoutes = require("./Routes/CourseRoutes.ts")
 const setUserRoutes = require("./Routes/UserRoutes.ts")
 const setReceptionRoutes = require("./Routes/ReceptionRoutes.ts")
 const setBeaconRoutes = require("./Routes/BeaconRoutes.ts")
+const setNotificationRoutes = require("./Routes/NotificationRoutes.ts")
 
 const app = express();
 const PORT = 80;
@@ -24,6 +25,7 @@ setCoursesRoutes(app);
 setUserRoutes(app);
 setReceptionRoutes(app);
 setBeaconRoutes(app);
+setNotificationRoutes(app);
 
 //connessione a mongo db
 mongoose.connect('mongodb://localhost:27017/talkingCampus');

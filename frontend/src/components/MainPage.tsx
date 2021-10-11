@@ -81,7 +81,6 @@ const MainPage : React.FC = () => {
 
     useEffect(() => {
         getRooms(mapState.currentPiano)
-        console.log("puoi aspettarmi dove mi hai lasciatoo")
     },[mapState.currentPiano])
 
     function renderMarkers(floor: number) {

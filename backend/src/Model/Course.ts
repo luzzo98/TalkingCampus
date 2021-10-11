@@ -6,7 +6,7 @@ interface Course {
 }
 
 const courseSchema = new Schema<Course>({
-    course_id: String,
+    course_id: {type: String, unique: true},
     teacher_id: String
 });
 
