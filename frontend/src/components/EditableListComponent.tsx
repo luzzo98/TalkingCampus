@@ -6,52 +6,47 @@ import AppBarTitle from "./AppBarTitle";
 import Footer from "./Footer";
 import SubAppBar from "./SubAppBar";
 import {CSSTransition} from "react-transition-group";
-import set = Reflect.set;
+import {ListItem} from "../Model";
+import * as listItemDeserializer from "../utils/ListItemDeserializer"
 require("../styles/userPagesComponents/list_component/notificationBoxStyle.scss")
 
 const io = require("socket.io-client");
 const socket = io("http://localhost:8080/");
-
-interface ListItem {
-    _id: string
-    key: number
-    content: string
-}
 
 const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
     function getNotifications(room: string){
         fetch(`http://localhost:80/api/get-notifications/${room}`)
             .then((res: Response) => res.json())
-            .then((json:JSON[]) => json.map( (value: any) => {
-                const elem = {
-                    _id: value._id,
-                    content: "" + value.message
-                    } as ListItem;
-                return elem
-                }
-            ))
+            .then((json:JSON[]) => json.map( (value: any) => listItemDeserializer.mapToNotification(value)))
             .then(items => setData(prevState => prevState.concat(
-                    items.filter(e => !prevState.find(p => p._id === e._id)))
+                    items.filter(e => !prevState.find(p => p.id === e.id)))
                 )
             )
+    }
+
+    function getObsRoom(email: string){
+        fetch(`http://localhost:80/api/get-observed-rooms/${email}`)
+            .then(res => res.json())
+            .then((json:string[]) => json.map( (value: any) => listItemDeserializer.mapToClass(value)))
+            .then(items => setData(items))
     }
 
     function deleteNotification(id: string){
         fetch(`http://localhost:80/api/del-notification/${id}`)
     }
 
+    function deleteObsRoom(email:string, room: string){
+        fetch(`http://localhost:80/api/del-observed-room/${email}/${room}`)
+    }
+
     useEffect(() => {
-        switch(sub_title){
-            case "Notifiche":
-                ["Bagno 1.7", "Bagno 1.4"].forEach(e => socket.on("notification: " + e,
-                    () => getNotifications(e)))
-                break;
-            case "Aule Registrate":
-                break;
-        }
-        ["Bagno 1.7", "Bagno 1.4"].forEach(e => getNotifications(e))
-    }, [])
+            if(sub_title === "Notifiche"){
+                ["Bagno 1.7", "Bagno 1.4"].forEach(e => socket.on("notification: " + e, () => getNotifications(e)));
+                ["Bagno 1.7", "Bagno 1.4"].forEach(e => getNotifications(e))
+            } else
+                getObsRoom("christian.derrico@studio.unibo.it")
+        }, [])
 
     const[data, setData] = useState<ListItem[]>([])
     const[isEntrance, setIsEntrance] = useState(() => {
@@ -61,8 +56,11 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
     function handleElimination(id: string){
         const elemId = `${id}`
-        setData(data.filter(el => el._id != id))
-        deleteNotification(id)
+        setData(data.filter(el => el.id != id))
+        if(sub_title === "Notifiche")
+            deleteNotification(id)
+        else
+            deleteObsRoom("christian.derrico@studio.unibo.it",id)
     }
 
     return (
@@ -87,11 +85,11 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
                         renderItem={(item) => (
                             <List.Item
                                 className={"motion-in"}
-                                key={`${item._id}`}
-                                id={`${item._id}`}
+                                key={`${item.id}`}
+                                id={`${item.id}`}
                                 extra={[
                                     <Button size = "small"
-                                            onClick={(e) => handleElimination(item._id)}
+                                            onClick={(e) => handleElimination(item.id)}
                                             className={"btn-notification"}
                                             icon={<CloseCircleOutlined className={"btn-icon"}/>}/>
                                 ]}>

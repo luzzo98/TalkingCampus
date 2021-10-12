@@ -94,3 +94,8 @@ export interface Student extends Teacher {
     badge_number: string,
     university_name: string
 }
+
+export interface ListItem {
+    id: string
+    content: string
+}

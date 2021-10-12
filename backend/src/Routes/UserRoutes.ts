@@ -13,8 +13,14 @@ module.exports = function setUserRoutes(app: Application) {
     app.route("/api/students/:id")
         .get(usersController.getStudent)
 
-    app.route("/api/rooms/add-observers/:observer/:room")
+    app.route("/api/add-observed-room/:observer/:room")
        .get(usersController.addObservedRoom)
+
+    app.route("/api/get-observed-rooms/:email")
+        .get(usersController.getObservedRooms)
+
+    app.route("/api/del-observed-room/:email/:room")
+        .get(usersController.delObservedRoom)
 
     app.route("/api/auth/signUpStudent")
         .post(usersController.insertStudent)

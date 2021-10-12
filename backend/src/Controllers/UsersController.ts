@@ -71,3 +71,28 @@ exports.findStudent = (req, res, next) => {
                 res.status(404).send("Student not found")
     })
 }
+
+exports.getObservedRooms = (req, res) => {
+    student.findOne({email: req.params.email}, function (err, student){
+        if(err)
+            res.send(err)
+        else{
+            //console.log(student)
+            res.status(200).json(student.observed_rooms)
+        }
+    })
+}
+
+exports.delObservedRoom = (req, res) => {
+    student.findOneAndUpdate(
+        {email: req.params.email},
+        {$pull: {observed_rooms: req.params.room}},
+        function (err, student){
+        if(err)
+            res.send(err)
+        else{
+            //console.log(student)
+            res.status(200).json(student.observed_rooms)
+        }
+    })
+}

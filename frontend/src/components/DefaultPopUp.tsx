@@ -20,7 +20,7 @@ const io = require("socket.io-client");
 const socket = io("http://localhost:8080/");
 
 function handleAddingObs(room_name: string, email: string){
-    fetch(`http://localhost:80/api/rooms/add-observers/${email}/${room_name}`)
+    fetch(`http://localhost:80/api/add-observed-room/${email}/${room_name}`)
         .then(res => console.log(res.json()));
 }
 
