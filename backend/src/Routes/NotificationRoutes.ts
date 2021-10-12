@@ -4,7 +4,7 @@ module.exports = function setNotificationRoutes(app: Application) {
 
     const notificationsController = require("../Controllers/NotificationsController.ts");
 
-    app.route("/api/get-notifications/:email")
+    app.route("/api/get-notifications/:room")
        .get(notificationsController.getNotification);
 
     app.route("/api/del-notification/:id")

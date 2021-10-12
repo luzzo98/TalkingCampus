@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import 'antd/dist/antd.css';
 import {List, Button} from 'antd';
 import {CloseCircleOutlined} from "@ant-design/icons";
@@ -6,7 +6,7 @@ import AppBarTitle from "./AppBarTitle";
 import Footer from "./Footer";
 import SubAppBar from "./SubAppBar";
 import {CSSTransition} from "react-transition-group";
-import * as lessonDeserializer from "../utils/LessonDeserializer";
+import set = Reflect.set;
 require("../styles/userPagesComponents/list_component/notificationBoxStyle.scss")
 
 const io = require("socket.io-client");
@@ -20,20 +20,21 @@ interface ListItem {
 
 const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
-    function getNotifications(){
-        let id = 0;
-        fetch(`http://localhost:80/api/get-notifications/christian.derrico@unibo.it`)
+    function getNotifications(room: string){
+        fetch(`http://localhost:80/api/get-notifications/${room}`)
             .then((res: Response) => res.json())
             .then((json:JSON[]) => json.map( (value: any) => {
-                return {
+                const elem = {
                     _id: value._id,
-                    key: id++,
                     content: "" + value.message
                     } as ListItem;
+                return elem
                 }
             ))
-            .then(i => {console.log(i); return i})
-            .then(items => setData(items))
+            .then(items => setData(prevState => prevState.concat(
+                    items.filter(e => !prevState.find(p => p._id === e._id)))
+                )
+            )
     }
 
     function deleteNotification(id: string){
@@ -41,8 +42,15 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
     }
 
     useEffect(() => {
-        if(sub_title === "Notifiche")
-            socket.on("notification: christian.derrico@unibo.it", () => getNotifications())
+        switch(sub_title){
+            case "Notifiche":
+                ["Bagno 1.7", "Bagno 1.4"].forEach(e => socket.on("notification: " + e,
+                    () => getNotifications(e)))
+                break;
+            case "Aule Registrate":
+                break;
+        }
+        ["Bagno 1.7", "Bagno 1.4"].forEach(e => getNotifications(e))
     }, [])
 
     const[data, setData] = useState<ListItem[]>([])
@@ -51,14 +59,10 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
         return false
     })
 
-    useEffect(() => {
-        getNotifications()
-    }, [isEntrance])
-
-    function handleElimination(id: number){
+    function handleElimination(id: string){
         const elemId = `${id}`
-        setData(data.filter(el => el.key != id))
-        deleteNotification(data.find(e => e.key === id)?._id as string)
+        setData(data.filter(el => el._id != id))
+        deleteNotification(id)
     }
 
     return (
@@ -83,11 +87,11 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
                         renderItem={(item) => (
                             <List.Item
                                 className={"motion-in"}
-                                key={`${item.key}`}
-                                id={`${item.key}`}
+                                key={`${item._id}`}
+                                id={`${item._id}`}
                                 extra={[
                                     <Button size = "small"
-                                            onClick={(e) => handleElimination(item.key)}
+                                            onClick={(e) => handleElimination(item._id)}
                                             className={"btn-notification"}
                                             icon={<CloseCircleOutlined className={"btn-icon"}/>}/>
                                 ]}>

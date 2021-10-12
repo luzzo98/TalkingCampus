@@ -8,7 +8,13 @@ module.exports = function setUserRoutes(app: Application) {
         .post(usersController.signin)
 
     app.route("/api/teachers/:id")
-        .get(usersController.getTeacher);
+        .get(usersController.getTeacher)
+
+    app.route("/api/students/:id")
+        .get(usersController.getStudent)
+
+    app.route("/api/rooms/add-observers/:observer/:room")
+       .get(usersController.addObservedRoom)
 
     app.route("/api/auth/signUpStudent")
         .post(usersController.insertStudent)

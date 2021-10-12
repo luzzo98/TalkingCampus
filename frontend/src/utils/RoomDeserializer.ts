@@ -9,7 +9,6 @@ export function mapToRoom(jsonElement: any): RoomOnMap{
         name: jsonElement.name,
         floor: jsonElement.floor,
         position: jsonElement.position,
-        observers: jsonElement.observers,
         adding_info: !jsonElement.adding_info ? {}
             : { phone_number: !jsonElement.adding_info.phone_number ? "" : jsonElement.adding_info.phone_number,
                 opening_hour: !jsonElement.adding_info.opening_hour ? null : jsonElement.adding_info.opening_hour,

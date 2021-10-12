@@ -20,7 +20,7 @@ const io = require("socket.io-client");
 const socket = io("http://localhost:8080/");
 
 function handleAddingObs(room_name: string, email: string){
-    fetch(`http://localhost:80/api/rooms/add-observers/${room_name}/${email}`)
+    fetch(`http://localhost:80/api/rooms/add-observers/${email}/${room_name}`)
         .then(res => console.log(res.json()));
 }
 
@@ -216,7 +216,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
                         <Button className={"prenote-class"}
                                 onClick={() => setModalVisible(true)}>Lezioni in programma</Button> : null}
                     <Button className={"prenote-class"} onClick={() =>
-                        handleAddingObs(props.room.name, "christian.derrico@unibo.it")}>Osserva Locale</Button>
+                        handleAddingObs(props.room.name, "christian.derrico@studio.unibo.it")}>Osserva Locale</Button>
                 </div>
         </Popup>
     );

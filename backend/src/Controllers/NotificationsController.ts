@@ -1,7 +1,7 @@
 const notification = require("../Model/Notification.ts");
 
 exports.getNotification = function (req, res){
-    notification.find({user_id: req.params.email}, function (err, notifications){
+    notification.find({room_id: req.params.room}, function (err, notifications){
         if(err)
             res.send(err)
         else

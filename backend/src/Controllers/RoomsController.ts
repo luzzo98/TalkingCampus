@@ -46,19 +46,6 @@ exports.updateRoom = function(req, res){
     })
 }
 
-exports.addObserver = function (req, res){
-   Room.findOneAndUpdate(
-        {name: req.params.room},
-        {$push: {observers: String(req.params.observer)}},
-        function (err, room){
-            if(err)
-                res.send(err)
-            else
-                res.json(room)
-        }
-    )
-}
-
 function checkSeats(room: string, increment:number, res, next){
     Room.findOne({name: room},
         function (err, room){
@@ -95,15 +82,14 @@ function changeSeats(room: string, increment:number, req, res, next){
                               : increment < 0 && room.occupied_seats === room.maximum_seats - 1 ? "Si è liberato un posto in "
                               : "";
                 const message = body ? body + room.name : null
-                if(message)
-                    room.observers.forEach(o => {
-                        io.emit("notification: " + o, null)
-                        req.body.notification = {
-                            user_id: o,
-                            message: message
-                        }
-                        next()
-                    })
+                if(message) {
+                    io.emit("notification: " + room.name, null)
+                    req.body.notification = {
+                        room_id: room.name,
+                        message: message
+                    }
+                    next();
+                }
                 else
                     res.send(room)
             }

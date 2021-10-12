@@ -138,7 +138,6 @@ const MainPage : React.FC = () => {
                 isMarkerSet: false,
                 name: piano + "." + (mapStateRef.current?.markers.filter(r => r.floor === piano).length + 1),
                 position: [e.latlng.lat, e.latlng.lng],
-                observers: [],
             })
             setMapState({ markers: tempMarkers })
         }

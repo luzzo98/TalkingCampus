@@ -35,6 +35,7 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
                 <button className="corner-button"
                         onClick={() => props.mainContents.user.role !== 'admin' ? closeMenu(el[1]) : adminAction(el[0])}>
                     <span>{el[0]}</span>
+                    {el[0] === "Notifiche" ? <span className={"badge"}>1</span> : null}
                 </button>
         )
     }

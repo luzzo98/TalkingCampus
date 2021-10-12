@@ -1,13 +1,22 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import 'antd/dist/antd.css';
 import {List} from 'antd';
 import AppBarTitle from "./AppBarTitle";
 import Footer from "./Footer";
 import SubAppBar from "./SubAppBar";
 import {CSSTransition} from "react-transition-group";
+import * as userDeserializer from "../utils/UserDeserializer";
+import {Student} from "../Model";
 require("../styles/userPagesComponents/studentPersonalArea/studentPersonalAreaStyle.scss")
 
 const StudentPersonalArea = () => {
+
+    function findStudent(){
+        fetch("http://localhost:80/api/students/christian.derrico@studio.unibo.it")
+            .then(res => res.json())
+            .then((json:JSON) => userDeserializer.mapToStudent(json))
+            .then(s => setData(s))
+    }
 
     const [isEntrance, setIsEntrance] = useState(() => {
             setTimeout(() => {
@@ -16,13 +25,12 @@ const StudentPersonalArea = () => {
             return false;
         }
     );
+    const [data, setData] = useState<Student>()
 
-    const data = [
-            'Nome: Giovanni',
-            'Cognome: Rossi',
-            'Numero di telefono: 3329432849',
-            'Email: giovanna.rossi@email.com'
-    ];
+    useEffect(() => {
+        findStudent()
+        console.log(Array.of(data))
+    }, [])
 
     return (
         <CSSTransition
@@ -35,11 +43,11 @@ const StudentPersonalArea = () => {
                 <SubAppBar sub_text={"Area Personale"}/>
                 <List
                     size="large"
-                    dataSource={data}
+                    dataSource={data ? Object.entries(data) : []}
                     renderItem={(item) => (
                         <List.Item
                             key={`${10_000}`}>
-                            <span className={"notification-text"}>{item}</span>
+                            <span className={"notification-text"}>{item[0]}: {item[1]}</span>
                         </List.Item>
                     )}
                 >

@@ -2,27 +2,50 @@ const {user, student, teacher} = require("../Model/User.ts");
 
 exports.signin = function (req, res){
     user.find(req.body, function (err, user){
-        if(err) res.send(err)
+        if(err)
+            res.send(err)
         res.send(user);
     })
 };
 
 exports.getTeacher = function (req, res){
     teacher.find({email: req.params.id}, function (err, teacher){
-        if(err) res.send(err)
+        if(err)
+            res.send(err)
         res.send(teacher);
     })
 };
+
+exports.getStudent = function (req, res){
+    student.findOne({email: req.params.id}, function (err, student){
+        if(err)
+            res.send(err)
+        res.status(200).json(student);
+    })
+};
+
+exports.addObservedRoom = function (req, res){
+    student.findOneAndUpdate(
+        {email: req.params.observer},
+        {$push: {observed_rooms: String(req.params.room)}},
+        function (err, room){
+            if(err)
+                res.send(err)
+            else
+                res.json(room)
+        }
+    )
+}
 
 exports.insertStudent = function (req, res) {
     const newStudent = new student(req.body)
     console.log(newStudent) //todo concella log
     newStudent.save(function (err, studente) {
-        if (err) {
+        if (err)
             res.send(err)
-        } else {
+        else
             res.status(200).json(studente)
-        }
+
     })
 }
 
@@ -30,16 +53,15 @@ exports.insertProfessor = function (req, res) {
     const newTeacher = new teacher(req.body)
     console.log(newTeacher) //todo concella log
     newTeacher.save(function (err, prof) {
-        if (err) {
+        if (err)
             res.send(err)
-        } else {
+        else
             res.status(200).json(prof)
-        }
     })
 }
 
 exports.findStudent = (req, res, next) => {
-    student.find({"email": req.body.email}, function(err, student){
+    student.find({email: req.body.email}, function(err, student){
         if(err)
             res.send(err)
         else

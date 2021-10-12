@@ -7,7 +7,6 @@ interface Room {
     name: string,
     floor: number,
     position: [number, number]
-    observers?: string[],
     adding_info?: {
         phone_number?: string
         opening_hour?: {
@@ -32,7 +31,6 @@ const roomSchema = new Schema<Room>({
     name: {type: String, unique: true},
     floor: Number,
     position: [Number, Number],
-    observers: {type: [String], default: []},
     adding_info: {
         required: false,
         phone_number: {type: String},

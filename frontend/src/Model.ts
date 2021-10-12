@@ -26,8 +26,7 @@ export interface Room {
     occupied_seats: number,
     name: string,
     floor: number,
-    position: [number, number]
-    observers?: string[],
+    position: [number, number],
     adding_info?: {
         phone_number?: string
         opening_hour?: {
@@ -68,15 +67,6 @@ export interface Course {
     teacher_id: string
 }
 
-export interface Teacher {
-    email: string,
-    phone_number: string,
-    psw: string,
-    name: string,
-    surname: string,
-    //picture: {data: Buffer, contentType: String}
-}
-
 export interface Reception {
     teacher_email: string,
     day: string,
@@ -88,4 +78,19 @@ export interface Reception {
         hours: number,
         minutes: number
     }
+}
+
+export interface Teacher {
+    email: string,
+    phone_number: string,
+    psw: string
+    name: string,
+    surname: string,
+    picture?: any
+}
+
+export interface Student extends Teacher {
+    observed_rooms: string[],
+    badge_number: string,
+    university_name: string
 }

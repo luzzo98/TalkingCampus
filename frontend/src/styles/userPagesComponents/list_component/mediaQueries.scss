@@ -18,6 +18,8 @@
         }
       }
     }
+    height: 90vh;
+    overflow-y: scroll;
   }
 
 
@@ -25,14 +27,16 @@
 
 @media (min-width: variables.$breakpoint-mobile-screen) and (max-width: variables.$breakpoint-laptop-screen) {
 
-  #list-container{
+  div#list-container{
     .ant-spin-container {
       ul.ant-list-items {
         li.ant-list-item > span{
-          font-size: 130%;
+          font-size: x-large;
         }
       }
     }
+    height: 80vh;
+    overflow-y: scroll;
   }
 
 }
@@ -41,15 +45,18 @@
 
   #list-container {
     width: 80%;
+    height: 80vh;
+    overflow-y: scroll;
+
     .ant-spin-container {
       ul.ant-list-items {
         text-align: center;
         padding: 0;
-        li.ant-list-item > span{
-          font-size: 150%;
+
+        li.ant-list-item > span {
+          font-size: x-large;
         }
       }
     }
   }
-
 }

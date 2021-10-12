@@ -8,7 +8,8 @@ export interface User {
     surname?: string;
     badge_number?: string,
     phone_number?: string,
-    university_name?: string
+    university_name?: string,
+    observed_rooms?: string[],
     picture?: string
 }
 
@@ -28,7 +29,8 @@ const baseSchema = new Schema<User>({
 
 const studentSchema = new Schema<User>({
     badge_number: String,
-    university_name: String
+    university_name: String,
+    observed_rooms: {type: [String], default: []},
 })
 
 const baseModel = model('base', baseSchema)
