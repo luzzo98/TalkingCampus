@@ -31,10 +31,10 @@ services:
       - "27017:27017"
     networks:
       - mongonet
+    environment:
+      MONGO_INITDB_DATABASE: talkingCampus
     volumes:
       - ./mongo_scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-    environment:
-      - "MONGO_INITDB_DATABASE=talkingCampus"
   
 networks:
   frontnet:

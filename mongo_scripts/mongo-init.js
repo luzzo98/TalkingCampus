@@ -247,14 +247,22 @@ db.createCollection("rooms", {
             bsonType: "double",
             description: "position of room on map"
           }
-        },
-        observers: {
-          bsonType: "array",
-          uniqueItems: true,
-          items: {
-            bsonType: "string",
-            description: "observers emails"
-          }
+        },
+
+        observers: {
+
+          bsonType: "array",
+
+          uniqueItems: true,
+
+          items: {
+
+            bsonType: "string",
+
+            description: "observers emails"
+
+          }
+
         },
         adding_info: {
            bsonType: "object",
@@ -346,7 +354,7 @@ db.rooms.insertMany([
     {"name":"Mensa 2.5", "floor":NumberInt(2), "maximum_seats":NumberInt(200), "type":"Mensa", "position":[40.74745, -74.16200],
         "adding_info":{
             "notes":{
-                "title":"Menù del giorno",
+                "title":"Menï¿½ del giorno",
                 "content":"Primo: Passatelli in brodo \nSecondo: Pollo arrosto con patate \nDolce: Crostata di mele"
             }
         }
@@ -395,16 +403,16 @@ db.courses.insertMany([
 ])
 
 db.lessons.insertMany([
-    {"course_name":"Algebra", "room":"Aula 1.1", "day":"Lunedì", 
+    {"course_name":"Algebra", "room":"Aula 1.1", "day":"Lunedï¿½", 
         "start":{ "hours":NumberInt(9), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(13), "minutes":NumberInt(0)}
     },
-    {"course_name":"Algebra", "room":"Aula 1.1", "day":"Mercoledì", 
+    {"course_name":"Algebra", "room":"Aula 1.1", "day":"Mercoledï¿½", 
         "start":{ "hours":NumberInt(15), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(18), "minutes":NumberInt(0)}
     },
-    {"course_name":"Calcolo Numerico", "room":"Aula 1.1", "day":"Martedì",
+    {"course_name":"Calcolo Numerico", "room":"Aula 1.1", "day":"Martedï¿½",
         "start":{ "hours":NumberInt(14), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(16), "minutes":NumberInt(0)}
     },
-    {"course_name":"Programmazione 1", "room":"Aula 1.1", "day":"Venerdì",
+    {"course_name":"Programmazione 1", "room":"Aula 1.1", "day":"Venerdï¿½",
         "start":{ "hours":NumberInt(8), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(13), "minutes":NumberInt(0)}
     }
 ])
