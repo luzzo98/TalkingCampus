@@ -27,8 +27,9 @@ setReceptionRoutes(app);
 setBeaconRoutes(app);
 setNotificationRoutes(app);
 
+const connection = process.env.CONNECTION ? process.env.CONNECTION : "localhost"
 //connessione a mongo db
-mongoose.connect('mongodb://localhost:27017/talkingCampus');
+mongoose.connect('mongodb://' + connection + ':27017/talkingCampus');
 
 //il server è on
 app.listen(PORT, function () {

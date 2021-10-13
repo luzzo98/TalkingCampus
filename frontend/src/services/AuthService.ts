@@ -1,7 +1,8 @@
 import axios from "axios";
+import * as utils from "../utils/utils"
 import {User} from "../Model";
 
-const API_URL = "http://localhost:80/api/";
+const API_URL = `${utils.BASE_URL}${utils.NODE_PORT}/api/`;
 
 class AuthService {
     login(email: string, psw: string) {

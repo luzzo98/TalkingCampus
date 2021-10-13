@@ -6,13 +6,14 @@ import Footer from "./Footer";
 import SubAppBar from "./SubAppBar";
 import {CSSTransition} from "react-transition-group";
 import * as userDeserializer from "../utils/UserDeserializer";
+import * as utils from "../utils/utils";
 import {Student} from "../Model";
 require("../styles/userPagesComponents/studentPersonalArea/studentPersonalAreaStyle.scss")
 
 const StudentPersonalArea = () => {
 
     function findStudent(){
-        fetch("http://localhost:80/api/students/christian.derrico@studio.unibo.it")
+        fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/students/christian.derrico@studio.unibo.it`)
             .then(res => res.json())
             .then((json:JSON) => userDeserializer.mapToStudent(json))
             .then(s => setData(s))

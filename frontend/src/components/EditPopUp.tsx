@@ -40,7 +40,7 @@ interface AddingInfo {
 }
 
 async function addRoom(newRoom: Room){
-    return fetch("http://localhost:80/api/add-room", {
+    return fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/add-room`, {
         method: "POST",
         headers: {
             'Content-Type':'application/json'
@@ -51,7 +51,7 @@ async function addRoom(newRoom: Room){
 
 async function editRoom(update: any, id: string){
     console.log(JSON.stringify(update))
-    return fetch(`http://localhost:80/api/edit-room/${id}`, {
+    return fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/edit-room/${id}`, {
         method: "POST",
         headers: {
             'Content-Type':'application/json'

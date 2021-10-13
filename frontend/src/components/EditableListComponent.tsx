@@ -8,6 +8,7 @@ import SubAppBar from "./SubAppBar";
 import {CSSTransition} from "react-transition-group";
 import {ListItem} from "../Model";
 import * as listItemDeserializer from "../utils/ListItemDeserializer"
+import * as utils from "../utils/utils"
 require("../styles/userPagesComponents/list_component/notificationBoxStyle.scss")
 
 const io = require("socket.io-client");
@@ -16,7 +17,7 @@ const socket = io("http://localhost:8080/");
 const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
     function getNotifications(room: string){
-        fetch(`http://localhost:80/api/get-notifications/${room}`)
+        fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/get-notifications/${room}`)
             .then((res: Response) => res.json())
             .then((json:JSON[]) => json.map( (value: any) => listItemDeserializer.mapToNotification(value)))
             .then(items => setData(prevState => prevState.concat(
@@ -26,18 +27,18 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
     }
 
     function getObsRoom(email: string){
-        fetch(`http://localhost:80/api/get-observed-rooms/${email}`)
+        fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/get-observed-rooms/${email}`)
             .then(res => res.json())
             .then((json:string[]) => json.map( (value: any) => listItemDeserializer.mapToClass(value)))
             .then(items => setData(items))
     }
 
     function deleteNotification(id: string){
-        fetch(`http://localhost:80/api/del-notification/${id}`)
+        fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/del-notification/${id}`)
     }
 
     function deleteObsRoom(email:string, room: string){
-        fetch(`http://localhost:80/api/del-observed-room/${email}/${room}`)
+        fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/del-observed-room/${email}/${room}`)
     }
 
     useEffect(() => {

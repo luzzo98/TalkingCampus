@@ -2,8 +2,6 @@ import React, {createRef} from "react";
 import {Popup} from "react-leaflet";
 import {Button} from "antd";
 import * as utils from "../utils/utils"
-import {ok} from "assert";
-import * as util from "util";
 require("../styles/pop_up/popUpStyle.scss")
 require("../styles/pop_up/deletePopupStyle.scss")
 
@@ -17,7 +15,7 @@ const popupRef = createRef<L.Popup>()
 const closeButtonIndex: number = 2;
 
 async function handleClose(id: string){
-    return fetch(`http://localhost:80/api/remove-room/${id}`)
+    return fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/remove-room/${id}`)
         .then(response => response.ok)
 }
 

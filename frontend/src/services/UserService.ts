@@ -1,7 +1,8 @@
 import axios from 'axios';
+import * as utils from "../utils/utils"
 import authHeader from './AuthHeader';
 
-const API_URL = 'http://localhost:80/api/user/'; //todo cambiare test e aggiungerlo nel backend
+const API_URL = `${utils.BASE_URL}${utils.NODE_PORT}/api/user/`; //todo cambiare test e aggiungerlo nel backend
 
 class UserService {
 

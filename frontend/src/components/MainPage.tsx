@@ -18,6 +18,7 @@ import {message} from "antd";
 import {useMediaQuery} from "react-responsive";
 import MainMenu from "./MainMenu";
 import {CSSTransition} from "react-transition-group";
+import * as util from "util";
 
 interface MapState {
     mode: string,
@@ -36,7 +37,7 @@ const MainPage : React.FC = () => {
     const [dataFetched, setDataFetched] = useState(false);
 
     function getRooms(floor: number) {
-        fetch(`http://localhost:80/api/rooms/${floor}`)
+        fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/rooms/${floor}`)
             .then((res: Response) => res.json())
             .then((json:JSON[]) => json.map(value => roomDeserializer.mapToRoom(value)))
             .then((markers) => {

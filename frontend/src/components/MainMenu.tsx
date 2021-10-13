@@ -3,8 +3,10 @@ import {CSSTransition} from "react-transition-group";
 import {useHistory} from "react-router-dom";
 import {Tooltip} from "antd";
 import {useMediaQuery} from "react-responsive";
-import {MainpageContents, User} from "../Model";
+import {MainpageContents} from "../Model";
+import * as utils from "../utils/utils"
 import '../styles/main_page/mainPageStyle.scss'
+import * as util from "util";
 
 interface menuProps {
     visibilityFromMap: boolean
@@ -15,7 +17,7 @@ interface menuProps {
 }
 
 const io = require("socket.io-client");
-const socket = io("http://localhost:8080/");
+const socket = io(`${utils.BASE_URL}${utils.SOCKET_IO_PORT}`);
 
 const MainMenu : React.FC<menuProps> = (props: menuProps) => {
 

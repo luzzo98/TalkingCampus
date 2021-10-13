@@ -17,26 +17,26 @@ interface Props {
 }
 
 const io = require("socket.io-client");
-const socket = io("http://localhost:8080/");
+const socket = io(`${utils.BASE_URL}${utils.SOCKET_IO_PORT}`);
 
 function handleAddingObs(room_name: string, email: string){
-    fetch(`http://localhost:80/api/add-observed-room/${email}/${room_name}`)
+    fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/add-observed-room/${email}/${room_name}`)
         .then(res => console.log(res.json()));
-    fetch(`http://localhost:80/api/add-observer/${room_name}/${email}`)
+    fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/add-observer/${room_name}/${email}`)
         .then(res => console.log(res.json()));
 }
 
 const DefaultPopUp: React.FC<Props> = (props:Props) => {
 
     function getLessons(room_id:string){
-        fetch(`http://localhost:80/api/lessons/${room_id}`)
+        fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/lessons/${room_id}`)
             .then((res: Response) => res.json())
             .then((json:JSON[]) => json.map(value => lessonDeserializer.mapToLesson(value)))
             .then(res => setLessons(res))
     }
 
     function getCourse(course_id:string){
-        return fetch(`http://localhost:80/api/courses/${course_id}`)
+        return fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/courses/${course_id}`)
             .then((res: Response) => res.json())
             .then((json: JSON[]) => json.map(value => courseDeserializer.mapToCourse(value))[0])
             .then(c => setCourses(prevState =>
@@ -44,7 +44,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
     }
 
     function getTeacher(email:string){
-        return fetch(`http://localhost:80/api/teachers/${email}`)
+        return fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/teachers/${email}`)
             .then((res: Response) => res.json())
             .then((json: JSON[]) => json.map(value => teacherDeserializer.mapToTeacher(value))[0])
             .then(t => {
@@ -54,7 +54,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
     }
 
     function getReceptions(teacherEmail:string){
-        return fetch(`http://localhost:80/api/receptions/${teacherEmail}`)
+        return fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/receptions/${teacherEmail}`)
             .then((res: Response) => res.json())
             .then((json: JSON[]) => json.map(value => receptionDeserializer.mapToReception(value)))
             .then(receptions => setReceptions(receptions))
