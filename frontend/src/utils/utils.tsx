@@ -6,9 +6,9 @@ import {IconDefinition} from "@fortawesome/fontawesome-common-types";
 import {divIcon} from "leaflet";
 import * as React from "react";
 
-export const BASE_URL = process.env.REACT_APP_BASE_URL ? process.env.REACT_APP_BASE_URL : "http://localhost:"
-export const NODE_PORT = process.env.REACT_APP_NODE_PORT ? process.env.REACT_APP_NODE_PORT : "80"
-export const SOCKET_IO_PORT = process.env.REACT_APP_NODE_PORT ? process.env.REACT_APP_NODE_PORT : "8080"
+export const BASE_URL = "http://" + (process.env.REACT_APP_ENDPOINT ? process.env.REACT_APP_ENDPOINT : "localhost") + ":"
+export const NODE_PORT = "80"
+export const SOCKET_IO_PORT = "8080"
 
 export const locals: Map<string,IconDefinition> = new Map<string, IconDefinition>([
     ["Aula Studio", faBook],

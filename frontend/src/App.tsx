@@ -2,6 +2,7 @@ import React from 'react';
 import {BrowserRouter as Router} from "react-router-dom";
 import './styles/App.css';
 import {Routes} from "./routes/routes";
+require('dotenv').config()
 
 const App:React.FC = () => {
     return (
