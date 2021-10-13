@@ -194,14 +194,14 @@ db.createCollection("users", {
         picture: {
           bsonType: "binData",
           description: "must be an user's image"
-       },
-       observed_rooms: {
-          bsonType: "array",
-          uniqueItems: true,
-          items: {
-            bsonType: "string",
-            description: "observed room name"
-          }
+       },
+       observed_rooms: {
+          bsonType: "array",
+          uniqueItems: true,
+          items: {
+            bsonType: "string",
+            description: "observed room name"
+          }
         }
     }
   }
@@ -247,6 +247,14 @@ db.createCollection("rooms", {
             bsonType: "double",
             description: "position of room on map"
           }
+        },
+        observers: {
+          bsonType: "array",
+          uniqueItems: true,
+          items: {
+            bsonType: "string",
+            description: "observers emails"
+          }
         },
         adding_info: {
            bsonType: "object",

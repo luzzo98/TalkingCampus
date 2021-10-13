@@ -22,6 +22,8 @@ const socket = io("http://localhost:8080/");
 function handleAddingObs(room_name: string, email: string){
     fetch(`http://localhost:80/api/add-observed-room/${email}/${room_name}`)
         .then(res => console.log(res.json()));
+    fetch(`http://localhost:80/api/add-observer/${room_name}/${email}`)
+        .then(res => console.log(res.json()));
 }
 
 const DefaultPopUp: React.FC<Props> = (props:Props) => {

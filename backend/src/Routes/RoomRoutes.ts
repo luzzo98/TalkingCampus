@@ -16,5 +16,8 @@ module.exports = function setRoomRoutes(app: Application) {
     app.route("/api/edit-room/:id")
         .post(roomsController.updateRoom)
 
+    app.route("/api/add-observer/:room/:observer")
+        .get(roomsController.addObserver)
+
 
 };

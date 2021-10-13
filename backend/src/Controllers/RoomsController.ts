@@ -46,6 +46,19 @@ exports.updateRoom = function(req, res){
     })
 }
 
+exports.addObserver = function (req, res){
+    Room.findOneAndUpdate(
+        {name: req.params.room},
+        {$push: {observers: String(req.params.observer)}},
+        function (err, user){
+            if(err)
+                res.send(err)
+            else
+                res.json(user)
+        }
+    )
+}
+
 function checkSeats(room: string, increment:number, res, next){
     Room.findOne({name: room},
         function (err, room){

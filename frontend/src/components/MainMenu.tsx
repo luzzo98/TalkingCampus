@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {CSSTransition} from "react-transition-group";
-import {useHistory, useLocation} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {Tooltip} from "antd";
 import {useMediaQuery} from "react-responsive";
 import {MainpageContents, User} from "../Model";
@@ -14,6 +14,9 @@ interface menuProps {
     onClosure: () => void
 }
 
+const io = require("socket.io-client");
+const socket = io("http://localhost:8080/");
+
 const MainMenu : React.FC<menuProps> = (props: menuProps) => {
 
     const isTabletOrMobile: boolean = useMediaQuery({ query: '(max-width: 1024px)' })
@@ -26,6 +29,10 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
         return false
     })
     const [isClosing, setIsClosing] = useState(false)
+    const [nNotification, setNNotification] = useState<number>(0)
+
+    useEffect(() => socket.on("receiver-notifications: christian.derrico@studio.unibo.it",
+        (nNotification: number) => setNNotification(nNotification)), [])
 
     const buttons: JSX.Element[] = createButtons()
 
@@ -35,7 +42,7 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
                 <button className="corner-button"
                         onClick={() => props.mainContents.user.role !== 'admin' ? closeMenu(el[1]) : adminAction(el[0])}>
                     <span>{el[0]}</span>
-                    {el[0] === "Notifiche" ? <span className={"badge"}>1</span> : null}
+                    {el[0] === "Notifiche" && nNotification > 0 ? <span className={"badge"}>{nNotification}</span> : null}
                 </button>
         )
     }

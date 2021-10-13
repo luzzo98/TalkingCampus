@@ -28,11 +28,11 @@ exports.addObservedRoom = function (req, res){
     student.findOneAndUpdate(
         {email: req.params.observer},
         {$push: {observed_rooms: String(req.params.room)}},
-        function (err, room){
+        function (err, student){
             if(err)
                 res.send(err)
             else
-                res.json(room)
+                res.json(student)
         }
     )
 }
