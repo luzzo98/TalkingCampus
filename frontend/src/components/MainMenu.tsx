@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {CSSTransition} from "react-transition-group";
 import {useHistory} from "react-router-dom";
 import {Tooltip} from "antd";
@@ -31,8 +31,10 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
     const [isClosing, setIsClosing] = useState(false)
     const [nNotification, setNNotification] = useState<number>(0)
 
-    useEffect(() => socket.on("receiver-notifications: christian.derrico@studio.unibo.it",
-        (nNotification: number) => setNNotification(nNotification)), [])
+    useEffect(() => socket.on("New notification: christian.derrico@studio.unibo.it",
+        () => {
+            setNNotification(prevState => prevState+1)
+        }), [])
 
     const buttons: JSX.Element[] = createButtons()
 
