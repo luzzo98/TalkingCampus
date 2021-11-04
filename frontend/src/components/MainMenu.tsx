@@ -6,7 +6,7 @@ import {useMediaQuery} from "react-responsive";
 import {MainpageContents} from "../Model";
 import * as utils from "../utils/utils"
 import '../styles/main_page/mainPageStyle.scss'
-import * as util from "util";
+
 
 interface menuProps {
     visibilityFromMap: boolean

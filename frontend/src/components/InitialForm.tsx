@@ -28,6 +28,8 @@ const InitialForm:React.FC = () => {
     const [studentForm] = Form.useForm();
     const [professorForm] = Form.useForm();
 
+    console.log(utils.BASE_URL)
+
     const formItemLayout = {
         labelCol: {
             xs: { span: 15 },

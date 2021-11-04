@@ -18,7 +18,6 @@ import {message} from "antd";
 import {useMediaQuery} from "react-responsive";
 import MainMenu from "./MainMenu";
 import {CSSTransition} from "react-transition-group";
-import * as util from "util";
 
 interface MapState {
     mode: string,
