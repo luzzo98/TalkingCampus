@@ -3,6 +3,7 @@ import {Popup} from "react-leaflet";
 import {Button, Form, Input, Select} from "antd";
 import * as utils from "../utils/utils"
 import {Room} from "../Model";
+import PopUpService from "../services/PopUpService";
 require("../styles/pop_up/editPopUpStyle.scss")
 
 interface props  {
@@ -40,25 +41,11 @@ interface AddingInfo {
 }
 
 async function addRoom(newRoom: Room){
-    return fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/add-room`, {
-        method: "POST",
-        headers: {
-            'Content-Type':'application/json'
-        },
-        body: JSON.stringify(newRoom)
-    }).then(response => response.ok)
+    return PopUpService.addRoom(newRoom)
 }
 
 async function editRoom(update: any, id: string){
-    console.log(JSON.stringify(update))
-    return fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/edit-room/${id}`, {
-        method: "POST",
-        headers: {
-            'Content-Type':'application/json'
-        },
-        body: JSON.stringify(update)
-    }).then(response => {console.log(response); return response})
-        .then(response => response.ok)
+    return PopUpService.editRoom(update, id)
 }
 
 const EditPopUp: React.FC<props> = (props: props) => {
@@ -72,7 +59,6 @@ const EditPopUp: React.FC<props> = (props: props) => {
         update['adding_info'] = {}
         defUpdate(initState, formState).forEach(e => update[e[0]] = e[1])
         defUpdate(addingInfoInit, addingInfo).forEach(e => update['adding_info'][e[0]] = e[1])
-        console.log(update)
         return update;
     }
 

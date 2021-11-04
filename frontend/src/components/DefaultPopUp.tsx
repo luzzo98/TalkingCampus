@@ -4,11 +4,8 @@ import {Course, Lesson, Reception, Room, Teacher} from "../Model";
 import {Popup} from "react-leaflet";
 import {Button, List, Modal} from "antd";
 import * as utils from "../utils/utils"
-import * as lessonDeserializer from "../utils/LessonDeserializer";
-import * as courseDeserializer from "../utils/CourseDeserializer";
-import * as teacherDeserializer from "../utils/TeacherDeserializer";
-import * as receptionDeserializer from "../utils/ReceptionDeserializer";
 import {getCorrectFormat} from "../utils/utils";
+import DefaultPopUpService from "../services/PopUpService";
 require("../styles/pop_up/popUpStyle.scss")
 
 interface Props {
@@ -19,45 +16,30 @@ interface Props {
 const io = require("socket.io-client");
 const socket = io(`${utils.BASE_URL}${utils.SOCKET_IO_PORT}`);
 
-function handleAddingObs(room_name: string, email: string){
-    fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/add-observed-room/${email}/${room_name}`)
-        .then(res => console.log(res.json()));
-    fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/add-observer/${room_name}/${email}`)
-        .then(res => console.log(res.json()));
-}
-
 const DefaultPopUp: React.FC<Props> = (props:Props) => {
 
+    function handleAddingObs(room_name: string, email: string){
+        DefaultPopUpService.handleAddingObs(room_name, email)
+    }
+
     function getLessons(room_id:string){
-        fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/lessons/${room_id}`)
-            .then((res: Response) => res.json())
-            .then((json:JSON[]) => json.map(value => lessonDeserializer.mapToLesson(value)))
-            .then(res => setLessons(res))
+        DefaultPopUpService.getLessons(room_id, lesson => setLessons(lesson))
     }
 
     function getCourse(course_id:string){
-        return fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/courses/${course_id}`)
-            .then((res: Response) => res.json())
-            .then((json: JSON[]) => json.map(value => courseDeserializer.mapToCourse(value))[0])
-            .then(c => setCourses(prevState =>
-                prevState.find(course => course.course_id === c.course_id) ? prevState : prevState.concat(c)))
+        DefaultPopUpService.getCourse(course_id, c =>
+            setCourses(prevState =>
+                prevState.find(course => course.course_id === c.course_id) ? prevState : prevState.concat(c)
+            ))
     }
 
-    function getTeacher(email:string){
-        return fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/teachers/${email}`)
-            .then((res: Response) => res.json())
-            .then((json: JSON[]) => json.map(value => teacherDeserializer.mapToTeacher(value))[0])
-            .then(t => {
-                setTeachers(prevState =>
-                    prevState.find(teacher => t.email === teacher.email) ? prevState : prevState.concat(t))
-            })
+    function getTeacher(email: string){
+        DefaultPopUpService.getTeacher(email, t => setTeachers(
+            prevState => prevState.find(teacher => t.email === teacher.email) ? prevState : prevState.concat(t)))
     }
 
-    function getReceptions(teacherEmail:string){
-        return fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/receptions/${teacherEmail}`)
-            .then((res: Response) => res.json())
-            .then((json: JSON[]) => json.map(value => receptionDeserializer.mapToReception(value)))
-            .then(receptions => setReceptions(receptions))
+    function getReceptions(teacherEmail: string){
+        DefaultPopUpService.getReceptions(teacherEmail, receptions => setReceptions(receptions))
     }
 
     const [occupiedSeats, setOccupiedSeats] = useState(props.room.occupied_seats)
@@ -83,6 +65,8 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
     },[courses])
 
     useEffect(() => {
+        console.log("I corsi sono: ")
+        console.log(courses)
         teachers.forEach(t => getReceptions(t.email))
     },[teachers])
 
@@ -109,9 +93,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
         const currentHour = new Date().getHours();
         const day = utils.convertDay(new Date().getDay())
 
-        const lesson: Lesson = lessons
-            .filter(l => (l.start.hours <= currentHour && l.end.hours > currentHour) && l.day === day)[0]
-        return lesson
+        return lessons.filter(l => (l.start.hours <= currentHour && l.end.hours > currentHour) && l.day === day)[0]
     }
 
     function getLessonSection(){
