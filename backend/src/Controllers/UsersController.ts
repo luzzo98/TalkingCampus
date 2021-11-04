@@ -39,7 +39,6 @@ exports.addObservedRoom = function (req, res){
 
 exports.insertStudent = function (req, res) {
     const newStudent = new student(req.body)
-    console.log(newStudent) //todo concella log
     newStudent.save(function (err, studente) {
         if (err)
             res.send(err)
@@ -51,7 +50,6 @@ exports.insertStudent = function (req, res) {
 
 exports.insertProfessor = function (req, res) {
     const newTeacher = new teacher(req.body)
-    console.log(newTeacher) //todo concella log
     newTeacher.save(function (err, prof) {
         if (err)
             res.send(err)
