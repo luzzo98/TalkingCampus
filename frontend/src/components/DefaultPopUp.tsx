@@ -65,8 +65,6 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
     },[courses])
 
     useEffect(() => {
-        console.log("I corsi sono: ")
-        console.log(courses)
         teachers.forEach(t => getReceptions(t.email))
     },[teachers])
 
