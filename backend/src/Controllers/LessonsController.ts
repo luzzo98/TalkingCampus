@@ -7,3 +7,14 @@ exports.listAllLessonsInRoom = function (req, res){
         res.send(lessons);
     })
 };
+
+exports.addLesson = function (req, res){
+    const newLesson = new Lesson(req.body)
+    newLesson.save(function (err, lesson) {
+        if (err) {
+            res.send(err)
+        } else {
+            res.status(200).json(lesson)
+        }
+    })
+};

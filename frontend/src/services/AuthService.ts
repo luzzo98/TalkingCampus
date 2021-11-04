@@ -6,8 +6,6 @@ const API_URL = `${utils.BASE_URL}${utils.NODE_PORT}/api/`;
 
 class AuthService {
     login(email: string, psw: string) {
-        console.log(email)
-        console.log(psw)
         return axios
             .post(API_URL + "auth/signin", {
                 email, psw
@@ -31,37 +29,53 @@ class AuthService {
             .post(API_URL + "auth/signUpStudent", {
                 name, surname, phone_number, university_name, badge_number, email, psw
             })
-            .then(response => {
-                if (response.data.code) {
-                    //TODO errore
-                }
-                console.log(response.data)
-            });
     }
 
-    registerProfessor(name: string, surname: string, phone_number: string, email: string, psw: string, corsi: any, ricevimento: any) {
-        let profRes = axios
+    registerProfessor(name: string, surname: string, phone_number: string, email: string, psw: string) {
+        return axios
             .post(API_URL + "auth/signUpProfessor", {
                 name, surname, phone_number, email, psw
             })
-            .then(response => {
-                //TODO cosa restituisce se è già registrato il prof?
-                console.log(response.data)
-            });
-        return profRes
     }
 
-    addcourse(course_id: string, teacher_id: string) {
+    addCourse(course_id: string, teacher_id: string) {
         return axios
             .post(API_URL + "courses/addCourse", {
                 course_id, teacher_id
             })
-            .then(response => {
-                if (response.data.code) {
-                    //TODO errore
+    }
+
+    addLesson(course_name: string, room: string, day: string, start: string, end: string) {
+        return axios
+            .post(API_URL + "lessons/addLesson", {
+                course_name,
+                room,
+                day,
+                start: {
+                    hours: start.substr(0, start.indexOf(':')),
+                    minutes: start.substr(start.indexOf(':')+1, start.length)
+                },
+                end: {
+                    hours: end.substr(0, end.indexOf(':')),
+                    minutes: end.substr(end.indexOf(':')+1, start.length)
                 }
-                console.log(response.data)
-            });
+            })
+    }
+
+    addReception(teacher_email: string, day: string, start: string, end: string) {
+        return axios
+            .post(API_URL + "receptions/addReception", {
+                teacher_email,
+                day,
+                start: {
+                    hours: start.substr(0, start.indexOf(':')),
+                    minutes: start.substr(start.indexOf(':')+1, start.length)
+                },
+                end: {
+                    hours: end.substr(0, end.indexOf(':')),
+                    minutes: end.substr(end.indexOf(':')+1, start.length)
+                }
+            })
     }
 
     getCurrentUser(): User {

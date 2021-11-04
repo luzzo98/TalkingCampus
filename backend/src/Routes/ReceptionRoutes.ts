@@ -7,4 +7,7 @@ module.exports = function setReceptionRoutes(app: Application) {
     app.route("/api/receptions/:email")
         .get(receptionsController.listAllReceptions)
 
+    app.route("/api/receptions/addReception")
+        .post(receptionsController.addReception)
+
 };
