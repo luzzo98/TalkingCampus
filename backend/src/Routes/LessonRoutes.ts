@@ -7,4 +7,7 @@ module.exports = function setLessonRoutes(app: Application) {
     app.route("/api/lessons/:id")
         .get(lessonsController.listAllLessonsInRoom)
 
+    app.route("/api/lessons/addLesson")
+        .post(lessonsController.addLesson)
+
 };

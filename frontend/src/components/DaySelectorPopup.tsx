@@ -80,11 +80,11 @@ const DaySelectorPopup: React.FC<Props> = ({formName, form, value, setValue}) =>
                                             rules={[{ required: true, message: 'Seleziona il giorno' }]}
                                         >
                                             <Select placeholder="Seleziona il giorno">
-                                                <Option value="lunedi">Lunedì</Option>
-                                                <Option value="martedi">Martedì</Option>
-                                                <Option value="mercoledi">Mercoledì</Option>
-                                                <Option value="giovedi">Giovedì</Option>
-                                                <Option value="venerdi">Venerdì</Option>
+                                                <Option value="Lunedì">Lunedì</Option>
+                                                <Option value="Martedì">Martedì</Option>
+                                                <Option value="Mercoledì">Mercoledì</Option>
+                                                <Option value="Giovedì">Giovedì</Option>
+                                                <Option value="Venerdì">Venerdì</Option>
                                             </Select>
                                         </Form.Item>
                                         {formName === "reception" ? "" :

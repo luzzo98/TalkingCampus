@@ -10,7 +10,6 @@ exports.getCourse = function (req, res){
 
 exports.addCourse = function (req, res){
     const newCourse = new Course(req.body)
-    console.log(newCourse) //todo concella log
     newCourse.save(function (err, studente) {
         if (err) {
             res.send(err)

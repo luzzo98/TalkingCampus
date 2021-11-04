@@ -12,7 +12,7 @@ interface Props {
     hours?: {
         start: string,
         end: string,
-        day: 'lunedi' | 'martedi' | 'mercoledi' | 'giovedi' | 'venerdi',
+        day: 'Lunedì' | 'Martedì' | 'Mercoledì' | 'Giovedì' | 'Venerdì',
         room: string
     }[]
 }
@@ -86,11 +86,11 @@ const DaySelector: React.FC<Props> = ({professorId, courseId, hours}) => {
                                                     rules={[{ required: true, message: 'Seleziona il giorno' }]}
                                                 >
                                                     <Select placeholder="Seleziona il giorno">
-                                                        <Option value="lunedi">Lunedì</Option>
-                                                        <Option value="martedi">Martedì</Option>
-                                                        <Option value="mercoledi">Mercoledì</Option>
-                                                        <Option value="giovedi">Giovedì</Option>
-                                                        <Option value="venerdi">Venerdì</Option>
+                                                        <Option value="Lunedì">Lunedì</Option>
+                                                        <Option value="Martedì">Martedì</Option>
+                                                        <Option value="Mercoledì">Mercoledì</Option>
+                                                        <Option value="Giovedì">Giovedì</Option>
+                                                        <Option value="Venerdì">Venerdì</Option>
                                                     </Select>
                                                 </Form.Item>
                                                 <Form.Item
@@ -152,11 +152,11 @@ const DaySelector: React.FC<Props> = ({professorId, courseId, hours}) => {
                                                         rules={[{ required: true, message: 'Seleziona il giorno' }]}
                                                     >
                                                         <Select placeholder="Seleziona il giorno">
-                                                            <Option value="lunedi">Lunedì</Option>
-                                                            <Option value="martedi">Martedì</Option>
-                                                            <Option value="mercoledi">Mercoledì</Option>
-                                                            <Option value="giovedi">Giovedì</Option>
-                                                            <Option value="venerdi">Venerdì</Option>
+                                                            <Option value="Lunedì">Lunedì</Option>
+                                                            <Option value="Martedì">Martedì</Option>
+                                                            <Option value="Mercoledì">Mercoledì</Option>
+                                                            <Option value="Giovedì">Giovedì</Option>
+                                                            <Option value="Venerdì">Venerdì</Option>
                                                         </Select>
                                                     </Form.Item>
                                                     <Form.Item

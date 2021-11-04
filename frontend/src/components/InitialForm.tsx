@@ -15,13 +15,24 @@ require("../styles/initialForm/initialFormStyle.scss")
 const { TabPane } = Tabs;
 const { Option } = Select;
 
-// const user: User = AuthService.getCurrentUser()
+interface LessonType {
+    room: string,
+    start: string,
+    end: string,
+    day: 'Lunedì' | 'Martedì' | 'Mercoledì' | 'Giovedì' | 'Venerdì'
+}
+
+interface ReceptionType {
+    start: string,
+    end: string,
+    day: 'Lunedì' | 'Martedì' | 'Mercoledì' | 'Giovedì' | 'Venerdì'
+}
 
 const InitialForm:React.FC = () => {
 
     const [visible, setVisible] = useState(false);
     const [visibleClassSchedule, setVisibleClassSchedule] = useState(Array<boolean>());
-    const [reception, setReception] = useState({})
+    const [reception, setReception] = useState(Array<ReceptionType>())
     const [courseMap, setCourseMap] = useState(new Map())
     const history = useHistory();
     const [loginForm] = Form.useForm();
@@ -45,22 +56,25 @@ const InitialForm:React.FC = () => {
         },
     };
 
-    const getCourses: any = (values: any) => {
-        if (values) {
+    const showConnectionError = () => Modal.error({
+        title: 'Errore di rete',
+        content: 'La comunicazione al server è fallita, controllare la connessione e riprovare',
+    });
+
+    const getLessons = (values: any): {name: string, timetable: LessonType[]}[] => {
+        let courses: { name: string; timetable: any; }[] = []
+        if (values && values.length > 0) {
             let i = courseMap.entries()
-            let courses: { name: string; timetable: any; }[] = []
             values.forEach((v: any) => courses.push({
                 name: v,
                 timetable: i.next().value[1]
             }))
-            console.log("ho creato",courses)
-            return courses
         }
-        return
+        return courses
     }
 
     const onLoginFinish = (values: any) => {
-        AuthService.login(loginForm.getFieldValue("email"), loginForm.getFieldValue("password")).then(
+        AuthService.login(values.email, values.password).then(
             (res) => {
                 if (res[0])
                     history.push("/main-page", {user: res[0], hooks: utils.getElements(res[0])});
@@ -69,46 +83,99 @@ const InitialForm:React.FC = () => {
                         title: 'I dati inseriti non sono corretti',
                         content: 'Inserisci nuovamente la tua email e password',
                     });
-                // window.location.reload(); //TODO serve?
             },
-            error => {
-                Modal.error({
-                    title: 'Errore di rete',
-                    content: 'La connessione al server è fallita, controllare la connessione e riprovare',
-                });
-            }
+            () => showConnectionError()
         );
     }
     const onStudentFinish = (values: any) => {
-        console.log(values)
-        AuthService.registerStudent(values.nome, values.cognome, values.telefono, values.universita, values.matricola, values.email, values.password)
-            .then(
-            response => {
-                //todo richiedere il token ed usarlo eseguire l'accesso con history.push o ricaricare il login
-            },
-            error => {
-                Modal.error({
-                    title: 'Errore in fase di registrazione',
-                    content: "L'email inserita è già stata utilizzata"
-                });
-            }
-        );
-    }
-    const onProfessorFinish = (values: any) => {
-        console.log("Professor:", values) //todo elimina i log
-        console.log(reception)
-        console.log(courseMap)
-        AuthService.registerProfessor(values.nome, values.cognome, values.telefono, values.email, values.password, reception, getCourses(values.corso))
-            .then(
-                response => {
-                    //todo richiedere il token ed usarlo eseguire l'accesso con history.push o ricaricare il login
-                },
-                error => {
+        AuthService.registerStudent(values.nome, values.cognome, values.telefono, values.universita, values.matricola, values.email, values.password).then(
+            res => {
+                if (res.data.code === 11000) {
                     Modal.error({
                         title: 'Errore in fase di registrazione',
                         content: "L'email inserita è già stata utilizzata"
                     });
+                } else {
+                    Modal.success({
+                        content: 'Registrazione effettuata con successo',
+                    });
+
+                    // const user: User = AuthService.getCurrentUser()
+                    //todo richiedere il token ed usarlo eseguire l'accesso con history.push o ricaricare il login
                 }
+            },
+            () => showConnectionError()
+        );
+    }
+    const onProfessorFinish = (values: any) => {
+        AuthService.registerProfessor(values.nome, values.cognome, values.telefono, values.email, values.password)
+            .then(
+                res => {
+                    if (res.data.code === 11000) {
+                        Modal.error({
+                            title: 'Errore in fase di registrazione',
+                            content: "L'email inserita è già stata utilizzata"
+                        });
+                    } else {
+                        Modal.success({
+                            content: 'Registrazione effettuata con successo',
+                        });
+
+                        if (values.corso) {
+                            values.corso.forEach((course: string) => {
+                                AuthService.addCourse(course, values.email).then(
+                                    res => {
+                                        if (res.data.code == 11000) {
+                                            Modal.error({
+                                                title: 'Impossibile aggiungere il corso',
+                                                content: `Il corso ${course} è già presente nel sistema`
+                                            });
+                                        }
+                                    },
+                                    () => showConnectionError()
+                                );
+                            })
+                        }
+
+                        if (reception) {
+                            reception.forEach(r => {
+                                AuthService.addReception(values.email, r.day, r.start, r.end).then(
+                                    res => {
+                                        if (res.data.code == 11000) {
+                                            Modal.error({
+                                                title: 'Impossibile aggiungere il ricevimento',
+                                                content: `Errore durante l'inserimento del ricevimento nel sistema`
+                                            });
+                                        }
+                                    },
+                                    () => showConnectionError()
+                                )
+                            })
+                        }
+
+                        const lessons = getLessons(values.corso)
+                        if (lessons) {
+                            lessons.forEach(l => {
+                                l.timetable.forEach(t => {
+                                    AuthService.addLesson(l.name, t.room, t.day, t.start, t.end).then(
+                                        res => {
+                                            if (res.data.code == 11000) {
+                                                Modal.error({
+                                                    title: 'Impossibile aggiungere la lezione',
+                                                    content: `Errore durante l'inserimento di una lezione nel sistema`
+                                                });
+                                            }
+                                        }
+                                    )
+                                })
+                            })
+                        }
+
+                        // const user: User = AuthService.getCurrentUser()
+                        //todo richiedere il token ed usarlo eseguire l'accesso con history.push o ricaricare il login
+                    }
+                },
+                () => showConnectionError()
             );
     }
     const onFinishFailed = (errorInfo: any) => {
@@ -183,7 +250,7 @@ const InitialForm:React.FC = () => {
                                     name="nome"
                                     rules={[{required: true, message: 'Inserisci il tuo nome'}]}
                                 >
-                                    <Input/>
+                                    <Input pattern={"^[a-zA-Z]+$"}/>
                                 </Form.Item>
 
                                 <Form.Item
@@ -191,15 +258,15 @@ const InitialForm:React.FC = () => {
                                     name="cognome"
                                     rules={[{required: true, message: 'Inserisci il tuo cognome'}]}
                                 >
-                                    <Input/>
+                                    <Input pattern={"^[a-zA-Z]+([ ]{1}[a-zA-Z]+){0,2}$"}/>
                                 </Form.Item>
 
                                 <Form.Item
                                     label="Telefono"
                                     name="telefono"
-                                    rules={[{required: true, message: 'Inserisci il tuo numero di telefono'}]}
+                                    rules={[{required: true, message: 'Inserisci il tuo numero di telefono', min: 10, max: 10}]}
                                 >
-                                    <Input type={"number"}/>
+                                    <Input type={"number"} min={0}/>
                                 </Form.Item>
 
                                 <Form.Item
@@ -222,7 +289,7 @@ const InitialForm:React.FC = () => {
                                 <Form.Item
                                     label="Matricola"
                                     name="matricola"
-                                    rules={[{required: true, message: 'Inserisci la tua matricola'}]}
+                                    rules={[{required: true, message: 'Inserisci la tua matricola', min: 10, max: 10}]}
                                 >
                                     <Input min={0} type={"number"}/>
                                 </Form.Item>
@@ -230,21 +297,16 @@ const InitialForm:React.FC = () => {
                                 <Form.Item
                                     label="Email"
                                     name="email"
-                                    rules={[{
-                                        type: 'email',
-                                        message: 'Inserisci una mail valida',
-                                    }, {
-                                        required: true,
-                                        message: 'Inserisci la tua email istituzionale'
-                                    }]}
+                                    rules={[{type: 'email', message: 'Inserisci una mail valida'},
+                                        {required: true, message: 'Inserisci la tua email istituzionale'}]}
                                 >
-                                    <Input/>
+                                    <Input pattern={"^[a-z]+.[a-z]+@(studio.unibo|unibo).it$"}/>
                                 </Form.Item>
 
                                 <Form.Item
                                     label="Password"
                                     name="password"
-                                    rules={[{required: true, message: 'Inserisci la tua password'}]}
+                                    rules={[{required: true, message: 'Inserisci la tua password', min: 8}]}
                                     hasFeedback
                                 >
                                     <Input.Password/>
@@ -264,7 +326,6 @@ const InitialForm:React.FC = () => {
                                                 if (!value || getFieldValue('password') === value) {
                                                     return Promise.resolve();
                                                 }
-
                                                 return Promise.reject(new Error('Le due password non sono uguali'));
                                             },
                                         }),
@@ -279,7 +340,6 @@ const InitialForm:React.FC = () => {
                                     valuePropName="fileList"
                                     getValueFromEvent={normFile}
                                     wrapperCol={{span: 24}}
-                                    // extra="test extra"
                                 >
                                     <Upload name="immagine" action="/upload.do" listType="picture" accept=".png,.jpg">
                                         <Button className="upload-btn" icon={<UploadOutlined/>}>Inserisci l'immagine del
@@ -313,35 +373,33 @@ const InitialForm:React.FC = () => {
                                 >
                                     <Form.Item className="first-elem" label="Nome" name="nome"
                                                rules={[{required: true, message: 'Inserisci il tuo nome'}]}>
-                                        <Input/>
+                                        <Input pattern={"^[a-zA-Z]+$"}/>
                                     </Form.Item>
 
                                     <Form.Item label="Cognome" name="cognome"
                                                rules={[{required: true, message: 'Inserisci il tuo cognome'}]}>
-                                        <Input/>
+                                        <Input pattern={"^[a-zA-Z]+([ ]{1}[a-zA-Z]+){0,2}$"}/>
                                     </Form.Item>
 
                                     <Form.Item label="Telefono" name="telefono"
-                                               rules={[{
-                                                   required: true,
-                                                   message: 'Inserisci il tuo numero di telefono'
-                                               }]}>
-                                        <Input type={"number"}/>
+                                               rules={[{required: true, message: 'Inserisci il tuo numero di telefono', min: 10, max: 10}]}>
+                                        <Input type={"number"} min={0}/>
                                     </Form.Item>
 
                                     <Form.Item label="Email" name="email"
                                                rules={[{type: 'email', message: 'Inserisci una mail valida',},
                                                    {required: true, message: 'Inserisci la tua email istituzionale'}]}>
-                                        <Input/>
+                                        <Input pattern={"^[a-z]+.[a-z]+@(studio.unibo|unibo).it$"}/>
                                     </Form.Item>
 
                                     <Form.Item label="Password" name="password" hasFeedback
-                                               rules={[{required: true, message: 'Inserisci la tua password'}]}>
+                                               rules={[{required: true, message: 'Inserisci la tua password', min: 8}]}>
                                         <Input.Password/>
                                     </Form.Item>
 
                                     <Form.Item label="Conferma password" name="conferma-password"
-                                               dependencies={['password']} hasFeedback
+                                               dependencies={['password']}
+                                               hasFeedback
                                                rules={[{
                                                    required: true,
                                                    message: 'Inserisci nuovamente la tua password'
@@ -361,7 +419,7 @@ const InitialForm:React.FC = () => {
 
                                     <Form.Item className="upload-btn" name="upload" valuePropName="fileList"
                                                getValueFromEvent={normFile}
-                                               wrapperCol={{span: 24}} /* extra="test extra" */>
+                                               wrapperCol={{span: 24}}>
                                         <Upload name="immagine" action="/upload.do" listType="picture"
                                                 accept=".png,.jpg">
                                             <Button className="upload-btn" icon={<UploadOutlined/>}>Inserisci l'immagine
@@ -390,12 +448,13 @@ const InitialForm:React.FC = () => {
                                                                 },
                                                             ]}
                                                         >
-                                                            <Input onChange={ () => {
-                                                                if (visibleClassSchedule.length <= index) {
-                                                                    let copy = visibleClassSchedule
-                                                                    copy.push(false)
-                                                                    setVisibleClassSchedule(copy)
-                                                                }
+                                                            <Input pattern={"^[a-zA-Z]+([ ]{1}[a-zA-Z0-9]+)*$"}
+                                                                onChange={ () => {
+                                                                    if (visibleClassSchedule.length <= index) {
+                                                                        let copy = visibleClassSchedule
+                                                                        copy.push(false)
+                                                                        setVisibleClassSchedule(copy)
+                                                                    }
                                                             }}/>
                                                         </Form.Item>
                                                         <Button

@@ -8,3 +8,14 @@ exports.listAllReceptions = function (req, res){
         res.send(receptions);
     })
 };
+
+exports.addReception = function (req, res){
+    const newReception = new Reception(req.body)
+    newReception.save(function (err, reception) {
+        if (err) {
+            res.send(err)
+        } else {
+            res.status(200).json(reception)
+        }
+    })
+};
