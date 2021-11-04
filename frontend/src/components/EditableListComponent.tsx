@@ -12,7 +12,7 @@ import * as utils from "../utils/utils"
 require("../styles/userPagesComponents/list_component/notificationBoxStyle.scss")
 
 const io = require("socket.io-client");
-const socket = io("http://localhost:8080/");
+const socket = io(`${utils.BASE_URL}${utils.SOCKET_IO_PORT}`);
 
 const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
