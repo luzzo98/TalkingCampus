@@ -9,7 +9,7 @@ import {CSSTransition} from "react-transition-group";
 import {ListItem} from "../Model";
 import * as utils from "../utils/utils"
 import PrivateContentService from "../services/PrivateContentService";
-import getEmail from "../services/EmailGetter";
+import getUser from "../services/UserLocalInfoGetter";
 require("../styles/userPagesComponents/list_component/notificationBoxStyle.scss")
 
 const io = require("socket.io-client");
@@ -37,8 +37,8 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
     useEffect(() => {
             if(sub_title === "Notifiche"){ //TODO rimuovi bagni hardcoded
-                ["Bagno 1.7", "Bagno 1.4"].forEach(e => socket.on("notification: " + e, () => getNotifications(e, getEmail())));
-                ["Bagno 1.7", "Bagno 1.4"].forEach(e => getNotifications(e, getEmail()))
+                ["Bagno 1.7", "Bagno 1.4"].forEach(e => socket.on("notification: " + e, () => getNotifications(e, getUser().email)));
+                ["Bagno 1.7", "Bagno 1.4"].forEach(e => getNotifications(e, getUser().email))
             } else
                 getObsRoom("christian.derrico@studio.unibo.it")
         }, [])
@@ -54,7 +54,7 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
         if(sub_title === "Notifiche")
             deleteNotification(id)
         else
-            deleteObsRoom(getEmail(), id)
+            deleteObsRoom(getUser().email, id)
     }
 
     return (

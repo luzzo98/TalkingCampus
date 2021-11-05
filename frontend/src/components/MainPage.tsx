@@ -18,6 +18,7 @@ import {useMediaQuery} from "react-responsive";
 import MainMenu from "./MainMenu";
 import {CSSTransition} from "react-transition-group";
 import MapService from "../services/MapService";
+import getUser from "../services/UserLocalInfoGetter";
 
 interface MapState {
     mode: string,
@@ -64,7 +65,6 @@ const MainPage : React.FC = () => {
     }
 
     let data = useLocation();
-    const mainContents: MainpageContents = data.state as MainpageContents
     const [mapState, setMapState] = useReducer<Reducer<MapState, any>>(utils.reducer, initState)
     const mapStateRef = useRef<MapState>()
     mapStateRef.current = mapState
@@ -72,7 +72,7 @@ const MainPage : React.FC = () => {
     const isTabletOrMobile: boolean = useMediaQuery({ query: '(max-width: 1024px)' })
 
     useEffect(() => {
-        if (mainContents.user.role === "admin")
+        if (getUser().role === "admin")
             message.info("Talking campus mode: " + mapState.mode,0.7)
     }, [mapState.mode])
 
@@ -220,7 +220,6 @@ const MainPage : React.FC = () => {
                 <main className={"main"}>
                     <MainMenu toggleVisibility={isOpeningView}
                               visibilityFromMap={isMenuVisibleForMap}
-                              mainContents={mainContents}
                               onChangeMode={changeMode}
                               onClosure={() => {
                                   setIsOpeningView(false);

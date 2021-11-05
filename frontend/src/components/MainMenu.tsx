@@ -6,12 +6,12 @@ import {useMediaQuery} from "react-responsive";
 import {MainpageContents} from "../Model";
 import * as utils from "../utils/utils"
 import '../styles/main_page/mainPageStyle.scss'
+import getUser from "../services/UserLocalInfoGetter";
 
 
 interface menuProps {
     visibilityFromMap: boolean
     toggleVisibility: boolean
-    mainContents: MainpageContents
     onChangeMode: (mode: string) => void
     onClosure: () => void
 }
@@ -41,10 +41,10 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
     const buttons: JSX.Element[] = createButtons()
 
     function createButtons(): JSX.Element[] {
-        return props.mainContents.hooks.map(
+        return utils.getElements(getUser().role).map(
             el =>
                 <button className="corner-button"
-                        onClick={() => props.mainContents.user.role !== 'admin' ? closeMenu(el[1]) : adminAction(el[0])}>
+                        onClick={() => getUser().role !== 'admin' ? closeMenu(el[1]) : adminAction(el[0])}>
                     <span>{el[0]}</span>
                     {el[0] === "Notifiche" && nNotification > 0 ? <span className={"badge"}>{nNotification}</span> : null}
                 </button>
@@ -101,8 +101,8 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
                             onClick={() => isTabletOrMobile ? setToggleOnOff(prev => !prev) : null}>Talking Campus</h1>
                     </Tooltip>
                     <div className="card">
-                        <h3>Ciao {props.mainContents.user.name}!</h3>
-                        <img src={props.mainContents.user.img} className="avatar-holder"/>
+                        <h3>Ciao {getUser().name}!</h3>
+                        <img src={getUser().image} className="avatar-holder"/>
                     </div>
                     {buttons}
                     <button className="corner-button logout-button" onClick={() => closeMenu("/")}>

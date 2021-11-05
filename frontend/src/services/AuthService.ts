@@ -1,6 +1,5 @@
 import axios from "axios";
 import * as utils from "../utils/utils"
-import {User} from "../Model";
 
 const API_URL = `${utils.BASE_URL}${utils.NODE_PORT}/api/`;
 

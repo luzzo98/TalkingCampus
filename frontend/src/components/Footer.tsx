@@ -12,7 +12,7 @@ const AppBar: React.FC<Props> = ({onBack}) => {
     let history = useHistory()
     function handleClick(){
         onBack()
-        //history.push("/main-page")
+        setTimeout(() => history.push("/main-page"), 700)
     }
 
     return (

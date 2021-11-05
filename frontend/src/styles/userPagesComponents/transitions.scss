@@ -1,6 +1,6 @@
 div.slide-up-down-enter{
   opacity: 1;
-  top: -40%;
+  top: -50%;
 }
 
 div.slide-up-down-enter-active{
@@ -21,11 +21,11 @@ div.slide-up-down-exit{
 
 div.slide-up-down-exit-active{
   opacity: 1;
-  top: -40%;
+  top: -50%;
   transition: top 800ms ease-in-out;
 }
 
 div.slide-up-down-exit-done{
   opacity: 1;
-  top: -40%;
+  top: -50%;
 }

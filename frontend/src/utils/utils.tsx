@@ -24,9 +24,9 @@ export const reducer = (prevState: any, updatedProperty:any) => ({
     ...updatedProperty,
 });
 
-export function getElements(user: User):[string, string][] {
+export function getElements(role: string):[string, string][] {
     let elements: [string, string][] = [];
-    switch (user.role){
+    switch (role){
         case "student":
             elements = [["Area Personale", "/student-personal-area"],
                 ["Notifiche", "/student-notifications"],

@@ -77,7 +77,7 @@ const InitialForm:React.FC = () => {
         AuthService.login(values.email, values.password).then(
             (res) => {
                 if (res)
-                    history.push("/main-page", {user: res, hooks: utils.getElements(res)});
+                    history.push("/main-page");
                 else
                     Modal.error({
                         title: 'I dati inseriti non sono corretti',
