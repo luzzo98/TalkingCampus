@@ -49,7 +49,7 @@ exports.updateRoom = function(req, res){
 exports.addObserver = function (req, res){
     Room.findOneAndUpdate(
         {name: req.params.room},
-        {$push: {observers: String(req.params.observer)}},
+        {$push: {observers: String(req.params.id)}},
         function (err, user){
             if(err)
                 res.send(err)

@@ -30,6 +30,7 @@ interface ReceptionType {
 
 const InitialForm:React.FC = () => {
 
+    const [tabKey, setTabKey] = useState("1")
     const [visible, setVisible] = useState(false);
     const [visibleClassSchedule, setVisibleClassSchedule] = useState(Array<boolean>());
     const [reception, setReception] = useState(Array<ReceptionType>())
@@ -60,7 +61,6 @@ const InitialForm:React.FC = () => {
         title: 'Errore di rete',
         content: 'La comunicazione al server è fallita, controllare la connessione e riprovare',
     });
-
     const getLessons = (values: any): {name: string, timetable: LessonType[]}[] => {
         let courses: { name: string; timetable: any; }[] = []
         if (values && values.length > 0) {
@@ -87,6 +87,7 @@ const InitialForm:React.FC = () => {
             () => showConnectionError()
         );
     }
+
     const onStudentFinish = (values: any) => {
         AuthService.registerStudent(values.nome, values.cognome, values.telefono, values.universita, values.matricola, values.email, values.password).then(
             res => {
@@ -99,7 +100,8 @@ const InitialForm:React.FC = () => {
                     Modal.success({
                         content: 'Registrazione effettuata con successo',
                         onOk() {
-                            window.location.reload();
+                            setTabKey("1")
+                            studentForm.resetFields()
                         }
                     });
                 }
@@ -120,7 +122,8 @@ const InitialForm:React.FC = () => {
                         Modal.success({
                             content: 'Registrazione effettuata con successo',
                             onOk() {
-                                window.location.reload();
+                                setTabKey("1")
+                                professorForm.resetFields()
                             }
                         });
 
@@ -194,7 +197,7 @@ const InitialForm:React.FC = () => {
             <div className="card-container">
                 <div>
                     <AppBarTitle/>
-                    <Tabs type="card">
+                    <Tabs activeKey={tabKey} onTabClick={(key) => {setTabKey(key)}} type="card">
                         <TabPane tab="Login" key="1" className="tabpane-container">
                             <Form
                                 form={loginForm}

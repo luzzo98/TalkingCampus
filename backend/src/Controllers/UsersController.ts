@@ -1,30 +1,26 @@
 const {user, student, teacher} = require("../Model/User.ts");
-const PRIVATE_SECRET_KEY = 'TalkingCampusKey';
-const jwt = require('jsonwebtoken');
 
 exports.signin = function (req, res) {
-    user.find(req.body, function (err, user){
+    const jwt = require('jsonwebtoken');
+    const PRIVATE_SECRET_KEY = 'TalkingCampusKey';
+
+    user.findOne(req.body, function (err, user){
         if(err)
             res.send(err)
         const token = jwt.sign({user}, PRIVATE_SECRET_KEY, {
             algorithm: 'HS512',
             expiresIn: '2h'
         });
-        let val = user[0]
-
-        // console.log("USER", val) //TODO elimina i log
-        // console.log("TOKEN",token)
-        // val.accessToken = token
-        // console.log("USER + TOKEN", val)
-        // res.send(val);
-
-        const r = {
-            email: val.email,
-            name: val.name,
-            role: val.role,
-            accessToken: token
+        if (user) {
+            res.send({
+                email: user.email,
+                name: user.name,
+                role: user.role,
+                accessToken: token
+            })
+        } else {
+            res.send()
         }
-        res.send(r)
     })
 };
 
@@ -91,7 +87,7 @@ exports.findStudent = (req, res, next) => {
 }
 
 exports.getObservedRooms = (req, res) => {
-    student.findOne({email: req.params.email}, function (err, student){
+    student.findOne({email: req.params.id}, function (err, student){
         if(err)
             res.send(err)
         else{
@@ -103,7 +99,7 @@ exports.getObservedRooms = (req, res) => {
 
 exports.delObservedRoom = (req, res) => {
     student.findOneAndUpdate(
-        {email: req.params.email},
+        {email: req.params.id},
         {$pull: {observed_rooms: req.params.room}},
         function (err, student){
         if(err)

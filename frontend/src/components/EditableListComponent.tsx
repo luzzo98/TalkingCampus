@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import 'antd/dist/antd.css';
 import {List, Button} from 'antd';
 import {CloseCircleOutlined} from "@ant-design/icons";
@@ -7,9 +7,9 @@ import Footer from "./Footer";
 import SubAppBar from "./SubAppBar";
 import {CSSTransition} from "react-transition-group";
 import {ListItem} from "../Model";
-import * as listItemDeserializer from "../utils/ListItemDeserializer"
 import * as utils from "../utils/utils"
 import PrivateContentService from "../services/PrivateContentService";
+import getEmail from "../services/EmailGetter";
 require("../styles/userPagesComponents/list_component/notificationBoxStyle.scss")
 
 const io = require("socket.io-client");
@@ -17,8 +17,8 @@ const socket = io(`${utils.BASE_URL}${utils.SOCKET_IO_PORT}`);
 
 const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
-    function getNotifications(room: string){
-        PrivateContentService.getNotifications(room, items =>
+    function getNotifications(room: string, email: string){
+        PrivateContentService.getNotifications(room, email, items =>
             setData(prevState => prevState.concat(items.filter(e => !prevState.find(p => p.id === e.id))))
         )
     }
@@ -36,9 +36,9 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
     }
 
     useEffect(() => {
-            if(sub_title === "Notifiche"){
-                ["Bagno 1.7", "Bagno 1.4"].forEach(e => socket.on("notification: " + e, () => getNotifications(e)));
-                ["Bagno 1.7", "Bagno 1.4"].forEach(e => getNotifications(e))
+            if(sub_title === "Notifiche"){ //TODO rimuovi bagni hardcoded
+                ["Bagno 1.7", "Bagno 1.4"].forEach(e => socket.on("notification: " + e, () => getNotifications(e, getEmail())));
+                ["Bagno 1.7", "Bagno 1.4"].forEach(e => getNotifications(e, getEmail()))
             } else
                 getObsRoom("christian.derrico@studio.unibo.it")
         }, [])
@@ -50,12 +50,11 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
     })
 
     function handleElimination(id: string){
-        const elemId = `${id}`
         setData(data.filter(el => el.id != id))
         if(sub_title === "Notifiche")
             deleteNotification(id)
         else
-            deleteObsRoom("christian.derrico@studio.unibo.it", id)
+            deleteObsRoom(getEmail(), id)
     }
 
     return (

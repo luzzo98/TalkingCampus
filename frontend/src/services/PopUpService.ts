@@ -4,16 +4,22 @@ import * as courseDeserializer from "../utils/CourseDeserializer";
 import * as teacherDeserializer from "../utils/TeacherDeserializer";
 import * as receptionDeserializer from "../utils/ReceptionDeserializer";
 import {Course, Lesson, Reception, Room, Teacher} from "../Model";
+import authHeader from "./AuthHeader";
 
 const API_URL = `${utils.BASE_URL}${utils.NODE_PORT}`
+
+const header = authHeader();
+header["Content-Type"] = 'application/json';
 
 class PopUpService {
 
     handleAddingObs(room_name: string, email: string){
-        fetch(API_URL + `/api/add-observed-room/${email}/${room_name}`)
-            .then(res => console.log(res.json()));
-        fetch(API_URL + `/api/add-observer/${room_name}/${email}`)
-            .then(res => console.log(res.json()));
+        fetch(API_URL + `/api/add-observed-room/${email}/${room_name}`, {
+            headers: authHeader()
+        }).then(res => console.log(res.json()));
+        fetch(API_URL + `/api/add-observer/${room_name}/${email}`, {
+            headers: authHeader()
+        }).then(res => console.log(res.json()));
     }
 
     getLessons(room_id:string, onComplete: (lessons: Lesson[]) => void ){

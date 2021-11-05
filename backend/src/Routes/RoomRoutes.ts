@@ -3,6 +3,7 @@ import {Application} from "express";
 module.exports = function setRoomRoutes(app: Application) {
 
     const roomsController = require("../Controllers/RoomsController.ts");
+    const tokenController = require("../Controllers/TokenController");
 
     app.route("/api/rooms/:floor")
        .get(roomsController.listAllRooms)
@@ -16,8 +17,7 @@ module.exports = function setRoomRoutes(app: Application) {
     app.route("/api/edit-room/:id")
         .post(roomsController.updateRoom)
 
-    app.route("/api/add-observer/:room/:observer")
-        .get(roomsController.addObserver)
-
-
+    app.route("/api/add-observer/:room/:id")
+        .get(tokenController.checkToken,
+            roomsController.addObserver)
 };

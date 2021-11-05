@@ -1,8 +1,7 @@
 import * as utils from "../utils/utils"
-import * as roomDeserializer from "../utils/RoomDeserializer";
-import {ListItem, RoomOnMap, Student} from "../Model";
-import * as userDeserializer from "../utils/UserDeserializer";
+import {ListItem} from "../Model";
 import * as listItemDeserializer from "../utils/ListItemDeserializer";
+import authHeader from "./AuthHeader";
 
 const API_URL = `${utils.BASE_URL}${utils.NODE_PORT}`
 
@@ -12,14 +11,16 @@ class PrivateContentService {
                             onComplete: (items: ListItem[]) => void,
                             mapper: (value: any) => ListItem){
 
-        fetch(url).then((res: Response) => res.json())
+        fetch(url, {
+            headers: authHeader()
+        }).then((res: Response) => res.json())
                   .then((json:JSON[]) => json.map( (value: any) => mapper(value)))
                   .then(items => onComplete(items))
 
     }
 
-    getNotifications(room: string, onComplete: (items: ListItem[]) => void){
-        this.workOnListItems(API_URL + `/api/get-notifications/${room}`,
+    getNotifications(room: string, email: string, onComplete: (items: ListItem[]) => void){
+        this.workOnListItems(API_URL + `/api/get-notifications/${room}/${email}`,
                                  onComplete,
                                  listItemDeserializer.mapToNotification)
     }
