@@ -7,6 +7,7 @@ import SubAppBar from "./SubAppBar";
 import {CSSTransition} from "react-transition-group";
 import {Student} from "../Model";
 import PersonalAreaService from "../services/PersonalAreaService";
+import getEmail from "../services/EmailGetter";
 require("../styles/userPagesComponents/studentPersonalArea/studentPersonalAreaStyle.scss")
 
 const StudentPersonalArea = () => {
@@ -25,7 +26,7 @@ const StudentPersonalArea = () => {
     const [data, setData] = useState<Student>()
 
     useEffect(() => {
-        findStudent("christian.derrico@studio.unibo.it")
+        findStudent(getEmail())
     }, [])
 
     return (

@@ -1,13 +1,11 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {CSSTransition} from "react-transition-group";
 import {useHistory} from "react-router-dom";
 import {Tooltip} from "antd";
 import {useMediaQuery} from "react-responsive";
-import {MainpageContents} from "../Model";
 import * as utils from "../utils/utils"
 import '../styles/main_page/mainPageStyle.scss'
 import getUser from "../services/UserLocalInfoGetter";
-
 
 interface menuProps {
     visibilityFromMap: boolean
@@ -33,7 +31,7 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
     const [isClosing, setIsClosing] = useState(false)
     const [nNotification, setNNotification] = useState<number>(0)
 
-    useEffect(() => socket.on("New notification: christian.derrico@studio.unibo.it",
+    useEffect(() => socket.on("New notification: " + getUser().email,
         () => {
             setNNotification(prevState => prevState+1)
         }), [])
