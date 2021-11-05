@@ -192,8 +192,8 @@ db.createCollection("users", {
           description: "must be a valid name"  
         },
         picture: {
-          bsonType: "binData",
-          description: "must be an user's image"
+          bsonType: "string",
+          description: "must be a valid user's image URL"
        },
        observed_rooms: {
           bsonType: "array",
@@ -403,16 +403,16 @@ db.courses.insertMany([
 ])
 
 db.lessons.insertMany([
-    {"course_name":"Algebra", "room":"Aula 1.1", "day":"Lunedï¿½", 
+    {"course_name":"Algebra", "room":"Aula 1.1", "day":"Lunedì", 
         "start":{ "hours":NumberInt(9), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(13), "minutes":NumberInt(0)}
     },
-    {"course_name":"Algebra", "room":"Aula 1.1", "day":"Mercoledï¿½", 
+    {"course_name":"Algebra", "room":"Aula 1.1", "day":"Mercoledì", 
         "start":{ "hours":NumberInt(15), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(18), "minutes":NumberInt(0)}
     },
-    {"course_name":"Calcolo Numerico", "room":"Aula 1.1", "day":"Martedï¿½",
+    {"course_name":"Calcolo Numerico", "room":"Aula 1.1", "day":"Martedì",
         "start":{ "hours":NumberInt(14), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(16), "minutes":NumberInt(0)}
     },
-    {"course_name":"Programmazione 1", "room":"Aula 1.1", "day":"Venerdï¿½",
+    {"course_name":"Programmazione 1", "room":"Aula 1.1", "day":"Venerdì",
         "start":{ "hours":NumberInt(8), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(13), "minutes":NumberInt(0)}
     }
 ])
