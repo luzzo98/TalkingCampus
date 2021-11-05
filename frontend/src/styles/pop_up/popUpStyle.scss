@@ -9,7 +9,7 @@
   .prenote-class{
     border-radius: 5px;
     color: white;
-    background-color: #6157F5;
+    background-color: #4285f4;
     margin-bottom: 0;
     box-shadow: none;
   }
@@ -17,6 +17,16 @@
   .classroom-infos {
     a {
       color: #333;
+    }
+    p:last-of-type {
+     display: flex;
+      span {
+        margin-right: 5%;
+      }
+      button {
+        padding: 0;
+        flex-basis: 20%;
+      }
     }
   }
 

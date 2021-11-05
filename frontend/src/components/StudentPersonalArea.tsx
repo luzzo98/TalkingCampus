@@ -5,18 +5,14 @@ import AppBarTitle from "./AppBarTitle";
 import Footer from "./Footer";
 import SubAppBar from "./SubAppBar";
 import {CSSTransition} from "react-transition-group";
-import * as userDeserializer from "../utils/UserDeserializer";
-import * as utils from "../utils/utils";
 import {Student} from "../Model";
+import PersonalAreaService from "../services/PersonalAreaService";
 require("../styles/userPagesComponents/studentPersonalArea/studentPersonalAreaStyle.scss")
 
 const StudentPersonalArea = () => {
 
-    function findStudent(){
-        fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/students/christian.derrico@studio.unibo.it`)
-            .then(res => res.json())
-            .then((json:JSON) => userDeserializer.mapToStudent(json))
-            .then(s => setData(s))
+    function findStudent(email: string){
+        PersonalAreaService.findStudent(email, s => setData(s))
     }
 
     const [isEntrance, setIsEntrance] = useState(() => {
@@ -29,8 +25,7 @@ const StudentPersonalArea = () => {
     const [data, setData] = useState<Student>()
 
     useEffect(() => {
-        findStudent()
-        console.log(Array.of(data))
+        findStudent("christian.derrico@studio.unibo.it")
     }, [])
 
     return (

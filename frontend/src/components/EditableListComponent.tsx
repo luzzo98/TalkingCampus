@@ -9,6 +9,7 @@ import {CSSTransition} from "react-transition-group";
 import {ListItem} from "../Model";
 import * as listItemDeserializer from "../utils/ListItemDeserializer"
 import * as utils from "../utils/utils"
+import PrivateContentService from "../services/PrivateContentService";
 require("../styles/userPagesComponents/list_component/notificationBoxStyle.scss")
 
 const io = require("socket.io-client");
@@ -17,28 +18,21 @@ const socket = io(`${utils.BASE_URL}${utils.SOCKET_IO_PORT}`);
 const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
     function getNotifications(room: string){
-        fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/get-notifications/${room}`)
-            .then((res: Response) => res.json())
-            .then((json:JSON[]) => json.map( (value: any) => listItemDeserializer.mapToNotification(value)))
-            .then(items => setData(prevState => prevState.concat(
-                    items.filter(e => !prevState.find(p => p.id === e.id)))
-                )
-            )
+        PrivateContentService.getNotifications(room, items =>
+            setData(prevState => prevState.concat(items.filter(e => !prevState.find(p => p.id === e.id))))
+        )
     }
 
     function getObsRoom(email: string){
-        fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/get-observed-rooms/${email}`)
-            .then(res => res.json())
-            .then((json:string[]) => json.map( (value: any) => listItemDeserializer.mapToClass(value)))
-            .then(items => setData(items))
+        PrivateContentService.getObsRoom(email, items => setData(items))
     }
 
     function deleteNotification(id: string){
-        fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/del-notification/${id}`)
+        PrivateContentService.deleteNotification(id)
     }
 
     function deleteObsRoom(email:string, room: string){
-        fetch(`${utils.BASE_URL}${utils.NODE_PORT}/api/del-observed-room/${email}/${room}`)
+        PrivateContentService.deleteObsRoom(email, room)
     }
 
     useEffect(() => {
@@ -61,7 +55,7 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
         if(sub_title === "Notifiche")
             deleteNotification(id)
         else
-            deleteObsRoom("christian.derrico@studio.unibo.it",id)
+            deleteObsRoom("christian.derrico@studio.unibo.it", id)
     }
 
     return (
