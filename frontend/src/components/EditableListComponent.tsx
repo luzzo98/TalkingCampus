@@ -40,7 +40,7 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
                 ["Bagno 1.7", "Bagno 1.4"].forEach(e => socket.on("notification: " + e, () => getNotifications(e, getUser().email)));
                 ["Bagno 1.7", "Bagno 1.4"].forEach(e => getNotifications(e, getUser().email))
             } else
-                getObsRoom("christian.derrico@studio.unibo.it")
+                getObsRoom(getUser().email)
         }, [])
 
     const[data, setData] = useState<ListItem[]>([])

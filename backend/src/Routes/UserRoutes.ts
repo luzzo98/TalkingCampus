@@ -15,7 +15,7 @@ module.exports = function setUserRoutes(app: Application) {
         .get(tokenController.checkToken,
             usersController.getStudent)
 
-    app.route("/api/add-observed-room/:observer/:room")
+    app.route("/api/add-observed-room/:id/:room")
        .get(tokenController.checkToken,
            usersController.addObservedRoom)
 
