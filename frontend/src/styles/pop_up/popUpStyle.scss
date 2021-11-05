@@ -18,6 +18,16 @@
     a {
       color: #333;
     }
+    p:last-of-type {
+     display: flex;
+      span {
+        margin-right: 5%;
+      }
+      button {
+        padding: 0;
+        flex-basis: 20%;
+      }
+    }
   }
 
   .margin-bottom {

@@ -100,9 +100,12 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
         return lesson ? <div className={"classroom-infos " + (isTeacherHidden ? "" : "margin-bottom")}>
             <h3>Lezione in Corso:</h3>
             <p>{lesson.course_name} {utils.getCorrectFormat(lesson.start)}/{utils.getCorrectFormat(lesson.end)}</p>
-            <p><a onClick={() =>
-                setIsTeacherHidden(prevState => !prevState)}>
-                Docente: {teacher?.name} {teacher?.surname}</a></p>
+            <p>
+                <span className={"span-teacher"}>Docente: {teacher?.name} {teacher?.surname}</span>
+                <button className={"prenote-class"} onClick={() => setIsTeacherHidden(prevState => !prevState)}>
+                    Info
+                </button>
+            </p>
             <div className={isTeacherHidden ? "sub-info-hidden" : "sub-info-visible"}>
                 <p>Email: {teacher?.email}<br/>Telefono: {teacher?.phone_number}</p>
                 <div className={"receptions"}>
