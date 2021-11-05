@@ -6,6 +6,7 @@ import {useMediaQuery} from "react-responsive";
 import {MainpageContents} from "../Model";
 import * as utils from "../utils/utils"
 import '../styles/main_page/mainPageStyle.scss'
+import getEmail from "../services/EmailGetter";
 
 
 interface menuProps {
@@ -33,7 +34,7 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
     const [isClosing, setIsClosing] = useState(false)
     const [nNotification, setNNotification] = useState<number>(0)
 
-    useEffect(() => socket.on("New notification: christian.derrico@studio.unibo.it",
+    useEffect(() => socket.on("New notification: " + getEmail(),
         () => {
             setNNotification(prevState => prevState+1)
         }), [])
