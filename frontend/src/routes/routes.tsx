@@ -6,7 +6,7 @@ import React from "react";
 import EditableListComponent from "../components/EditableListComponent";
 import StudentPersonalArea from "../components/StudentPersonalArea";
 
-interface hoursArray {
+interface hoursArray { //TODO rimuovere placeolder
     hours: {
         start: string,
         end: string,

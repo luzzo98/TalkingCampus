@@ -11,9 +11,9 @@ class AuthService {
                 email, psw
             })
             .then(response => {
-                console.log(response.data)
+                console.log("res.data",response.data) //TODO cancella log
                 if (response.data.accessToken) {
-                    console.log(JSON.stringify(response.data)) //TODO rimuovi stampa
+                    console.log("TOKEN E INFO SALVATE", JSON.stringify(response.data)) //TODO rimuovi stampa
                     localStorage.setItem("user", JSON.stringify(response.data));
                 }
                 return response.data;

@@ -1,14 +1,34 @@
 const {user, student, teacher} = require("../Model/User.ts");
+const PRIVATE_SECRET_KEY = 'TalkingCampusKey';
+const jwt = require('jsonwebtoken');
 
-exports.signin = function (req, res){
+exports.signin = function (req, res) {
     user.find(req.body, function (err, user){
         if(err)
             res.send(err)
-        res.send(user);
+        const token = jwt.sign({user}, PRIVATE_SECRET_KEY, {
+            algorithm: 'HS512',
+            expiresIn: '2h'
+        });
+        let val = user[0]
+
+        // console.log("USER", val) //TODO elimina i log
+        // console.log("TOKEN",token)
+        // val.accessToken = token
+        // console.log("USER + TOKEN", val)
+        // res.send(val);
+
+        const r = {
+            email: val.email,
+            name: val.name,
+            role: val.role,
+            accessToken: token
+        }
+        res.send(r)
     })
 };
 
-exports.getTeacher = function (req, res){
+exports.getTeacher = function (req, res) {
     teacher.find({email: req.params.id}, function (err, teacher){
         if(err)
             res.send(err)
@@ -16,7 +36,7 @@ exports.getTeacher = function (req, res){
     })
 };
 
-exports.getStudent = function (req, res){
+exports.getStudent = function (req, res) {
     student.findOne({email: req.params.id}, function (err, student){
         if(err)
             res.send(err)
@@ -24,7 +44,7 @@ exports.getStudent = function (req, res){
     })
 };
 
-exports.addObservedRoom = function (req, res){
+exports.addObservedRoom = function (req, res) {
     student.findOneAndUpdate(
         {email: req.params.observer},
         {$push: {observed_rooms: String(req.params.room)}},

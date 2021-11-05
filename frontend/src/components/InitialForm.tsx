@@ -76,8 +76,8 @@ const InitialForm:React.FC = () => {
     const onLoginFinish = (values: any) => {
         AuthService.login(values.email, values.password).then(
             (res) => {
-                if (res[0])
-                    history.push("/main-page", {user: res[0], hooks: utils.getElements(res[0])});
+                if (res)
+                    history.push("/main-page", {user: res, hooks: utils.getElements(res)});
                 else
                     Modal.error({
                         title: 'I dati inseriti non sono corretti',
@@ -98,10 +98,10 @@ const InitialForm:React.FC = () => {
                 } else {
                     Modal.success({
                         content: 'Registrazione effettuata con successo',
+                        onOk() {
+                            window.location.reload();
+                        }
                     });
-
-                    // const user: User = AuthService.getCurrentUser()
-                    //todo richiedere il token ed usarlo eseguire l'accesso con history.push o ricaricare il login
                 }
             },
             () => showConnectionError()
@@ -119,6 +119,9 @@ const InitialForm:React.FC = () => {
                     } else {
                         Modal.success({
                             content: 'Registrazione effettuata con successo',
+                            onOk() {
+                                window.location.reload();
+                            }
                         });
 
                         if (values.corso) {
@@ -170,9 +173,6 @@ const InitialForm:React.FC = () => {
                                 })
                             })
                         }
-
-                        // const user: User = AuthService.getCurrentUser()
-                        //todo richiedere il token ed usarlo eseguire l'accesso con history.push o ricaricare il login
                     }
                 },
                 () => showConnectionError()
