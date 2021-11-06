@@ -10,10 +10,7 @@ exports.checkToken = function(req, res, next) {
         if(err){
             res.sendStatus(403);
         } else {
-            console.log("INFO ->", info)
-            console.log(req.params)
-            console.log(req.params.id)
-            if (req.params.id == info.user.email) {
+            if (req.params.id == info.payload) {
                 next()
             } else {
                 res.sendStatus(403);

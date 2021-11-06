@@ -7,7 +7,10 @@ exports.signin = function (req, res) {
     user.findOne(req.body, function (err, user){
         if(err)
             res.send(err)
-        const token = jwt.sign({user}, PRIVATE_SECRET_KEY, {
+
+        const payload = user ? user.email : ""
+
+        const token = jwt.sign({payload}, PRIVATE_SECRET_KEY, {
             algorithm: 'HS512',
             expiresIn: '2h'
         });
@@ -16,6 +19,7 @@ exports.signin = function (req, res) {
                 email: user.email,
                 name: user.name,
                 role: user.role,
+                picture: user.picture,
                 accessToken: token
             })
         } else {
@@ -43,6 +47,7 @@ exports.getStudent = function (req, res) {
 exports.insertStudent = function (req, res) {
     const newStudent = new student(req.body)
     newStudent.save(function (err, studente) {
+        console.log(studente)
         if (err)
             res.send(err)
         else

@@ -193,7 +193,7 @@ db.createCollection("users", {
         },
         picture: {
           bsonType: "string",
-          description: "must be a valid user's image URL"
+          description: "must be a valid image"
        },
        observed_rooms: {
           bsonType: "array",

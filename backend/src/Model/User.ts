@@ -24,7 +24,7 @@ const baseSchema = new Schema<User>({
     phone_number: String,
     name: {type: String, required: false},
     surname: {type: String, required: false},
-    picture: {data: Buffer, contentType: String, required: false}
+    picture: String
 }, baseOptions)
 
 const studentSchema = new Schema<User>({

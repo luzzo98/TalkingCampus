@@ -1,11 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Form, Input, Button, Tabs, Upload, Select, Divider, Modal} from 'antd';
 import { UploadOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {useHistory} from "react-router-dom";
 import 'antd/dist/antd.css';
 import {Route} from "react-router-dom";
 import MainPage from "./MainPage";
-import * as utils from "../utils/utils";
 import AppBarTitle from "./AppBarTitle";
 import DaySelectorModalForm from "./DaySelectorPopupModalForm"
 import AuthService from "../services/AuthService";
@@ -39,6 +38,9 @@ const InitialForm:React.FC = () => {
     const [loginForm] = Form.useForm();
     const [studentForm] = Form.useForm();
     const [professorForm] = Form.useForm();
+    const [img, setImg] = useState<string>("")
+
+    useEffect(() => console.log(img), [img])
 
     const formItemLayout = {
         labelCol: {
@@ -89,7 +91,7 @@ const InitialForm:React.FC = () => {
     }
 
     const onStudentFinish = (values: any) => {
-        AuthService.registerStudent(values.nome, values.cognome, values.telefono, values.universita, values.matricola, values.email, values.password).then(
+        AuthService.registerStudent(values.nome, values.cognome, values.telefono, values.universita, values.matricola, values.email, values.password, img).then(
             res => {
                 if (res.data.code === 11000) {
                     Modal.error({
@@ -344,7 +346,20 @@ const InitialForm:React.FC = () => {
                                     getValueFromEvent={normFile}
                                     wrapperCol={{span: 24}}
                                 >
-                                    <Upload name="immagine" action="/upload.do" listType="picture" accept=".png,.jpg">
+                                    <Upload name="immagine"
+                                            listType="picture"
+                                            showUploadList={true}
+                                            beforeUpload={file => {
+                                                const reader = new FileReader();
+                                                reader.onload = e => {
+                                                    setImg(e.target?.result as string);
+                                                };
+                                                reader.readAsDataURL(file);
+
+                                                // Prevent upload
+                                                return false;
+                                            }}
+                                            accept=".png,.jpg">
                                         <Button className="upload-btn" icon={<UploadOutlined/>}>Inserisci l'immagine del
                                             profilo</Button>
                                     </Upload>

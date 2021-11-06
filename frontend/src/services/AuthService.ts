@@ -10,9 +10,7 @@ class AuthService {
                 email, psw
             })
             .then(response => {
-                console.log("res.data",response.data) //TODO cancella log
                 if (response.data.accessToken) {
-                    console.log("TOKEN E INFO SALVATE", JSON.stringify(response.data)) //TODO rimuovi stampa
                     localStorage.setItem("user", JSON.stringify(response.data));
                 }
                 return response.data;
@@ -23,10 +21,10 @@ class AuthService {
         localStorage.removeItem("user");
     }
 
-    registerStudent(name: string, surname: string, phone_number: string, university_name: string, badge_number: string, email: string, psw: string) {
+    registerStudent(name: string, surname: string, phone_number: string, university_name: string, badge_number: string, email: string, psw: string, picture: string) {
         return axios
             .post(API_URL + "auth/signUpStudent", {
-                name, surname, phone_number, university_name, badge_number, email, psw
+                name, surname, phone_number, university_name, badge_number, email, psw, picture
             })
     }
 

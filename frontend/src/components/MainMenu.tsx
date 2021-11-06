@@ -20,6 +20,8 @@ const socket = io(`${utils.BASE_URL}${utils.SOCKET_IO_PORT}`);
 
 const MainMenu : React.FC<menuProps> = (props: menuProps) => {
 
+    const image = getUser().picture
+
     const isTabletOrMobile: boolean = useMediaQuery({ query: '(max-width: 1024px)' })
     const [toggleIsOn, setToggleOnOff] = useState(() => {
         setTimeout(() => { setToggleOnOff(true) }, 0);
@@ -46,10 +48,10 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
     }, [])
 
     useEffect(() => {
-        if(areThereRegisteredRooms)
+        if(areThereRegisteredRooms) {
             socket.on("New notification: " + getUser().email,
-                    () => setNNotification(prevState => prevState+1))
-        else
+                () => setNNotification(prevState => prevState+1))
+        } else
             socket.removeListener("New notification: " + getUser().email)
     }, [areThereRegisteredRooms])
 
@@ -117,7 +119,7 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
                     </Tooltip>
                     <div className="card">
                         <h3>Ciao {getUser().name}!</h3>
-                        <img src={getUser().image} className="avatar-holder"/>
+                        <img src={image} className="avatar-holder"/>
                     </div>
                     {buttons}
                     <button className="corner-button logout-button" onClick={() => closeMenu("/")}>

@@ -10,7 +10,7 @@ const translation = new Map<string, string>([
     ])
 
 function mapToUser(jsonElement: JSON){
-    const excludeFields = ["_id", "__v", "psw", "role", "observed_rooms"]
+    const excludeFields = ["_id", "__v", "psw", "role", "observed_rooms", "picture"]
     const columns = Array.from(translation.values())
     return Object.assign({}, Object.entries(jsonElement)
                  .filter(e => !excludeFields.includes(e[0]))
