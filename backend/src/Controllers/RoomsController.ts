@@ -49,14 +49,30 @@ exports.updateRoom = function(req, res){
 exports.addObserver = function (req, res){
     Room.findOneAndUpdate(
         {name: req.params.room},
-        {$push: {observers: String(req.params.id)}},
+        {$push: {observers: req.params.id}},
         function (err, user){
             if(err)
                 res.send(err)
-            else
+            else {
+                io.emit("New observed room")
                 res.json(user)
+            }
         }
     )
+}
+
+exports.delObserver = (req, res) => {
+    Room.findOneAndUpdate(
+        {name: req.params.room},
+        {$pull: {observers: req.params.id}},
+        function (err, student){
+            if(err)
+                res.send(err)
+            else{
+                //console.log(student)
+                res.status(200).json(student.observed_rooms)
+            }
+        })
 }
 
 function checkSeats(room: string, increment:number, res, next){

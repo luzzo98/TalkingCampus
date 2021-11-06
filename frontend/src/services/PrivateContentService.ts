@@ -25,7 +25,7 @@ class PrivateContentService {
                                  listItemDeserializer.mapToNotification)
     }
 
-    getObsRoom(email: string, onComplete: (items: ListItem[]) => void){
+    getObservedRooms(email: string, onComplete: (items: ListItem[]) => void){
         this.workOnListItems(API_URL + `/api/get-observed-rooms/${email}`,
                                  onComplete,
                                  listItemDeserializer.mapToClass)
@@ -36,7 +36,8 @@ class PrivateContentService {
     }
 
     deleteObsRoom(email:string, room: string){
-        fetch(API_URL + `/api/del-observed-room/${email}/${room}`)
+        fetch(API_URL + `/api/del-observed-room/${email}/${room}`, {headers: authHeader()})
+        fetch(API_URL + `/api/del-observer/${room}/${email}`, {headers: authHeader()})
     }
 
 }

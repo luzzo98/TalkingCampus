@@ -6,6 +6,7 @@ import {useMediaQuery} from "react-responsive";
 import * as utils from "../utils/utils"
 import '../styles/main_page/mainPageStyle.scss'
 import getUser from "../services/UserLocalInfoGetter";
+import PrivateContentService from "../services/PrivateContentService";
 
 interface menuProps {
     visibilityFromMap: boolean
@@ -30,11 +31,27 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
     })
     const [isClosing, setIsClosing] = useState(false)
     const [nNotification, setNNotification] = useState<number>(0)
+    const [areThereRegisteredRooms, setRoomsPresent] = useState<boolean>(false)
 
-    useEffect(() => socket.on("New notification: " + getUser().email,
-        () => {
-            setNNotification(prevState => prevState+1)
-        }), [])
+    function checkObservedRooms(){
+        PrivateContentService.getObservedRooms(getUser().email,
+                items => setRoomsPresent(items.length > 0))
+    }
+
+    useEffect(() => {
+        socket.on("New observed room", () =>
+            checkObservedRooms()
+        )
+        checkObservedRooms()
+    }, [])
+
+    useEffect(() => {
+        if(areThereRegisteredRooms)
+            socket.on("New notification: " + getUser().email,
+                    () => setNNotification(prevState => prevState+1))
+        else
+            socket.removeListener("New notification: " + getUser().email)
+    }, [areThereRegisteredRooms])
 
     const buttons: JSX.Element[] = createButtons()
 

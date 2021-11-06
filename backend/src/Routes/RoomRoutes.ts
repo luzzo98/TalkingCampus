@@ -20,4 +20,8 @@ module.exports = function setRoomRoutes(app: Application) {
     app.route("/api/add-observer/:room/:id")
         .get(tokenController.checkToken,
             roomsController.addObserver)
+
+    app.route("/api/del-observer/:room/:id")
+        .get(tokenController.checkToken,
+            roomsController.delObserver)
 };

@@ -40,19 +40,6 @@ exports.getStudent = function (req, res) {
     })
 };
 
-exports.addObservedRoom = function (req, res) {
-    student.findOneAndUpdate(
-        {email: req.params.id},
-        {$push: {observed_rooms: String(req.params.room)}},
-        function (err, student){
-            if(err)
-                res.send(err)
-            else
-                res.json(student)
-        }
-    )
-}
-
 exports.insertStudent = function (req, res) {
     const newStudent = new student(req.body)
     newStudent.save(function (err, studente) {
@@ -95,6 +82,19 @@ exports.getObservedRooms = (req, res) => {
             res.status(200).json(student.observed_rooms)
         }
     })
+}
+
+exports.addObservedRoom = function (req, res) {
+    student.findOneAndUpdate(
+        {email: req.params.id},
+        {$push: {observed_rooms: req.params.room}},
+        function (err, student){
+            if(err)
+                res.send(err)
+            else
+                res.json(student)
+        }
+    )
 }
 
 exports.delObservedRoom = (req, res) => {

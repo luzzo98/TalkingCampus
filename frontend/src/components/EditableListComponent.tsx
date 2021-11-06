@@ -17,43 +17,53 @@ const socket = io(`${utils.BASE_URL}${utils.SOCKET_IO_PORT}`);
 
 const EditableListComponent: React.FC<string> = (sub_title: string) => {
 
-    function getNotifications(room: string, email: string){
-        PrivateContentService.getNotifications(room, email, items =>
-            setData(prevState => prevState.concat(items.filter(e => !prevState.find(p => p.id === e.id))))
+    function getObservedRooms(email: string){
+        PrivateContentService.getObservedRooms(
+            email, items => setObservedRooms(items)
         )
-    }
-
-    function getObsRoom(email: string){
-        PrivateContentService.getObsRoom(email, items => setData(items))
-    }
-
-    function deleteNotification(id: string){
-        PrivateContentService.deleteNotification(id)
     }
 
     function deleteObsRoom(email:string, room: string){
         PrivateContentService.deleteObsRoom(email, room)
     }
 
-    useEffect(() => {
-            if(sub_title === "Notifiche"){ //TODO rimuovi bagni hardcoded
-                ["Bagno 1.7", "Bagno 1.4"].forEach(e => socket.on("notification: " + e, () => getNotifications(e, getUser().email)));
-                ["Bagno 1.7", "Bagno 1.4"].forEach(e => getNotifications(e, getUser().email))
-            } else
-                getObsRoom(getUser().email)
-        }, [])
+    function getNotifications(room: string, email: string){
+        PrivateContentService.getNotifications(room, email, items =>
+            setData(prevState => prevState.concat(items.filter(e => !prevState.find(p => p.id === e.id))))
+        )
+    }
+
+    function deleteNotification(id: string){
+        PrivateContentService.deleteNotification(id)
+    }
 
     const[data, setData] = useState<ListItem[]>([])
+    const[observedRooms, setObservedRooms] = useState<ListItem[]>([])
     const[isEntrance, setIsEntrance] = useState(() => {
         setTimeout(() => { setIsEntrance(true) }, 0);
         return false
     })
 
+    useEffect(() => {
+        getObservedRooms(getUser().email)
+    }, [])
+
+    useEffect(() => {
+        if(sub_title === "Notifiche"){
+            observedRooms.forEach(e =>
+                socket.on("notification: " + e.id, () => getNotifications(e.id, getUser().email))
+            );
+            observedRooms.forEach(e => getNotifications(e.id, getUser().email))
+        } else
+            setData(observedRooms)
+    }, [observedRooms])
+
     function handleElimination(id: string){
         setData(data.filter(el => el.id != id))
-        if(sub_title === "Notifiche")
+        if(sub_title === "Notifiche"){
+            socket.removeListener("notification: " + id)
             deleteNotification(id)
-        else
+        } else
             deleteObsRoom(getUser().email, id)
     }
 

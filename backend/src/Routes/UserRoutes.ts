@@ -15,16 +15,17 @@ module.exports = function setUserRoutes(app: Application) {
         .get(tokenController.checkToken,
             usersController.getStudent)
 
-    app.route("/api/add-observed-room/:id/:room")
-       .get(tokenController.checkToken,
-           usersController.addObservedRoom)
-
     app.route("/api/get-observed-rooms/:id")
         .get(tokenController.checkToken,
             usersController.getObservedRooms)
 
+    app.route("/api/add-observed-room/:id/:room")
+        .get(tokenController.checkToken,
+            usersController.addObservedRoom)
+
     app.route("/api/del-observed-room/:id/:room")
-        .get(usersController.delObservedRoom)
+        .get(tokenController.checkToken,
+            usersController.delObservedRoom)
 
     app.route("/api/auth/signUpStudent")
         .post(usersController.insertStudent)
