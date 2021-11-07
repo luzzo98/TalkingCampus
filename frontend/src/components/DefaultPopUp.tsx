@@ -134,12 +134,6 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
     let openingToString:string[] = timeToString(opening)
     let closingToString:string[] = timeToString(closing)
 
-    function renderReceptions(receptions: Reception[]): JSX.Element[]{
-        return receptions.map(
-            e => <p>Ricevimento: {e.day} {getCorrectFormat(e.start)}/{getCorrectFormat(e.end)}</p>
-        );
-    }
-
     return (
         <Popup offset={props.offset}>
             <ModalTitle> {props.room.name} </ModalTitle>

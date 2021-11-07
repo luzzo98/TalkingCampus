@@ -59,7 +59,7 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
     }, [observedRooms])
 
     function handleElimination(id: string){
-        setData(data.filter(el => el.id != id))
+        setData(data.filter(el => el.id !== id))
         if(sub_title === "Notifiche"){
             socket.removeListener("notification: " + id)
             deleteNotification(id)
@@ -93,7 +93,7 @@ const EditableListComponent: React.FC<string> = (sub_title: string) => {
                                 id={`${item.id}`}
                                 extra={[
                                     <Button size = "small"
-                                            onClick={(e) => handleElimination(item.id)}
+                                            onClick={() => handleElimination(item.id)}
                                             className={"btn-notification"}
                                             icon={<CloseCircleOutlined className={"btn-icon"}/>}/>
                                 ]}>

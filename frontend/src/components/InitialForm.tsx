@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Form, Input, Button, Tabs, Upload, Select, Divider, Modal} from 'antd';
 import { UploadOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {useHistory} from "react-router-dom";
@@ -39,8 +39,6 @@ const InitialForm:React.FC = () => {
     const [studentForm] = Form.useForm();
     const [professorForm] = Form.useForm();
     const [img, setImg] = useState<string>("")
-
-    useEffect(() => console.log(img), [img])
 
     const formItemLayout = {
         labelCol: {
@@ -89,7 +87,6 @@ const InitialForm:React.FC = () => {
             () => showConnectionError()
         );
     }
-
     const onStudentFinish = (values: any) => {
         AuthService.registerStudent(values.nome, values.cognome, values.telefono, values.universita, values.matricola, values.email, values.password, img).then(
             res => {
@@ -133,7 +130,7 @@ const InitialForm:React.FC = () => {
                             values.corso.forEach((course: string) => {
                                 AuthService.addCourse(course, values.email).then(
                                     res => {
-                                        if (res.data.code == 11000) {
+                                        if (res.data.code === 11000) {
                                             Modal.error({
                                                 title: 'Impossibile aggiungere il corso',
                                                 content: `Il corso ${course} è già presente nel sistema`
@@ -149,7 +146,7 @@ const InitialForm:React.FC = () => {
                             reception.forEach(r => {
                                 AuthService.addReception(values.email, r.day, r.start, r.end).then(
                                     res => {
-                                        if (res.data.code == 11000) {
+                                        if (res.data.code === 11000) {
                                             Modal.error({
                                                 title: 'Impossibile aggiungere il ricevimento',
                                                 content: `Errore durante l'inserimento del ricevimento nel sistema`
@@ -167,7 +164,7 @@ const InitialForm:React.FC = () => {
                                 l.timetable.forEach(t => {
                                     AuthService.addLesson(l.name, t.room, t.day, t.start, t.end).then(
                                         res => {
-                                            if (res.data.code == 11000) {
+                                            if (res.data.code === 11000) {
                                                 Modal.error({
                                                     title: 'Impossibile aggiungere la lezione',
                                                     content: `Errore durante l'inserimento di una lezione nel sistema`

@@ -17,10 +17,7 @@ const DaySelectorPopup: React.FC<Props> = ({formName, form, value, setValue}) =>
     const rooms: string[] = []
     useEffect(() => {
         AuthService.getLessonsRooms().then(
-            (res) => {
-                res.data.forEach((v: any) => rooms.push(v.name))
-                console.log(rooms)
-            })
+            (res) => res.data.forEach((v: any) => rooms.push(v.name)))
     }, [])
 
     const onFinish = (v: any) => {

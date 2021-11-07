@@ -42,7 +42,7 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
     }
 
     useEffect(() => {
-        if(getUser().role == "student") {
+        if(getUser().role === "student") {
             socket.on("New observed room", () =>
                 checkObservedRooms()
             )
@@ -122,7 +122,7 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
                     </Tooltip>
                     <div className="card">
                         <h3>Ciao {getUser().name || "Admin"}!</h3>
-                        <img src={getUser().role == "admin" ? adminImg : image} className="avatar-holder"/>
+                        <img src={getUser().role === "admin" ? adminImg : image} className="avatar-holder" alt="the user"/>
                     </div>
                     {buttons}
                     <button className="corner-button logout-button" onClick={() => closeMenu("/")}>
@@ -131,7 +131,6 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
                 </nav>
             </CSSTransition>
         </header>)
-
 }
 
 export default MainMenu

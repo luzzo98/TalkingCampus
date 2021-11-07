@@ -1,4 +1,4 @@
-import React, {createRef, FormEvent, useEffect, useReducer, useRef, useState} from "react";
+import React, {createRef, FormEvent, useEffect, useReducer, useState} from "react";
 import {Popup} from "react-leaflet";
 import {Button, Form, Input, Select} from "antd";
 import * as utils from "../utils/utils"

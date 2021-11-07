@@ -2,14 +2,13 @@ import {MapContainer, ImageOverlay, LayersControl, Marker} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/leaflet.js.map';
 import React, {Reducer, useEffect, useReducer, useRef, useState} from 'react';
-import {MainpageContents, RoomOnMap} from '../Model';
+import {RoomOnMap} from '../Model';
 import '../styles/main_page/mainPageStyle.scss'
 import { Control, LatLngBoundsLiteral, LatLngExpression, LayersControlEvent, LeafletMouseEvent, Map } from "leaflet";
 import floor1 from "../assets/floor1.svg"
 import floor2 from "../assets/floor2.svg"
 import groundFloor from "../assets/groundFloor.svg"
 import DefaultPopUp from "./DefaultPopUp";
-import {useLocation} from "react-router-dom";
 import * as utils from "../utils/utils";
 import DeletePopUp from "./DeletePopUp";
 import EditPopUp from "./EditPopUp";
@@ -64,7 +63,6 @@ const MainPage : React.FC = () => {
         markers: []
     }
 
-    let data = useLocation();
     const [mapState, setMapState] = useReducer<Reducer<MapState, any>>(utils.reducer, initState)
     const mapStateRef = useRef<MapState>()
     mapStateRef.current = mapState
@@ -161,7 +159,7 @@ const MainPage : React.FC = () => {
     }
 
     function isLowestZoomLevel(m: Map): boolean {
-        return m.getZoom() == mobileMinLevelZoom || m.getZoom() == screenDefaultZoom
+        return m.getZoom() === mobileMinLevelZoom || m.getZoom() === screenDefaultZoom
     }
 
     function noElementNotSet() : boolean {
