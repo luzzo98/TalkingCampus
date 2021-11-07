@@ -4,7 +4,7 @@ module.exports = function setReceptionRoutes(app: Application) {
 
     const receptionsController = require("../Controllers/ReceptionsController.ts");
 
-    //TODO riusa listAllReceptions con il controllo
+    //TODO riusa listAllReceptions con il controllo per la vista del prof
     app.route("/api/receptions/:email")
         .get(receptionsController.listAllReceptions)
 
