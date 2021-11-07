@@ -7,6 +7,7 @@ import * as utils from "../utils/utils"
 import '../styles/main_page/mainPageStyle.scss'
 import getUser from "../services/UserLocalInfoGetter";
 import PrivateContentService from "../services/PrivateContentService";
+import adminImg from "../assets/tg_group_admins.jpg"
 
 interface menuProps {
     visibilityFromMap: boolean
@@ -120,8 +121,8 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
                             onClick={() => isTabletOrMobile ? setToggleOnOff(prev => !prev) : null}>Talking Campus</h1>
                     </Tooltip>
                     <div className="card">
-                        <h3>Ciao {getUser().name}!</h3>
-                        <img src={image} className="avatar-holder"/>
+                        <h3>Ciao {getUser().name || "Admin"}!</h3>
+                        <img src={getUser().role == "admin" ? adminImg : image} className="avatar-holder"/>
                     </div>
                     {buttons}
                     <button className="corner-button logout-button" onClick={() => closeMenu("/")}>
