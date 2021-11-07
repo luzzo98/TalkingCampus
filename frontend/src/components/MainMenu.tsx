@@ -41,10 +41,12 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
     }
 
     useEffect(() => {
-        socket.on("New observed room", () =>
+        if(getUser().role == "student") {
+            socket.on("New observed room", () =>
+                checkObservedRooms()
+            )
             checkObservedRooms()
-        )
-        checkObservedRooms()
+        }
     }, [])
 
     useEffect(() => {
