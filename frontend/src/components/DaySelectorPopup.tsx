@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Button, Divider, Form, FormInstance, Input, Select, Space} from "antd";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
+import AuthService from "../services/AuthService";
 const { Option } = Select;
 require("../styles/initialForm/DaySelectorPopupStyle.scss")
 
@@ -13,7 +14,14 @@ interface Props {
 
 const DaySelectorPopup: React.FC<Props> = ({formName, form, value, setValue}) => {
 
-    const rooms = ['Aula 3.3', 'Aula 3.4', 'Lab. Vela']
+    const rooms: string[] = []
+    useEffect(() => {
+        AuthService.getLessonsRooms().then(
+            (res) => {
+                res.data.forEach((v: any) => rooms.push(v.name))
+                console.log(rooms)
+            })
+    }, [])
 
     const onFinish = (v: any) => {
         if (formName === "reception") {

@@ -74,6 +74,10 @@ class AuthService {
                 }
             })
     }
+
+    getLessonsRooms() {
+        return axios.get(API_URL + "lessons-rooms")
+    }
 }
 
 export default new AuthService();

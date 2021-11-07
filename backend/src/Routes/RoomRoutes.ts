@@ -24,4 +24,7 @@ module.exports = function setRoomRoutes(app: Application) {
     app.route("/api/del-observer/:room/:id")
         .get(tokenController.checkToken,
             roomsController.delObserver)
+
+    app.route("/api/lessons-rooms")
+        .get(roomsController.roomsForLessons)
 };

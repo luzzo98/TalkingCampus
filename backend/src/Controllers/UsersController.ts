@@ -47,7 +47,6 @@ exports.getStudent = function (req, res) {
 exports.insertStudent = function (req, res) {
     const newStudent = new student(req.body)
     newStudent.save(function (err, studente) {
-        console.log(studente)
         if (err)
             res.send(err)
         else
@@ -83,7 +82,6 @@ exports.getObservedRooms = (req, res) => {
         if(err)
             res.send(err)
         else{
-            //console.log(student)
             res.status(200).json(student.observed_rooms)
         }
     })
@@ -110,7 +108,6 @@ exports.delObservedRoom = (req, res) => {
         if(err)
             res.send(err)
         else{
-            //console.log(student)
             res.status(200).json(student.observed_rooms)
         }
     })

@@ -59,10 +59,6 @@ const InitialForm:React.FC = () => {
         },
     };
 
-    const showConnectionError = () => Modal.error({
-        title: 'Errore di rete',
-        content: 'La comunicazione al server è fallita, controllare la connessione e riprovare',
-    });
     const getLessons = (values: any): {name: string, timetable: LessonType[]}[] => {
         let courses: { name: string; timetable: any; }[] = []
         if (values && values.length > 0) {
@@ -75,6 +71,10 @@ const InitialForm:React.FC = () => {
         return courses
     }
 
+    const showConnectionError = () => Modal.error({
+        title: 'Errore di rete',
+        content: 'La comunicazione al server è fallita, controllare la connessione e riprovare',
+    });
     const onLoginFinish = (values: any) => {
         AuthService.login(values.email, values.password).then(
             (res) => {
@@ -355,8 +355,6 @@ const InitialForm:React.FC = () => {
                                                     setImg(e.target?.result as string);
                                                 };
                                                 reader.readAsDataURL(file);
-
-                                                // Prevent upload
                                                 return false;
                                             }}
                                             accept=".png,.jpg">
@@ -438,10 +436,20 @@ const InitialForm:React.FC = () => {
                                     <Form.Item className="upload-btn" name="upload" valuePropName="fileList"
                                                getValueFromEvent={normFile}
                                                wrapperCol={{span: 24}}>
-                                        <Upload name="immagine" action="/upload.do" listType="picture"
+                                        <Upload name="immagine"
+                                                listType="picture"
+                                                showUploadList={true}
+                                                beforeUpload={file => {
+                                                    const reader = new FileReader();
+                                                    reader.onload = e => {
+                                                        setImg(e.target?.result as string);
+                                                    };
+                                                    reader.readAsDataURL(file);
+                                                    return false;
+                                                }}
                                                 accept=".png,.jpg">
-                                            <Button className="upload-btn" icon={<UploadOutlined/>}>Inserisci l'immagine
-                                                del profilo</Button>
+                                            <Button className="upload-btn" icon={<UploadOutlined/>}>Inserisci l'immagine del
+                                                profilo</Button>
                                         </Upload>
                                     </Form.Item>
 
