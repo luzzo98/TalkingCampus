@@ -112,7 +112,7 @@ const InitialForm:React.FC = () => {
         );
     }
     const onProfessorFinish = (values: any) => {
-        AuthService.registerProfessor(values.nome, values.cognome, values.telefono, values.email, values.password)
+        AuthService.registerProfessor(values.nome, values.cognome, values.telefono, values.email, values.password, img)
             .then(
                 res => {
                     if (res.data.code === 11000) {

@@ -28,10 +28,10 @@ class AuthService {
             })
     }
 
-    registerProfessor(name: string, surname: string, phone_number: string, email: string, psw: string) {
+    registerProfessor(name: string, surname: string, phone_number: string, email: string, psw: string, picture: string) {
         return axios
             .post(API_URL + "auth/signUpProfessor", {
-                name, surname, phone_number, email, psw
+                name, surname, phone_number, email, psw, picture
             })
     }
 
