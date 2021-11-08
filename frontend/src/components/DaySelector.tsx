@@ -1,37 +1,59 @@
 import React, {useEffect, useState} from "react";
-import {Button, Divider, Form, Input, Select, Space} from "antd";
+import {Button, Divider, Form, Input, Modal, Select, Space} from "antd";
 import {useHistory} from "react-router-dom";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import AppBarTitle from "./AppBarTitle";
-import AuthService from "../services/AuthService";
+import getUser from "../services/UserLocalInfoGetter";
+import TeacherService from "../services/TeacherService";
 const { Option } = Select;
 require("../styles/initialForm/initialFormStyle.scss")
 
-interface Props {
-    professorId?: string,
-    courseId?: string,
-    hours?: {
-        start: string,
-        end: string,
-        day: 'Lunedì' | 'Martedì' | 'Mercoledì' | 'Giovedì' | 'Venerdì',
-        room: string
-    }[]
-}
+const DaySelector: React.FC = () => {
 
-const DaySelector: React.FC<Props> = ({professorId, courseId, hours}) => {
-    
-    const [values, setValues] = useState(hours === undefined ? [] : hours)
+    const receptions: {
+        start: { hours: string, minutes: string },
+        end:   { hours: string, minutes: string },
+        day: 'Lunedì' | 'Martedì' | 'Mercoledì' | 'Giovedì' | 'Venerdì',
+        room?: string
+    }[] = []
+    const [values, setValues] = useState(receptions)
     const history = useHistory();
     const [form] = Form.useForm();
 
     const rooms: string[] = []
     useEffect(() => {
-        AuthService.getLessonsRooms().then(
-            (res) => res.data.forEach((v: any) => rooms.push(v.name)))
+        if (getUser().role === "teacher") {
+            TeacherService.getReceptions(getUser().email).then(
+                (res) => setValues(res.data))
+        } else {
+            TeacherService.getLessonsRooms().then(
+                (res) => res.data.forEach((v: any) => rooms.push(v.name))) //TODO non funziona? nel ricevimento non serve
+        }
     }, [])
 
     const onFinish = (v: any) => {
-        console.log('Success:', v.orario == null ? values : values.concat(v.orario));
+        if (v.orario) {
+            v.orario.forEach((r: { day: string; start: string; end: string; }) => {
+                TeacherService.addReception(getUser().email, r.day, r.start, r.end).then(
+                    res => {
+                        if (res.data.code === 11000) {
+                            Modal.error({
+                                title: 'Impossibile aggiungere il ricevimento',
+                                content: `Errore durante l'inserimento del ricevimento nel sistema`
+                            });
+                        } else {
+                            history.goBack()
+                        }
+                    },
+                    () => Modal.error({
+                        title: 'Errore di rete',
+                        content: 'La comunicazione al server è fallita, controllare la connessione e riprovare',
+                    })
+                )
+            })
+        } else {
+            history.goBack()
+        }
     };
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
@@ -46,11 +68,10 @@ const DaySelector: React.FC<Props> = ({professorId, courseId, hours}) => {
                         <Form
                             form={form}
                             name="daySelector"
-                            style={{margin: '5% 0', scrollMargin: 'initial'}}
+                            style={{margin: '5% 0'}}
                             onFinish={onFinish}
                             onFinishFailed={onFinishFailed}
                         >
-
                             <Form.List name="vecchio-orario">
                                 {() => (
                                     values.map((v, index) => (
@@ -62,33 +83,39 @@ const DaySelector: React.FC<Props> = ({professorId, courseId, hours}) => {
                                                     wrapperCol={{span: 13}}
                                                     label="Ora inizio"
                                                     name={[index, 'start']}
-                                                    initialValue={v.start}
+                                                    initialValue={v.start.hours + ":" + (v.start.minutes.toString().length === 1 ? "0"+v.start.minutes : v.start.minutes)}
                                                     rules={[{ required: true, message: "Inserisci l'ora di inizio" }]}
                                                 >
-                                                    <Input className={"hour"} type={"time"}/>
+                                                    <Input className={"hour"} type={"time"} disabled={true}/>
                                                 </Form.Item>
                                                 <Form.Item
                                                     labelCol={{span: 11}}
                                                     wrapperCol={{span: 13}}
                                                     label="Ora fine"
                                                     name={[index, 'end']}
-                                                    initialValue={v.end}
+                                                    initialValue={v.end.hours + ":" + (v.end.minutes.toString().length === 1 ? "0"+v.end.minutes : v.end.minutes)}
                                                     rules={[{ required: true, message: "Inserisci l'ora di fine" }]}
                                                 >
-                                                    <Input className={"hour"} type={"time"}/>
+                                                    <Input className={"hour"} type={"time"} disabled={true}/>
                                                 </Form.Item>
                                                 <MinusCircleOutlined
                                                     className="dynamic-delete-button"
-                                                    onClick={() => {setValues(values.filter((_, i) => i !== index))}}
+                                                    onClick={() => {
+                                                        TeacherService.deleteReception(getUser().email, values[index].day, values[index].start, values[index].end)
+                                                        setValues(values.filter((_, i) => i !== index))
+                                                        // new Promise(resolve => setTimeout(resolve, 1000)) //TODO cancella
+                                                        //     .then(() => { console.log(values); setValues(values.filter((_, i) => i !== index))})
+                                                    }}
                                                 />
                                             </Space>
-                                            <Space className="hour-line">
+                                            <Space className="hour-line"
+                                                   style={ getUser().role === "teacher" ? { justifyContent: 'center' } : {}}>
                                                 <Form.Item
                                                     name={[index, 'day']}
                                                     initialValue={v.day}
                                                     rules={[{ required: true, message: 'Seleziona il giorno' }]}
                                                 >
-                                                    <Select placeholder="Seleziona il giorno">
+                                                    <Select placeholder="Seleziona il giorno" disabled={true}>
                                                         <Option value="Lunedì">Lunedì</Option>
                                                         <Option value="Martedì">Martedì</Option>
                                                         <Option value="Mercoledì">Mercoledì</Option>
@@ -96,17 +123,20 @@ const DaySelector: React.FC<Props> = ({professorId, courseId, hours}) => {
                                                         <Option value="Venerdì">Venerdì</Option>
                                                     </Select>
                                                 </Form.Item>
-                                                <Form.Item
-                                                    name={[index, 'room']}
-                                                    initialValue={v.room}
-                                                    rules={[{ required: true, message: "Seleziona l'aula" }]}
-                                                >
-                                                    <Select placeholder="Seleziona l'aula">
-                                                        {rooms.map(v => (
-                                                            <Option key={v} value={v}>{v}</Option>
-                                                        ))}
-                                                    </Select>
-                                                </Form.Item>
+                                                {getUser().role === "student" ?
+                                                    <Form.Item
+                                                        name={[index, 'room']}
+                                                        initialValue={v.room}
+                                                        rules={[{ required: true, message: "Seleziona l'aula" }]}
+                                                    >
+                                                        <Select placeholder="Seleziona l'aula" disabled={true}>
+                                                            {rooms.map(v => (
+                                                                <Option key={v} value={v}>{v}</Option>
+                                                            ))}
+                                                        </Select>
+                                                    </Form.Item>
+                                                    : ""
+                                                }
                                             </Space>
                                         </Form.Item>
                                     ))
@@ -147,7 +177,8 @@ const DaySelector: React.FC<Props> = ({professorId, courseId, hours}) => {
                                                         onClick={() => remove(name)}
                                                     />
                                                 </Space>
-                                                <Space className="hour-line" style={{ display: 'flex', width:'100%' }}>
+                                                <Space className="hour-line"
+                                                       style={ getUser().role === "teacher" ? { justifyContent: 'center' } : {}}>
                                                     <Form.Item
                                                         {...restField}
                                                         name={[name, 'day']}
@@ -162,24 +193,27 @@ const DaySelector: React.FC<Props> = ({professorId, courseId, hours}) => {
                                                             <Option value="Venerdì">Venerdì</Option>
                                                         </Select>
                                                     </Form.Item>
-                                                    <Form.Item
-                                                        {...restField}
-                                                        name={[name, 'room']}
-                                                        fieldKey={[fieldKey, 'room']}
-                                                        rules={[{ required: true, message: "Seleziona l'aula" }]}
-                                                    >
-                                                        <Select placeholder="Seleziona l'aula">
-                                                            {rooms.map(v => (
-                                                                <Option key={v} value={v}>{v}</Option>
-                                                            ))}
-                                                        </Select>
-                                                    </Form.Item>
+                                                    {getUser().role === "student" ?
+                                                        <Form.Item
+                                                            {...restField}
+                                                            name={[name, 'room']}
+                                                            fieldKey={[fieldKey, 'room']}
+                                                            rules={[{ required: true, message: "Seleziona l'aula" }]}
+                                                        >
+                                                            <Select placeholder="Seleziona l'aula">
+                                                                {rooms.map(v => (
+                                                                    <Option key={v} value={v}>{v}</Option>
+                                                                ))}
+                                                            </Select>
+                                                        </Form.Item>
+                                                        : ""
+                                                    }
                                                 </Space>
                                             </Form.Item>
                                         ))}
-                                        <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
+                                        <Divider/>
+                                        <Form.Item style={{marginTop: "15pt"}} wrapperCol={{ offset: 0, span: 24 }}>
                                             <Button
-                                                className= "add-day"
                                                 type="dashed"
                                                 onClick={() => add()}
                                                 icon={<PlusOutlined />}
@@ -203,7 +237,6 @@ const DaySelector: React.FC<Props> = ({professorId, courseId, hours}) => {
                                 <Button
                                     type="primary"
                                     htmlType="submit"
-                                    // onClick={() => history.goBack()}
                                 >
                                     Conferma
                                 </Button>

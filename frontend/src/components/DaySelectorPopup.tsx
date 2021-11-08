@@ -1,7 +1,8 @@
 import React, {useEffect} from "react";
 import {Button, Divider, Form, FormInstance, Input, Select, Space} from "antd";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
-import AuthService from "../services/AuthService";
+import TeacherService from "../services/TeacherService";
+
 const { Option } = Select;
 require("../styles/initialForm/DaySelectorPopupStyle.scss")
 
@@ -16,7 +17,7 @@ const DaySelectorPopup: React.FC<Props> = ({formName, form, value, setValue}) =>
 
     const rooms: string[] = []
     useEffect(() => {
-        AuthService.getLessonsRooms().then(
+        TeacherService.getLessonsRooms().then(
             (res) => res.data.forEach((v: any) => rooms.push(v.name)))
     }, [])
 

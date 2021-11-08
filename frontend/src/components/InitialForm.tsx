@@ -8,6 +8,7 @@ import MainPage from "./MainPage";
 import AppBarTitle from "./AppBarTitle";
 import DaySelectorModalForm from "./DaySelectorPopupModalForm"
 import AuthService from "../services/AuthService";
+import TeacherService from "../services/TeacherService";
 
 require("../styles/initialForm/initialFormStyle.scss")
 
@@ -57,6 +58,13 @@ const InitialForm:React.FC = () => {
         },
     };
 
+    const normFile = (e: any) => {
+        if (Array.isArray(e)) {
+            return e;
+        }
+        return e && e.fileList;
+    }
+
     const getLessons = (values: any): {name: string, timetable: LessonType[]}[] => {
         let courses: { name: string; timetable: any; }[] = []
         if (values && values.length > 0) {
@@ -73,6 +81,7 @@ const InitialForm:React.FC = () => {
         title: 'Errore di rete',
         content: 'La comunicazione al server è fallita, controllare la connessione e riprovare',
     });
+
     const onLoginFinish = (values: any) => {
         AuthService.login(values.email, values.password).then(
             (res) => {
@@ -128,7 +137,7 @@ const InitialForm:React.FC = () => {
 
                         if (values.corso) {
                             values.corso.forEach((course: string) => {
-                                AuthService.addCourse(course, values.email).then(
+                                TeacherService.addCourse(course, values.email).then(
                                     res => {
                                         if (res.data.code === 11000) {
                                             Modal.error({
@@ -144,7 +153,7 @@ const InitialForm:React.FC = () => {
 
                         if (reception) {
                             reception.forEach(r => {
-                                AuthService.addReception(values.email, r.day, r.start, r.end).then(
+                                TeacherService.addReception(values.email, r.day, r.start, r.end).then(
                                     res => {
                                         if (res.data.code === 11000) {
                                             Modal.error({
@@ -162,7 +171,7 @@ const InitialForm:React.FC = () => {
                         if (lessons) {
                             lessons.forEach(l => {
                                 l.timetable.forEach(t => {
-                                    AuthService.addLesson(l.name, t.room, t.day, t.start, t.end).then(
+                                    TeacherService.addLesson(l.name, t.room, t.day, t.start, t.end).then(
                                         res => {
                                             if (res.data.code === 11000) {
                                                 Modal.error({
@@ -183,13 +192,6 @@ const InitialForm:React.FC = () => {
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
-
-    const normFile = (e: any) => {
-        if (Array.isArray(e)) {
-            return e;
-        }
-        return e && e.fileList;
-    }
 
     return (
         <div className={'initialForm'}>

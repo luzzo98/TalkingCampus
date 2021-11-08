@@ -34,50 +34,6 @@ class AuthService {
                 name, surname, phone_number, email, psw, picture
             })
     }
-
-    addCourse(course_id: string, teacher_id: string) {
-        return axios
-            .post(API_URL + "courses/addCourse", {
-                course_id, teacher_id
-            })
-    }
-
-    addLesson(course_name: string, room: string, day: string, start: string, end: string) {
-        return axios
-            .post(API_URL + "lessons/addLesson", {
-                course_name,
-                room,
-                day,
-                start: {
-                    hours: start.substr(0, start.indexOf(':')),
-                    minutes: start.substr(start.indexOf(':')+1, start.length)
-                },
-                end: {
-                    hours: end.substr(0, end.indexOf(':')),
-                    minutes: end.substr(end.indexOf(':')+1, start.length)
-                }
-            })
-    }
-
-    addReception(teacher_email: string, day: string, start: string, end: string) {
-        return axios
-            .post(API_URL + "receptions/addReception", {
-                teacher_email,
-                day,
-                start: {
-                    hours: start.substr(0, start.indexOf(':')),
-                    minutes: start.substr(start.indexOf(':')+1, start.length)
-                },
-                end: {
-                    hours: end.substr(0, end.indexOf(':')),
-                    minutes: end.substr(end.indexOf(':')+1, start.length)
-                }
-            })
-    }
-
-    getLessonsRooms() {
-        return axios.get(API_URL + "lessons-rooms")
-    }
 }
 
 export default new AuthService();
