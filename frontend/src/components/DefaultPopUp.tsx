@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {createRef, useEffect, useState} from "react";
 import {ModalTitle} from "react-bootstrap";
 import {Course, Lesson, Reception, Room, Teacher} from "../Model";
 import {Popup} from "react-leaflet";
-import {Button, List, Modal} from "antd";
+import {Button, List, Modal, message} from "antd";
 import * as utils from "../utils/utils"
 import {getCorrectFormat} from "../utils/utils";
 import DefaultPopUpService from "../services/PopUpService";
@@ -50,6 +50,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
     const [receptions, setReceptions] = useState<Reception[]>([])
     const [modalVisible, setModalVisible] = useState<boolean>(false)
     const [isTeacherHidden, setIsTeacherHidden] = useState(true);
+    const popupRef = createRef<L.Popup>()
 
     useEffect(() => {
         getLessons(props.room.name);
@@ -136,7 +137,9 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
     let closingToString:string[] = timeToString(closing)
 
     return (
-        <Popup offset={props.offset}>
+        <Popup
+            ref={popupRef}
+            offset={props.offset}>
             <ModalTitle> {props.room.name} </ModalTitle>
             <hr/>
             {props.room.type === "Aula" ? getLessonSection() : null}
@@ -201,8 +204,11 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
                     }
                     {
                         getUser().role === "student" ?
-                            <Button className={"prenote-class"} onClick={() =>
-                                handleAddingObs(props.room.name, getUser().email)}>Osserva Locale</Button>
+                            <Button className={"prenote-class"} onClick={() => {
+                                handleAddingObs(props.room.name, getUser().email)
+                                message.info("Stanza aggiunta")
+                                utils.closePopup(popupRef)
+                            }}>Osserva Locale</Button>
                             : null
                     }
                 </div>

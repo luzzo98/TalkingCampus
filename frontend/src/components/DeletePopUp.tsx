@@ -13,7 +13,6 @@ interface Props {
 }
 
 const popupRef = createRef<L.Popup>()
-const closeButtonIndex: number = 2;
 
 async function handleClose(id: string){
     return PopUpService.deleteRoom(id)
@@ -24,7 +23,7 @@ const DeletePopUp: React.FC<Props> = (props: Props) => {
     async function handleDelete(id: string){
         const statusIsOk = await handleClose(id)
         if(statusIsOk){
-            utils.closePopup(popupRef, closeButtonIndex)
+            utils.closePopup(popupRef)
             props.onDelete();
         }
     }
@@ -35,7 +34,7 @@ const DeletePopUp: React.FC<Props> = (props: Props) => {
             offset={props.offset}>
             <p>Vuoi eliminare {props.room_id}?</p>
             <div className={"pop-up-buttons"}>
-                <Button className={"choice-button"} onClick={() => utils.closePopup(popupRef, closeButtonIndex)}>No</Button>
+                <Button className={"choice-button"} onClick={() => utils.closePopup(popupRef)}>No</Button>
                 <Button className={"choice-button"} onClick={() => handleDelete(props.room_id)}>Si</Button></div>
         </Popup>
     )

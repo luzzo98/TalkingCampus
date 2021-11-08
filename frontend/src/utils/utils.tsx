@@ -44,8 +44,11 @@ export function getElements(role: string):[string, string][] {
     return elements
 }
 
-export function closePopup(popupRef: React.RefObject<L.Popup>, id: number) {
-    (popupRef.current?.getElement()?.children[id] as HTMLLinkElement).click()
+const closeButtonIndex: number = 2;
+
+export function closePopup(popupRef: React.RefObject<L.Popup>) {
+    console.log(popupRef.current?.getElement()?.children[closeButtonIndex] as HTMLLinkElement);
+    (popupRef.current?.getElement()?.children[closeButtonIndex] as HTMLLinkElement).click()
 }
 
 export function convertDay(index: number):string | null {
