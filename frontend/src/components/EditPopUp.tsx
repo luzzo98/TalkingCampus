@@ -74,7 +74,6 @@ const EditPopUp: React.FC<props> = (props: props) => {
     const composed_name = props.elem.name.split(" ")
     const [initialName] = useState(composed_name[composed_name.length-1])
     const popupRef = createRef<L.Popup>()
-    const closeButtonIndex: number = 2
 
     useEffect(() => {
         if(notes.title && notes.content)
@@ -136,7 +135,7 @@ const EditPopUp: React.FC<props> = (props: props) => {
     }
 
     function handleDelete(){
-        utils.closePopup(popupRef, closeButtonIndex)
+        utils.closePopup(popupRef)
         setTimeout(() => {
             props.onDelete()
         }, 10)
@@ -144,7 +143,7 @@ const EditPopUp: React.FC<props> = (props: props) => {
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>){
         if(formState.name !== "" && formState.type !== "" && formState.maximum_seats !== ""){
-            utils.closePopup(popupRef, closeButtonIndex)
+            utils.closePopup(popupRef)
             const submitIsOk = props.yetExistent ? await editRoom(combineUpdate(), props.elem.id as string) : await addRoom(props.elem)
             if (submitIsOk) {
                 props.onSubmit()
