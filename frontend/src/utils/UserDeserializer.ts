@@ -21,6 +21,6 @@ function mapToUser(jsonElement: JSON){
     )
 }
 
-export function mapToTeacher(jsonElement: any): Teacher { return mapToUser(jsonElement) as Teacher }
+export function mapToTeacher(jsonElement: any): Teacher { return mapToUser(jsonElement[0]) as Teacher }
 
 export function mapToStudent(jsonElement: any): Student { return mapToUser(jsonElement) as Student }

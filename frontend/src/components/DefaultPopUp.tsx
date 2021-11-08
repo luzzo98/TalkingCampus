@@ -6,6 +6,7 @@ import {Button, List, Modal} from "antd";
 import * as utils from "../utils/utils"
 import {getCorrectFormat} from "../utils/utils";
 import DefaultPopUpService from "../services/PopUpService";
+import getUser from "../services/UserLocalInfoGetter";
 require("../styles/pop_up/popUpStyle.scss")
 
 interface Props {
@@ -191,11 +192,19 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
             {props.room.maximum_seats > 0 ?
                 <p>Posti occupati: {occupiedSeats}/{props.room.maximum_seats}</p> : null}
                 <div className={"class-buttons"}>
-                    {props.room.type === "Aula" ?
-                        <Button className={"prenote-class"}
-                                onClick={() => setModalVisible(true)}>Lezioni in programma</Button> : null}
-                    <Button className={"prenote-class"} onClick={() =>
-                        handleAddingObs(props.room.name, "christian.derrico@studio.unibo.it")}>Osserva Locale</Button>
+                    {
+                        props.room.type === "Aula" ?
+                            <Button className={"prenote-class"}
+                                onClick={() => setModalVisible(true)}>Lezioni in programma
+                            </Button>
+                            : null
+                    }
+                    {
+                        getUser().role === "student" ?
+                            <Button className={"prenote-class"} onClick={() =>
+                                handleAddingObs(props.room.name, getUser().email)}>Osserva Locale</Button>
+                            : null
+                    }
                 </div>
         </Popup>
     );

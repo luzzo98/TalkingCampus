@@ -5,15 +5,19 @@ import AppBarTitle from "./AppBarTitle";
 import Footer from "./Footer";
 import SubAppBar from "./SubAppBar";
 import {CSSTransition} from "react-transition-group";
-import {Student} from "../Model";
+import {Teacher} from "../Model";
 import PersonalAreaService from "../services/PersonalAreaService";
 import getUser from "../services/UserLocalInfoGetter";
 require("../styles/userPagesComponents/studentPersonalArea/studentPersonalAreaStyle.scss")
 
-const StudentPersonalArea = () => {
+const PersonalArea = () => {
 
-    function findStudent(email: string){
-        PersonalAreaService.findStudent(email, s => setData(s))
+    function findUser(email: string) {
+        if (getUser().role === "student") {
+            PersonalAreaService.findStudent(email, s => setData(s))
+        } else {
+            PersonalAreaService.findTeacher(email, s => setData(s))
+        }
     }
 
     const [isEntrance, setIsEntrance] = useState(() => {
@@ -23,10 +27,10 @@ const StudentPersonalArea = () => {
             return false;
         }
     );
-    const [data, setData] = useState<Student>()
+    const [data, setData] = useState<Teacher>()
 
     useEffect(() => {
-        findStudent(getUser().email)
+        findUser(getUser().email)
     }, [])
 
     return (
@@ -55,4 +59,4 @@ const StudentPersonalArea = () => {
     );
 }
 
-export default StudentPersonalArea
+export default PersonalArea

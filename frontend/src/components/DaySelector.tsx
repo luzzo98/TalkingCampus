@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Divider, Form, Input, Select, Space} from "antd";
 import {useHistory} from "react-router-dom";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import AppBarTitle from "./AppBarTitle";
+import AuthService from "../services/AuthService";
 const { Option } = Select;
 require("../styles/initialForm/initialFormStyle.scss")
 
@@ -18,14 +19,16 @@ interface Props {
 }
 
 const DaySelector: React.FC<Props> = ({professorId, courseId, hours}) => {
-
-    const rooms = ['Aula 3.3', 'Aula 3.4', 'Lab. Vela']
     
     const [values, setValues] = useState(hours === undefined ? [] : hours)
-
     const history = useHistory();
-
     const [form] = Form.useForm();
+
+    const rooms: string[] = []
+    useEffect(() => {
+        AuthService.getLessonsRooms().then(
+            (res) => res.data.forEach((v: any) => rooms.push(v.name)))
+    }, [])
 
     const onFinish = (v: any) => {
         console.log('Success:', v.orario == null ? values : values.concat(v.orario));

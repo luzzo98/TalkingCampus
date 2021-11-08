@@ -4,7 +4,7 @@ import MainPage from "../components/MainPage";
 import DaySelector from "../components/DaySelector";
 import React from "react";
 import EditableListComponent from "../components/EditableListComponent";
-import StudentPersonalArea from "../components/StudentPersonalArea";
+import PersonalArea from "../components/PersonalArea";
 
 interface hoursArray { //TODO rimuovere placeolder
     hours: {
@@ -30,7 +30,7 @@ export const Routes: React.FC = () => {
             <Route path={"/main-page"} component={MainPage}/>
             <Route path={"/student-notifications"} component={() => EditableListComponent("Notifiche")}/>
             <Route path={"/registered-rooms"} component={() => EditableListComponent("Aule Registrate")}/>
-            <Route path={"/student-personal-area"} component={StudentPersonalArea}/>
+            <Route path={"/personal-area"} component={PersonalArea}/>
         </Switch>
     );
 }

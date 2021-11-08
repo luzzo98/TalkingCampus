@@ -1,5 +1,5 @@
 import * as utils from "../utils/utils"
-import {Student} from "../Model";
+import {Student, Teacher} from "../Model";
 import * as userDeserializer from "../utils/UserDeserializer";
 import authHeader from "./AuthHeader";
 
@@ -16,6 +16,14 @@ class PersonalAreaService {
             .then(s => onComplete(s))
     }
 
+    findTeacher(email: string, onComplete: (teacher: Teacher) => void){
+        fetch(API_URL + `/api/teachers/${email}`,{
+            headers: authHeader()
+        })
+            .then(res => res.json())
+            .then((json:JSON) => userDeserializer.mapToTeacher(json))
+            .then(s => onComplete(s))
+    }
 }
 
 export default new PersonalAreaService()

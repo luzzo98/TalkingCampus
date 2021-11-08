@@ -1,4 +1,3 @@
-import {User} from "../Model";
 import {renderToStaticMarkup} from "react-dom/server";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faBook, faChalkboardTeacher, faBath, faCoffee, faFax, faFlask} from "@fortawesome/free-solid-svg-icons";
@@ -28,14 +27,14 @@ export function getElements(role: string):[string, string][] {
     let elements: [string, string][] = [];
     switch (role){
         case "student":
-            elements = [["Area Personale", "/student-personal-area"],
+            elements = [["Area Personale", "/personal-area"],
                 ["Notifiche", "/student-notifications"],
                 ["Aule registrate", "/registered-rooms"]]
             break;
         case "teacher":
-            elements = [["Area Personale", "/teacher-personal-area"],
-                ["Modifica orario di ricevimento", "/time-table"],
-                ["Gestisci i tuoi corsi", "/course-table"]]
+            elements = [["Area Personale", "/personal-area"],
+                ["Modifica orario di ricevimento", "/DaySelector"],
+                ["Gestisci i tuoi corsi", "/course-table"]] //TODO questo
             break;
         case "admin":
             elements = [["Aggiungi locale", "/add-room"],
