@@ -206,7 +206,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
                         getUser().role === "student" ?
                             <Button className={"prenote-class"} onClick={() => {
                                 handleAddingObs(props.room.name, getUser().email)
-                                message.info("Stanza aggiunta")
+                                message.info("Stanza aggiunta", 0.7)
                                 utils.closePopup(popupRef)
                             }}>Osserva Locale</Button>
                             : null
