@@ -21,9 +21,9 @@ const CourseTable: React.FC = () => {
     const onFinish = (v: any) => {
         v.newCourses.forEach((course: any) => {
             setValues(prevState => prevState.concat(course.course))
-            // TeacherService.addCourse(course.course, getUser().email).then(
-            //     (res) => console.log(res)
-            // )
+            TeacherService.addCourse(course.course, getUser().email).then(
+                (res) => console.log(res)
+            )
         })
         form.resetFields()
     }
@@ -39,6 +39,7 @@ const CourseTable: React.FC = () => {
                     <AppBarTitle/>
                     <div className="day-selector">
                         <Form
+                            className="courseTable"
                             form={form}
                             name="courseTable"
                             style={{margin: '5% 0'}}
@@ -50,19 +51,20 @@ const CourseTable: React.FC = () => {
                                     values.map((v, index) => (
                                         <Form.Item key={index} noStyle>
                                             {index >= 1 ? (<Divider/>) : null}
-                                            <Form.Item label={v}>
+                                            <Form.Item labelAlign="left" labelCol={{span: 15}} wrapperCol={{span: 9}} label={v}>
                                                 <Button
+                                                    style={{marginRight: "5pt"}}
                                                     type="default"
                                                     htmlType="button"
-                                                    onClick={() => {}}
+                                                    onClick={() => history.push({pathname: "/day-selector"})}
                                                 >
                                                     Modifica lezioni
                                                 </Button>
                                                 <Button
-                                                    style={{marginTop: "5pt"}}
+                                                    style={{marginTop: "5pt", marginRight: "5pt"}}
                                                     type="primary"
                                                     htmlType="button"
-                                                    onClick={() => setValues(values.filter((v,i) => i != index))}
+                                                    onClick={() => setValues(values.filter((v,i) => i !== index))}
                                                     danger
                                                 >
                                                     Elimina corso

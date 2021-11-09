@@ -68,11 +68,17 @@ const InitialForm:React.FC = () => {
     const getLessons = (values: any): {name: string, timetable: LessonType[]}[] => {
         let courses: { name: string; timetable: any; }[] = []
         if (values && values.length > 0) {
-            let i = courseMap.entries()
-            values.forEach((v: any) => courses.push({
-                name: v,
-                timetable: i.next().value[1]
-            }))
+            const i = courseMap.entries()
+            values.forEach((v: any, index: number) =>  {
+                const val = i.next()
+                console.log(courseMap.get(index.toString()))
+                if (courseMap.get(index.toString())) {
+                    courses.push({
+                        name: v,
+                        timetable: courseMap.get(index.toString())
+                    })
+                }
+            })
         }
         return courses
     }
@@ -130,8 +136,8 @@ const InitialForm:React.FC = () => {
                         Modal.success({
                             content: 'Registrazione effettuata con successo',
                             onOk() {
-                                setTabKey("1")
-                                professorForm.resetFields()
+                                // setTabKey("1")
+                                // professorForm.resetFields() //TODO scommenta
                             }
                         });
 

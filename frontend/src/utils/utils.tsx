@@ -33,8 +33,8 @@ export function getElements(role: string):[string, string][] {
             break;
         case "teacher":
             elements = [["Area Personale", "/personal-area"],
-                ["Modifica orario di ricevimento", "/DaySelector"],
-                ["Gestisci i tuoi corsi", "/course-table"]] //TODO questo
+                ["Modifica orario di ricevimento", "/day-selector"],
+                ["Gestisci i tuoi corsi", "/course-table"]]
             break;
         case "admin":
             elements = [["Aggiungi locale", "/add-room"],

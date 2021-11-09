@@ -177,6 +177,12 @@
     flex-wrap: wrap;
     align-content: center;
   }
+
+  /*----------- CourseTable -----------*/
+
+  .courseTable .ant-row.ant-form-item .ant-col.ant-col-15.ant-form-item-label.ant-form-item-label-left{
+    text-align: center;
+  }
 }
 
 .hours-container > .appbar-title {

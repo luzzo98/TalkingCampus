@@ -11,7 +11,7 @@ export const Routes: React.FC = () => {
     return (
         <Switch>
             <Route exact path={"/"} component={InitialForm}/>
-            <Route path="/DaySelector" component={DaySelector}/>
+            <Route path={"/day-selector"} component={DaySelector}/>
             <Route path={"/main-page"} component={MainPage}/>
             <Route path={"/student-notifications"} component={() => EditableListComponent("Notifiche")}/>
             <Route path={"/registered-rooms"} component={() => EditableListComponent("Aule Registrate")}/>
