@@ -1,10 +1,11 @@
+import React from "react";
 import {Route, Switch} from "react-router-dom";
 import InitialForm from "../components/InitialForm";
 import MainPage from "../components/MainPage";
 import DaySelector from "../components/DaySelector";
-import React from "react";
 import EditableListComponent from "../components/EditableListComponent";
 import PersonalArea from "../components/PersonalArea";
+import CourseTable from "../components/CourseTable";
 
 export const Routes: React.FC = () => {
     return (
@@ -15,6 +16,7 @@ export const Routes: React.FC = () => {
             <Route path={"/student-notifications"} component={() => EditableListComponent("Notifiche")}/>
             <Route path={"/registered-rooms"} component={() => EditableListComponent("Aule Registrate")}/>
             <Route path={"/personal-area"} component={PersonalArea}/>
+            <Route path={"/course-table"} component={CourseTable}/>
         </Switch>
     );
 }

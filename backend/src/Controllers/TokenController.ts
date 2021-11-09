@@ -14,7 +14,6 @@ exports.checkToken = function(req, res, next) {
             if (req.params.id == info.payload) {
                 next()
             } else {
-                console.log("payload diverso")
                 res.sendStatus(403);
             }
         }

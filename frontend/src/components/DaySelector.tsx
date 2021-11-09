@@ -103,8 +103,6 @@ const DaySelector: React.FC = () => {
                                                     onClick={() => {
                                                         TeacherService.deleteReception(getUser().email, values[index].day, values[index].start, values[index].end)
                                                         setValues(values.filter((_, i) => i !== index))
-                                                        // new Promise(resolve => setTimeout(resolve, 1000)) //TODO cancella
-                                                        //     .then(() => { console.log(values); setValues(values.filter((_, i) => i !== index))})
                                                     }}
                                                 />
                                             </Space>

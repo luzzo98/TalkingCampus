@@ -22,7 +22,7 @@ exports.addReception = function (req, res){
 
 exports.deleteReception = function (req, res){
     reception.deleteOne({
-        teacher_email: req.params.email,
+        teacher_email: req.params.id,
         day: req.params.day,
         "start.hours" : req.params.shours,
         "start.minutes": req.params.sminutes,
