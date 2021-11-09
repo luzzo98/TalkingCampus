@@ -27,7 +27,11 @@ class TeacherService {
 
     deleteReception(email: string, day: string, start: any, end: any) {
         return axios.get(API_URL + `del-receptions/${email}&${day}&${start.hours}&${start.minutes}&${end.hours}&${end.minutes}`,
-            { headers: authHeader()})
+            {headers: authHeader()})
+    }
+
+    getCourses(teacher_id: string) {
+        return axios.get(API_URL + `all-courses/${teacher_id}`, {headers: authHeader()})
     }
 
     addCourse(course_id: string, teacher_id: string) {

@@ -8,7 +8,7 @@ module.exports = function setReceptionRoutes(app: Application) {
     app.route("/api/receptions/:email")
         .get(receptionsController.listAllReceptions)
 
-    app.route("/api/del-receptions/:email&:day&:shours&:sminutes&:ehours&:eminutes")
+    app.route("/api/del-receptions/:id&:day&:shours&:sminutes&:ehours&:eminutes")
         .get(tokenController.checkToken, receptionsController.deleteReception)
 
     app.route("/api/receptions/addReception")
