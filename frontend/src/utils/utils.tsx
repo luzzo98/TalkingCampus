@@ -29,7 +29,7 @@ export function getElements(role: string):[string, string][] {
         case "student":
             elements = [["Area Personale", "/personal-area"],
                 ["Notifiche", "/student-notifications"],
-                ["Aule registrate", "/registered-rooms"]]
+                ["Locali registrati", "/registered-rooms"]]
             break;
         case "teacher":
             elements = [["Area Personale", "/personal-area"],
