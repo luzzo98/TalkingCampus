@@ -13,7 +13,7 @@ export const Routes: React.FC = () => {
             <Route path="/DaySelector" component={DaySelector}/>
             <Route path={"/main-page"} component={MainPage}/>
             <Route path={"/student-notifications"} component={() => EditableListComponent("Notifiche")}/>
-            <Route path={"/registered-rooms"} component={() => EditableListComponent("Aule Registrate")}/>
+            <Route path={"/registered-rooms"} component={() => EditableListComponent("Locali registrati")}/>
             <Route path={"/personal-area"} component={PersonalArea}/>
         </Switch>
     );
