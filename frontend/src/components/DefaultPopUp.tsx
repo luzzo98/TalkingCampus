@@ -142,7 +142,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
             offset={props.offset}>
             <ModalTitle> {props.room.name} </ModalTitle>
             <hr/>
-            {props.room.type === "Aula" ? getLessonSection() : null}
+            {props.room.type === "Aula" || props.room.type === "Laboratorio" ? getLessonSection() : null}
             <Modal
                 title="Calendario"
                 style={{ top: 20 }}
@@ -196,7 +196,7 @@ const DefaultPopUp: React.FC<Props> = (props:Props) => {
                 <p>Posti occupati: {occupiedSeats}/{props.room.maximum_seats}</p> : null}
                 <div className={"class-buttons"}>
                     {
-                        props.room.type === "Aula" ?
+                        props.room.type === "Aula" || props.room.type === "Laboratorio" ?
                             <Button className={"prenote-class"}
                                 onClick={() => setModalVisible(true)}>Lezioni in programma
                             </Button>

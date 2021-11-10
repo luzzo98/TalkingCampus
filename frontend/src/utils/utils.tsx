@@ -27,12 +27,12 @@ export function getElements(role: string):[string, string][] {
     let elements: [string, string][] = [];
     switch (role){
         case "student":
-            elements = [["Area Personale", "/personal-area"],
+            elements = [["Inormazioni personali", "/personal-area"],
                 ["Notifiche", "/student-notifications"],
                 ["Locali registrati", "/registered-rooms"]]
             break;
         case "teacher":
-            elements = [["Area Personale", "/personal-area"],
+            elements = [["Inormazioni personali", "/personal-area"],
                 ["Modifica orario di ricevimento", "/day-selector"],
                 ["Gestisci i tuoi corsi", "/course-table"]]
             break;

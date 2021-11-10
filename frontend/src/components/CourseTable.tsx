@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import AppBarTitle from "./AppBarTitle";
 import TeacherService from "../services/TeacherService";
 import getUser from "../services/UserLocalInfoGetter";
-import {Button, Divider, Form, Input, Space} from "antd";
+import {Button, Divider, Form, Input, Modal, Space} from "antd";
 import {useHistory} from "react-router-dom";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 
@@ -21,8 +21,17 @@ const CourseTable: React.FC = () => {
     const onFinish = (v: any) => {
         if (v.newCourses) {
             v.newCourses.forEach((course: any) => {
-                setValues(prevState => prevState.concat(course.course))
-                TeacherService.addCourse(course.course, getUser().email)
+                TeacherService.addCourse(course.course, getUser().email).then(
+                    res => {
+                        if (res.data.code === 11000) {
+                            Modal.error({
+                                title: "Errore nell'inserimento del corso nel sistema",
+                                content: `Il corso "${course.course}" è già presente all'interno del sistema`,
+                            });
+                        } else {
+                            setValues(prevState => prevState.concat(course.course))
+                        }
+                    })
             })
             form.resetFields()
         } else {

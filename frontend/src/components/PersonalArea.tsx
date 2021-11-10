@@ -41,7 +41,7 @@ const PersonalArea = () => {
         >
             <div className={"list-box"} id={"list-container"}>
                 <AppBarTitle/>
-                <SubAppBar sub_text={"Area Personale"}/>
+                <SubAppBar sub_text={"Inormazioni personali"}/>
                 <List
                     size="large"
                     dataSource={data ? Object.entries(data) : []}

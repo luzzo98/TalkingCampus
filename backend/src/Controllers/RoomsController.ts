@@ -132,7 +132,7 @@ exports.incrementSeats = (req, res, next) => changeSeats(req.body.room_name, 1, 
 exports.decrementSeats = (req, res, next) => changeSeats(req.body.room_name, -1, req, res, next)
 
 exports.roomsForLessons = function (req, res){
-    Room.find({type: {$in: ["Aula Studio", "Aula", "Laboratorio"]}}, function (err, rooms){
+    Room.find({type: {$in: ["Aula", "Laboratorio"]}}, function (err, rooms){
         if(err)
             res.send(err)
         res.send(rooms);

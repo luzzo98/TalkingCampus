@@ -8,6 +8,7 @@ import '../styles/main_page/mainPageStyle.scss'
 import getUser from "../services/UserLocalInfoGetter";
 import PrivateContentService from "../services/PrivateContentService";
 import adminImg from "../assets/tg_group_admins.jpg"
+import userImg from "../assets/general-user-name-icon.png"
 
 interface menuProps {
     visibilityFromMap: boolean
@@ -122,7 +123,7 @@ const MainMenu : React.FC<menuProps> = (props: menuProps) => {
                     </Tooltip>
                     <div className="card">
                         <h3>Ciao {getUser().name || "Admin"}!</h3>
-                        <img src={getUser().role === "admin" ? adminImg : image} className="avatar-holder" alt="the user"/>
+                        <img src={getUser().role === "admin" ? adminImg : image || userImg} className="avatar-holder" alt="the user"/>
                     </div>
                     {buttons}
                     <button className="corner-button logout-button" onClick={() => closeMenu("/")}>
