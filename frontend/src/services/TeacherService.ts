@@ -41,6 +41,10 @@ class TeacherService {
             }, { headers: authHeader()})
     }
 
+    deleteCourse(teacher_id: string, course_id: string) {
+        return axios.get(API_URL + `del-course/${teacher_id}&${course_id}`, {headers: authHeader()})
+    }
+
     addLesson(course_name: string, room: string, day: string, start: string, end: string) {
         return axios
             .post(API_URL + "lessons/addLesson", {
@@ -56,6 +60,18 @@ class TeacherService {
                     minutes: end.substr(end.indexOf(':')+1, start.length)
                 }
             })
+    }
+
+    getLessonsFromCourse(course_id: string) {
+        return axios.get(API_URL + `get-lessons/${course_id}`)
+    }
+
+    deleteLessons(id: string, course_name: string, room: string, day: string, start: { hours: string, minutes: string }, end: { hours: string, minutes: string }) {
+        return axios.get(API_URL + `del-lesson/${id}&${course_name}&${room}&${day}&${start.hours}&${start.minutes}&${end.hours}&${end.minutes}`, {headers: authHeader()})
+    }
+
+    deleteAllLessons(id: string, course_name: string) {
+        return axios.get(API_URL + `del-all-lessons/${id}&${course_name}`, {headers: authHeader()})
     }
 
     getLessonsRooms() {

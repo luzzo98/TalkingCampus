@@ -19,13 +19,15 @@ const CourseTable: React.FC = () => {
     }, [])
 
     const onFinish = (v: any) => {
-        v.newCourses.forEach((course: any) => {
-            setValues(prevState => prevState.concat(course.course))
-            TeacherService.addCourse(course.course, getUser().email).then(
-                (res) => console.log(res)
-            )
-        })
-        form.resetFields()
+        if (v.newCourses) {
+            v.newCourses.forEach((course: any) => {
+                setValues(prevState => prevState.concat(course.course))
+                TeacherService.addCourse(course.course, getUser().email)
+            })
+            form.resetFields()
+        } else {
+            history.goBack()
+        }
     }
 
     const onFinishFailed = (errorInfo: any) => {
@@ -51,12 +53,12 @@ const CourseTable: React.FC = () => {
                                     values.map((v, index) => (
                                         <Form.Item key={index} noStyle>
                                             {index >= 1 ? (<Divider/>) : null}
-                                            <Form.Item labelAlign="left" labelCol={{span: 15}} wrapperCol={{span: 9}} label={v}>
+                                            <Form.Item labelAlign="left" labelCol={{span: 13}} wrapperCol={{span: 11}} label={v}>
                                                 <Button
                                                     style={{marginRight: "5pt"}}
                                                     type="default"
                                                     htmlType="button"
-                                                    onClick={() => history.push({pathname: "/day-selector"})}
+                                                    onClick={() => history.push({pathname: "/day-selector", state: {course: values[index]}})}
                                                 >
                                                     Modifica lezioni
                                                 </Button>
@@ -64,7 +66,11 @@ const CourseTable: React.FC = () => {
                                                     style={{marginTop: "5pt", marginRight: "5pt"}}
                                                     type="primary"
                                                     htmlType="button"
-                                                    onClick={() => setValues(values.filter((v,i) => i !== index))}
+                                                    onClick={() => {
+                                                        TeacherService.deleteAllLessons(getUser().email, values[index])
+                                                        TeacherService.deleteCourse(getUser().email, values[index])
+                                                        setValues(values.filter((v,i) => i !== index))
+                                                    }}
                                                     danger
                                                 >
                                                     Elimina corso

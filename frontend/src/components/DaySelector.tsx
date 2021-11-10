@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Button, Divider, Form, Input, Modal, Select, Space} from "antd";
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import AppBarTitle from "./AppBarTitle";
 import getUser from "../services/UserLocalInfoGetter";
@@ -10,50 +10,79 @@ require("../styles/initialForm/initialFormStyle.scss")
 
 const DaySelector: React.FC = () => {
 
-    const receptions: {
+    const location: any = useLocation();
+
+    const myType: {
         start: { hours: string, minutes: string },
         end:   { hours: string, minutes: string },
         day: 'Lunedì' | 'Martedì' | 'Mercoledì' | 'Giovedì' | 'Venerdì',
         room?: string
     }[] = []
-    const [values, setValues] = useState(receptions)
+    const [values, setValues] = useState(myType)
+    const [rooms, setRooms] = useState<string[]>([])
     const history = useHistory();
     const [form] = Form.useForm();
 
-    const rooms: string[] = []
     useEffect(() => {
-        if (getUser().role === "teacher") {
-            TeacherService.getReceptions(getUser().email).then(
+        if (location.state && location.state.course) {
+            const r: string[] = []
+            TeacherService.getLessonsRooms().then(
+                (res) => res.data.forEach((v: { name: string; }) => r.push(v.name)))
+            setRooms(r)
+
+            TeacherService.getLessonsFromCourse(location.state.course).then(
                 (res) => setValues(res.data))
         } else {
-            TeacherService.getLessonsRooms().then(
-                (res) => res.data.forEach((v: any) => rooms.push(v.name))) //TODO non funziona? nel ricevimento non serve
+            TeacherService.getReceptions(getUser().email).then(
+                (res) => setValues(res.data))
         }
     }, [])
 
     const onFinish = (v: any) => {
         if (v.orario) {
-            v.orario.forEach((r: { day: string; start: string; end: string; }) => {
-                TeacherService.addReception(getUser().email, r.day, r.start, r.end).then(
-                    res => {
-                        if (res.data.code === 11000) {
+            v.orario.forEach((r: { day: string; start: string; end: string; room?: string }) => {
+                if (location.state && location.state.course) {
+                    TeacherService.addLesson(location.state.course, r.room || "", r.day, r.start, r.end).then(
+                        res => {
+                            if (res.data.code === 11000) {
+                                Modal.error({
+                                    title: 'Impossibile aggiungere il ricevimento',
+                                    content: `Errore durante l'inserimento del ricevimento nel sistema`
+                                });
+                                return;
+                            }
+                        },
+                        () => {
                             Modal.error({
-                                title: 'Impossibile aggiungere il ricevimento',
-                                content: `Errore durante l'inserimento del ricevimento nel sistema`
-                            });
-                        } else {
-                            history.goBack()
+                                title: 'Errore di rete',
+                                content: 'La comunicazione al server è fallita, controllare la connessione e riprovare',
+                            })
+                            return;
                         }
-                    },
-                    () => Modal.error({
-                        title: 'Errore di rete',
-                        content: 'La comunicazione al server è fallita, controllare la connessione e riprovare',
-                    })
-                )
+                    )
+                } else {
+                    TeacherService.addReception(getUser().email, r.day, r.start, r.end).then(
+                        res => {
+                            if (res.data.code === 11000) {
+                                Modal.error({
+                                    title: 'Impossibile aggiungere il ricevimento',
+                                    content: `Errore durante l'inserimento del ricevimento nel sistema`
+                                });
+                                return;
+                            }
+                        },
+                        () => {
+                            Modal.error({
+                                title: 'Errore di rete',
+                                content: 'La comunicazione al server è fallita, controllare la connessione e riprovare',
+                            })
+                            return;
+                        }
+                    )
+                }
             })
-        } else {
-            history.goBack()
         }
+        history.goBack()
     };
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
@@ -83,7 +112,8 @@ const DaySelector: React.FC = () => {
                                                     wrapperCol={{span: 13}}
                                                     label="Ora inizio"
                                                     name={[index, 'start']}
-                                                    initialValue={v.start.hours + ":" + (v.start.minutes.toString().length === 1 ? "0"+v.start.minutes : v.start.minutes)}
+                                                    initialValue={(v.start.hours.toString().length === 1 ? "0"+v.start.hours : v.start.hours)
+                                                    + ":" + (v.start.minutes.toString().length === 1 ? "0"+v.start.minutes : v.start.minutes)}
                                                     rules={[{ required: true, message: "Inserisci l'ora di inizio" }]}
                                                 >
                                                     <Input className={"hour"} type={"time"} disabled={true}/>
@@ -101,13 +131,17 @@ const DaySelector: React.FC = () => {
                                                 <MinusCircleOutlined
                                                     className="dynamic-delete-button"
                                                     onClick={() => {
-                                                        TeacherService.deleteReception(getUser().email, values[index].day, values[index].start, values[index].end)
+                                                        if (v.room) {
+                                                            TeacherService.deleteLessons(getUser().email, location.state.course, v.room || "", v.day, v.start, v.end)
+                                                        } else {
+                                                            TeacherService.deleteReception(getUser().email, v.day, v.start, v.end)
+                                                        }
                                                         setValues(values.filter((_, i) => i !== index))
                                                     }}
                                                 />
                                             </Space>
                                             <Space className="hour-line"
-                                                   style={ getUser().role === "teacher" ? { justifyContent: 'center' } : {}}>
+                                                   style={ !v.room ? { justifyContent: 'center' } : {}}>
                                                 <Form.Item
                                                     name={[index, 'day']}
                                                     initialValue={v.day}
@@ -121,7 +155,7 @@ const DaySelector: React.FC = () => {
                                                         <Option value="Venerdì">Venerdì</Option>
                                                     </Select>
                                                 </Form.Item>
-                                                {getUser().role === "student" ?
+                                                {v.room ?
                                                     <Form.Item
                                                         name={[index, 'room']}
                                                         initialValue={v.room}
@@ -176,7 +210,7 @@ const DaySelector: React.FC = () => {
                                                     />
                                                 </Space>
                                                 <Space className="hour-line"
-                                                       style={ getUser().role === "teacher" ? { justifyContent: 'center' } : {}}>
+                                                       style={ !location.state || !location.state.course ? { justifyContent: 'center' } : {}}>
                                                     <Form.Item
                                                         {...restField}
                                                         name={[name, 'day']}
@@ -191,7 +225,7 @@ const DaySelector: React.FC = () => {
                                                             <Option value="Venerdì">Venerdì</Option>
                                                         </Select>
                                                     </Form.Item>
-                                                    {getUser().role === "student" ?
+                                                    {location.state && location.state.course ?
                                                         <Form.Item
                                                             {...restField}
                                                             name={[name, 'room']}
