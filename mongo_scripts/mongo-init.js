@@ -13,8 +13,8 @@ db.createCollection("courses", {
         },
         course_id: {
           bsonType: "string",
-          pattern: "^[a-zA-Z]+([ ]{1}[a-zA-Z0-9]+)*$",  
-          description: "must be a valid string: basically, one word with only letters. Eventually, it can contain more words with, from the second one, letters and numbers"  
+          pattern: "^[a-zA-Z]+([ ]{1}[a-zA-Z0-9]+)*$",
+          description: "must be a valid string: basically, one word with only letters. Eventually, it can contain more words with, from the second one, letters and numbers"
         },
     }
   }
@@ -63,7 +63,7 @@ db.createCollection("lessons", {
                   minimum: 0,
                   maximum: 23,
               },
-              minutes: {  
+              minutes: {
                   bsonType: "int",
                   minimum: 0,
                   maximum: 59,
@@ -118,7 +118,7 @@ db.createCollection("receptions", {
                   minimum: 0,
                   maximum: 23,
               },
-              minutes: {  
+              minutes: {
                   bsonType: "int",
                   minimum: 0,
                   maximum: 59,
@@ -134,7 +134,7 @@ db.createCollection("receptions", {
                   minimum: 0,
                   maximum: 23,
               },
-              minutes: {  
+              minutes: {
                   bsonType: "int",
                   minimum: 0,
                   maximum: 59,
@@ -159,12 +159,12 @@ db.createCollection("users", {
         },
         psw: {
           bsonType: "string",
-          pattern: "^.{8,}$",  
+          pattern: "^.{8,}$",
           description: "must be a valid psw string: at least 8 characters"
         },
         role: {
           enum: ["student", "teacher", "admin"],
-          description: "can be only a value in the enum and it's required"  
+          description: "can be only a value in the enum and it's required"
         },
         name: {
           bsonType: "string",
@@ -173,23 +173,23 @@ db.createCollection("users", {
         },
         surname: {
           bsonType: "string",
-          pattern: "^[a-zA-Z]+([ ]{1}[a-zA-Z]+){0,2}$",  
-          description: "must be a valid surname string: surnames of several words allowed"  
+          pattern: "^[a-zA-Z]+([ ]{1}[a-zA-Z]+){0,2}$",
+          description: "must be a valid surname string: surnames of several words allowed"
         },
         badge_number: {
           bsonType: "string",
-          pattern: "^[0-9]{10}$",  
-          description: "must be a number of 10 ciphers"  
+          pattern: "^[0-9]{10}$",
+          description: "must be a number of 10 ciphers"
         },
         phone_number: {
           bsonType: "string",
-          pattern: "^[0-9]{10}$",  
-          description: "must be a number of 10 ciphers"  
+          pattern: "^[0-9]{10}$",
+          description: "must be a number of 10 ciphers"
         },
         university_name: {
           bsonType: "string",
           pattern: "^[a-zA-Z]+([ ]{1}[a-zA-Z]+)*$",
-          description: "must be a valid name"  
+          description: "must be a valid name"
         },
         picture: {
           bsonType: "string",
@@ -216,28 +216,28 @@ db.createCollection("rooms", {
       properties: {
         type: {
           enum: ["Aula Studio", "Aula", "Bagno", "Mensa", "Segreteria", "Laboratorio"],
-          description: "can be only a value in the enum and it's required"  
+          description: "can be only a value in the enum and it's required"
         },
         maximum_seats: {
           bsonType: "int",
           minimum: 0,
-          description: "must be a positive number"  
+          description: "must be a positive number"
         },
         floor: {
           bsonType: "int",
           minimum: 1,
           maximum: 3,
-          description: "must be a positive number"  
+          description: "must be a positive number"
         },
         occupied_seats: {
           bsonType: "int",
           minimum: 0,
-          description: "must be a positive number minor than maximum_seats_value"   
+          description: "must be a positive number minor than maximum_seats_value"
         },
         name: {
           bsonType: "string",
-          pattern: "^(Aula|Aula Studio|Bagno|Mensa|Segreteria|Laboratorio) [1-3].([0-9]){1,2}$",  
-          description: "must be a valid string: basically, one word with only letters. Eventually, it can contain more words with, from the second one, letters and numbers"  
+          pattern: "^(Aula|Aula Studio|Bagno|Mensa|Segreteria|Laboratorio) [1-3].([0-9]){1,2}$",
+          description: "must be a valid string: basically, one word with only letters. Eventually, it can contain more words with, from the second one, letters and numbers"
         },
         position: {
           bsonType: "array",
@@ -280,13 +280,13 @@ db.createCollection("rooms", {
                            bsonType: "int",
                            minimum: 0,
                            maximum: 23,
-                           description: "must be a valid hour"  
+                           description: "must be a valid hour"
                        },
                        minutes: {
                            bsonType: "int",
                            minimum: 0,
                            maximum: 59,
-                           description: "must be valid minutes"  
+                           description: "must be valid minutes"
                        }
                   }
                },
@@ -298,13 +298,13 @@ db.createCollection("rooms", {
                            bsonType: "int",
                            minimum: 0,
                            maximum: 23,
-                           description: "must be a valid hour"  
+                           description: "must be a valid hour"
                        },
                        minutes: {
                            bsonType: "int",
                            minimum: 0,
                            maximum: 59,
-                           description: "must be valid minutes"  
+                           description: "must be valid minutes"
                        }
                   }
                },
@@ -341,12 +341,11 @@ db.rooms.insertMany([
     {"name":"Mensa 1.11", "floor":NumberInt(1), "maximum_seats":NumberInt(200), "type":"Mensa", "position":[40.745891, -74.158401]},
     {"name":"Laboratorio 1.12", "floor":NumberInt(1), "maximum_seats":NumberInt(150), "type":"Laboratorio", "position":[40.728201, -74.178485]},
     {"name":"Segreteria 1.13", "floor":NumberInt(1), "maximum_seats":NumberInt(0), "type":"Segreteria", "position":[40.728201, -74.172306],
-        "adding_info": {"phone_number":"3312100521", 
-                        "opening_hour":{"hours":NumberInt(9), "minutes":NumberInt(0)}, 
+        "adding_info": {"phone_number":"3312100521",
+                        "opening_hour":{"hours":NumberInt(9), "minutes":NumberInt(0)},
                         "closing_hour":{"hours":NumberInt(16), "minutes":NumberInt(0)}
                        }
     },
-        
     {"name":"Aula 2.1", "floor":NumberInt(2), "maximum_seats":NumberInt(200), "type":"Aula", "position":[40.757059, -74.198484]},
     {"name":"Aula 2.2", "floor":NumberInt(2), "maximum_seats":NumberInt(170), "type":"Aula", "position":[40.757059, -74.194536]},
     {"name":"Aula 2.3", "floor":NumberInt(2), "maximum_seats":NumberInt(170), "type":"Aula", "position":[40.756710, -74.18887]},
@@ -354,7 +353,7 @@ db.rooms.insertMany([
     {"name":"Mensa 2.5", "floor":NumberInt(2), "maximum_seats":NumberInt(200), "type":"Mensa", "position":[40.74745, -74.16200],
         "adding_info":{
             "notes":{
-                "title":"Menï¿½ del giorno",
+                "title":"MenÃ¹ del giorno",
                 "content":"Primo: Passatelli in brodo \nSecondo: Pollo arrosto con patate \nDolce: Crostata di mele"
             }
         }
@@ -390,29 +389,29 @@ db.rooms.insertMany([
 ])
 
 db.users.insertMany([
-    {"email":"admin.admin@unibo.it", "psw":"talkingadmin", "role":"admin" }, 
+    {"email":"admin.admin@unibo.it", "psw":"talkingadmin", "role":"admin" },
     {"email":"franco.franchi@unibo.it", "psw":"professore", "role":"teacher", "phone_number":"3312100521", "name":"Franco", "surname":"Franchi"},
     {"email":"mario.rossi@unibo.it", "psw":"professore", "role":"teacher", "phone_number":"3311234567", "name":"Mario", "surname":"Rossi"}
 ])
 
 db.courses.insertMany([
-    {"teacher_id":"franco.franchi@unibo.it", "course_id":"Algebra"}, 
-    {"teacher_id":"franco.franchi@unibo.it", "course_id":"Calcolo Numerico"}, 
+    {"teacher_id":"franco.franchi@unibo.it", "course_id":"Algebra"},
+    {"teacher_id":"franco.franchi@unibo.it", "course_id":"Calcolo Numerico"},
     {"teacher_id":"mario.rossi@unibo.it", "course_id":"Programmazione 1"},
     {"teacher_id":"mario.rossi@unibo.it", "course_id":"Programmazione 2"}
 ])
 
 db.lessons.insertMany([
-    {"course_name":"Algebra", "room":"Aula 1.1", "day":"Lunedì", 
+    {"course_name":"Algebra", "room":"Aula 1.1", "day":"LunedÃ¬",
         "start":{ "hours":NumberInt(9), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(13), "minutes":NumberInt(0)}
     },
-    {"course_name":"Algebra", "room":"Aula 1.1", "day":"Mercoledì", 
+    {"course_name":"Algebra", "room":"Aula 1.1", "day":"MercoledÃ¬",
         "start":{ "hours":NumberInt(15), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(18), "minutes":NumberInt(0)}
     },
-    {"course_name":"Calcolo Numerico", "room":"Aula 1.1", "day":"Martedì",
+    {"course_name":"Calcolo Numerico", "room":"Aula 1.1", "day":"MartedÃ¬",
         "start":{ "hours":NumberInt(14), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(16), "minutes":NumberInt(0)}
     },
-    {"course_name":"Programmazione 1", "room":"Aula 1.1", "day":"Venerdì",
+    {"course_name":"Programmazione 1", "room":"Aula 1.1", "day":"VenerdÃ¬",
         "start":{ "hours":NumberInt(8), "minutes":NumberInt(0)}, "end":{ "hours":NumberInt(13), "minutes":NumberInt(0)}
     }
 ])
