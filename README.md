@@ -1,6 +1,6 @@
 # TalkingCampus
 
-In ambiente Windows, cio che bisogna fare per utilizzare Talking Campus è:
+In ambiente Windows, i task da eseguire per lanciare correttamente Talking Campus sono:
 - inizializzare il database Mongo, lanciando lo script contenuto nella folder mongo_scripts
 - lanciare il comando "npm install" all'interno della directory del progetto per installare le dipendenze
 - lanciare il comando "npm run frontend-start" per lanciare il frontend dell'applicazione
