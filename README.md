@@ -6,6 +6,6 @@ In ambiente Windows, i task da eseguire per lanciare correttamente Talking Campu
 - lanciare il comando "npm run frontend-start" per lanciare il frontend dell'applicazione
 - lanciare il comando "npm run backend-start" per lanciare il backend dell'applicazione 
 
-Qualora si scelga di lanciare l'applicazione via Docker, è necessario lanciare i seguenti comandi nella directory del progetto:
+In ambiente Linux, qualora si scelga di lanciare l'applicazione via Docker, è necessario lanciare i seguenti comandi nella directory del progetto:
 - docker-compose down -v (per eliminare qualunque versione datata, rimuovendo anche eventuali volumi)
 - docker-compose up --build -d (per buildare il progetto e lanciare l'applicazione in modalità "detached")
