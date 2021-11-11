@@ -4,7 +4,6 @@ exports.checkToken = function(req, res, next) {
 
     const token = req.headers['x-access-token'];
     if (token == null) {
-        console.log("no token")
         res.sendStatus(403)
     }
     jwt.verify(token, PRIVATE_SECRET_KEY, (err, info) => {
