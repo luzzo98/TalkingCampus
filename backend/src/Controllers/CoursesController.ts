@@ -10,11 +10,11 @@ exports.getCourse = function (req, res) {
 
 exports.addCourse = function (req, res) {
     const newCourse = new Course(req.body)
-    newCourse.save(function (err, studente) {
+    newCourse.save(function (err, course) {
         if (err) {
             res.send(err)
         } else {
-            res.status(200).json(studente)
+            res.status(200).json(course)
         }
     })
 };
