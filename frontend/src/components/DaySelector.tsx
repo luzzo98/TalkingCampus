@@ -5,13 +5,14 @@ import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import AppBarTitle from "./AppBarTitle";
 import getUser from "../services/UserLocalInfoGetter";
 import TeacherService from "../services/TeacherService";
+import SubAppBar from "./SubAppBar";
 const { Option } = Select;
 require("../styles/initialForm/initialFormStyle.scss")
 
 const DaySelector: React.FC = () => {
 
     const location: any = useLocation();
-
+    const name: string = location.state && location.state.course ? location.state.course : "Orario di ricevimento"
     const myType: {
         start: { hours: string, minutes: string },
         end:   { hours: string, minutes: string },
@@ -93,6 +94,7 @@ const DaySelector: React.FC = () => {
             <div className="card-container">
                 <div className="hours-container">
                     <AppBarTitle/>
+                    <SubAppBar sub_text={name}/>
                     <div className="day-selector">
                         <Form
                             form={form}

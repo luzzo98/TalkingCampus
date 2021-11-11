@@ -8,7 +8,7 @@ interface Props {
 
 const SubAppBar: React.FC<Props> = ({sub_text}) => {
     return (
-        <div className={"bottom-header"}>
+        <div className={"bottom-header"} style={{backgroundColor: "white"}}>
             <ModalTitle> {sub_text} </ModalTitle>
             <hr/>
         </div>

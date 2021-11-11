@@ -5,6 +5,7 @@ import getUser from "../services/UserLocalInfoGetter";
 import {Button, Divider, Form, Input, Modal, Space} from "antd";
 import {useHistory} from "react-router-dom";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
+import SubAppBar from "./SubAppBar";
 
 const CourseTable: React.FC = () => {
 
@@ -48,6 +49,7 @@ const CourseTable: React.FC = () => {
             <div className="card-container">
                 <div className="hours-container">
                     <AppBarTitle/>
+                    <SubAppBar sub_text={"Corsi insegnati"}/>
                     <div className="day-selector">
                         <Form
                             className="courseTable"
