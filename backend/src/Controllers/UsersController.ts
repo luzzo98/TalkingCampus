@@ -23,7 +23,7 @@ exports.signin = function (req, res) {
                 accessToken: token
             })
         } else {
-            res.send()
+            res.status(404).send("Student not found")
         }
     })
 };
@@ -70,7 +70,7 @@ exports.findStudent = (req, res, next) => {
         if(err)
             res.send(err)
         else
-            if(student !== null)
+            if(student.length > 0)
                 next()
             else
                 res.status(404).send("Student not found")
