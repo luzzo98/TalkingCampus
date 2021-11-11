@@ -90,13 +90,11 @@ const InitialForm:React.FC = () => {
             (res) => {
                 if (res)
                     history.push("/main-page");
-                else
-                    Modal.error({
-                        title: 'I dati inseriti non sono corretti',
-                        content: 'Inserisci nuovamente la tua email e password',
-                    });
             },
-            () => showConnectionError()
+            () => Modal.error({
+                title: 'I dati inseriti non sono corretti',
+                content: 'Inserisci nuovamente la tua email e password',
+            })
         );
     }
     const onStudentFinish = (values: any) => {
